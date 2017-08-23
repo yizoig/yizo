@@ -1,0 +1,65 @@
+##是不是用户
+##id 用户id
+#is_user
+
+SELECT
+  `accounts`.id,
+  `users`.`user_id`
+FROM accounts
+  RIGHT JOIN users ON accounts.user_id = users.user_id
+WHERE id=? and users.`@live` =0;
+
+##是不是管理员
+##id 用户id
+#is_admin
+
+SELECT
+  `accounts`.id,
+  `admins`.`admin_id`
+FROM accounts
+  RIGHT JOIN admins on accounts.admin_id = admins.admin_id
+WHERE id=? and admins.`@live` =0
+
+##账号是否存在
+#existsAccount
+select * from accounts where account=?;
+
+##获取登录账号的基本信息
+#accountInfo
+select * from accounts where user_id IS NOT null and account=?;
+
+##获取登录账号的基本信息
+#accountInfoById
+select * from accounts where user_id IS NOT null and id=?;
+
+##更新登录表的信息
+#updAccountsByAccount
+
+update accounts set ? where account=?;
+
+##添加登录表的信息
+#addAccount
+
+insert into accounts set ?;
+
+
+##删除没有引用的登录表
+#delnotReferAccount
+delete from accounts where admin_id is null and user_id is null;
+
+
+##修改手机号
+#changeTel
+
+update accounts set account=? where account=?;
+
+##修改密码  旧换新
+#changePwd
+
+update accounts set password=? where password=? and id=?;
+
+
+##通过手机号 修改密码
+#changePwdByTel
+
+update accounts set password=? where account=?;

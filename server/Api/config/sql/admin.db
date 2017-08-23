@@ -1,0 +1,17 @@
+##管理员登录
+##account 账号
+#adminSignIn
+
+SELECT
+  `accounts`.id,
+  `admins`.`admin_id`,
+  `account`,
+  `password`,
+  `nicename`,
+  `gender`,
+  `@create`,
+  `@live`,
+  `signin_time`
+FROM accounts
+  RIGHT JOIN admins ON accounts.admin_id = admins.admin_id
+WHERE account = ?

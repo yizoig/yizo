@@ -1,0 +1,18 @@
+{
+    "server": {
+        "port": 3000,
+        "protocol": "http"
+    },
+    "secret":"yizo",
+    "mysql": {
+        "host": "119.29.189.99",
+        "user": "root",
+        "password": "coder123456",
+        "database": "new_yizo"
+    },
+    "redis":{
+        "host":"127.0.0.1",
+        "pssword":"coder123456",
+        "post":6379
+    }
+}

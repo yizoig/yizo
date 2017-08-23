@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "lodash": "registry:npm/lodash#4.0.0+20161015015725",
+    "mysql": "registry:npm/mysql#2.11.1+20161114232222"
+  }
+}

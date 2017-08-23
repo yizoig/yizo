@@ -1,0 +1,25 @@
+##学校列表
+#collegeList
+
+SELECT *
+FROM colleges
+LIMIT ?, ?
+
+##添加学校
+#addcollege
+
+insert into colleges(college_name) value(?);
+
+
+##删除学校
+#delColleges
+delete from colleges where college_id in (?);
+
+
+##获取学生表中用到的学校
+#usersInCollege
+select group_concat(DISTINCT college) as colleges from users WHERE college is not null and college in (?);
+
+##修改学校信息
+#updateCollege
+update colleges set college_name=? where college_id=?;

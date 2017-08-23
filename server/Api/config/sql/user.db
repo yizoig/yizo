@@ -1,0 +1,87 @@
+##用户登录
+##account 账号
+#userSignIn
+
+SELECT
+  `accounts`.id,
+  `users`.`user_id`,
+  `account`,
+  `password`,
+  `nicename`,
+  `gender`,
+  `college`,
+  `balance`,
+  `@create`,
+  `@live`,
+  `signin_time`
+FROM accounts
+  RIGHT JOIN users ON accounts.user_id = users.user_id
+WHERE account = ?
+
+##用户列表
+#userList
+
+SELECT
+  id,
+  account,
+  nicename,
+  gender,
+  `@create`,
+  `@live`,
+  college
+FROM accounts
+  JOIN users ON accounts.user_id = users.user_id
+WHERE accounts.user_id IS NOT NULL
+LIMIT ?,?
+
+##获取用户基本信息
+#userInfo
+
+SELECT
+  account,
+  nicename,
+  gender,
+  college,
+  college_name,
+  `@create`
+FROM accounts
+  JOIN users ON users.`user_id` = accounts.`user_id`
+  JOIN colleges ON colleges.`college_id` = users.`college`
+WHERE id = ?;
+
+##添加用户 在User表添加上用户信息
+#addUser1
+
+insert into users(balance) value(0);
+
+##添加用户  在account添加用户登录信息
+#addUser2
+
+insert into accounts(account,password,nicename,user_id) values(?,?,?,?);
+
+
+##删除用户 
+## 外建级联
+#delUser
+
+DELETE u FROM users u
+join accounts a on u.user_id = a.user_id
+WHERE id IN (?);
+
+
+##禁用用户 
+## 外建级联
+#disabledUser
+
+update users set `@live` = ? where user_id in (
+  SELECT user_id
+  FROM accounts WHERE id in (?)
+);
+
+##修改用户的头像
+#changeCollege
+
+update users set `college` = ? where user_id in (
+  SELECT user_id
+  FROM accounts WHERE id in (?)
+);
