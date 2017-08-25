@@ -43,36 +43,23 @@ module.exports = class Model extends Mysql {
      * 支持对象  {id:'user_id',name:"user_name"}
      */
     field(_fileds) {
+        if (Object.prototype.toString.call(_fileds) === "[object String]") {
 
-
-        switch (Object.prototype.toString.call(_fileds)) {
-
-            case "[object String]": {
-                //首先去除两边空格或者将两个以上空格转换为一个空格
-                _fileds = _fileds.trim().replace(/\s\s+/, " ").replace(/\s*,\s*/, ",");
-                if (!/^([a-zA-Z$_][a-zA-Z_0-9]+( as [a-zA-Z$_][a-zA-Z_0-9])?)(,[a-zA-Z$_][a-zA-Z_0-9]+( as [a-zA-Z$_][a-zA-Z_0-9])?)*$/.test(_fileds)) {
-                    throw new Error("字段格式错误 格式比如：'id,name'");
-                }
-                //转换为数组
-                _fileds = (_fileds+"").split(",");
-                break;
-            }
-            case "[object Object]": {
-                for (let key in _fileds) {
-                    if (!/^[a-zA-Z$_][a-zA-Z_0-9]+$/.test(_fileds[key])) {
-                        throw new Error(_fileds[key] + "格式错误 必须是变量格式 格式比如：['id','name']");
-                    }
-                }
-                break;
-            }
-            default: {
-                throw new Error("只支持字符串和数组形式");
-            }
-        }
+            //首先去除两边空格或者将两个以上空格转换为一个空格
+            _fileds = _fileds.trim().replace(/\s\s+/, " ").replace(/\s*,\s*/, ",");
 
         console.log(_fileds)
+            if (!/^([a-zA-Z$_][a-zA-Z_0-9]*( as [a-zA-Z$_][a-zA-Z_0-9]*)?)(,[a-zA-Z$_][a-zA-Z_0-9]*( as [a-zA-Z$_][a-zA-Z_0-9]*)?)*$/ig.test(_fileds)) {
+                throw new Error("字段格式错误 格式比如：'id,name'");
+            }
+            //转换为数组
+            _fileds = (_fileds + "").split(",");
+        } else {
+            throw new Error("只支持字符串和数组形式");
+
+        }
         //合并字段  允许连贯
-        this._data['field'] = Object.assign(this._data['field'] || {}, _fileds);
+        this._data['field'] = _fileds.concat(this._data['field'] || []);
 
         return this;
     }

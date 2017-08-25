@@ -24,11 +24,12 @@ function testField(){
 
     model.field("id,adf,adf");
     console.log(model._data)
-    model.field({id:"id",name:"name"});
+    model.field("id AS college_id1,adf,adf as id");
     console.log(model._data)
-    model.field("id desc,name");
-    console.log(model._data)
-    model.field("id1 desc,name");
+    model.field(`
+        id             as college_id2,
+        name as college_name
+    `);
     console.log(model._data)
 }
 
