@@ -2,7 +2,6 @@ let Mysql = require("./mysql");
 module.exports = class Model extends Mysql {
 
 
-
     constructor() {
         super();
         this._data = {};
@@ -34,33 +33,35 @@ module.exports = class Model extends Mysql {
         }
 
     }
-
+    table(_table) {
+        this._data['table'] = _table;
+    }
     //连贯操作
     /**
      * 
      * @param {*字段} _fileds 
      * 支持字符串 'id,name'
-     * 支持对象  {id:'user_id',name:"user_name"}
      */
     field(_fileds) {
-        if (Object.prototype.toString.call(_fileds) === "[object String]") {
 
-            //首先去除两边空格或者将两个以上空格转换为一个空格
-            _fileds = _fileds.trim().replace(/\s\s+/, " ").replace(/\s*,\s*/, ",");
 
-        console.log(_fileds)
-            if (!/^([a-zA-Z$_][a-zA-Z_0-9]*( as [a-zA-Z$_][a-zA-Z_0-9]*)?)(,[a-zA-Z$_][a-zA-Z_0-9]*( as [a-zA-Z$_][a-zA-Z_0-9]*)?)*$/ig.test(_fileds)) {
-                throw new Error("字段格式错误 格式比如：'id,name'");
-            }
-            //转换为数组
-            _fileds = (_fileds + "").split(",");
-        } else {
-            throw new Error("只支持字符串和数组形式");
-
+        if (Object.prototype.toString.call(_fileds) !== "[object String]") {
+            throw new Error("只支持字符串");
         }
-        //合并字段  允许连贯
-        this._data['field'] = _fileds.concat(this._data['field'] || []);
+        //首先去除两边空格或者将两个以上空格转换为一个空格
+        _fileds = _fileds.trim().replace(/\s\s+/, " ").replace(/\s*,\s*/g, ",").replace(/\s+as\s+/g, ' AS ');
+        //转换为数组 去除重复的值  
+        _fileds = (_fileds + "").split(",");
 
+        for (let i = 0; i <= _fileds.length; i++) {
+            if (_fileds[i])
+                _fileds[i] = _fileds[i].replace(/(([a-zA-Z$_][a-zA-Z_0-9]*\()?([a-zA-Z$_][a-zA-Z_0-9]*)(\))?)( AS \S+)?/, (...data) => {
+
+                    return (data[2] || '').toUpperCase() + '`' + data[3] + '`' + (data[4] || '') + (data[5] || '')
+                });
+        }
+        //合并字段  允许连贯  (unique使用的是自定义的函数 Array.property.unique)
+        this._data['field'] = _fileds.concat(this._data['field'] || []).unique();
         return this;
     }
     /**
@@ -74,9 +75,19 @@ module.exports = class Model extends Mysql {
 
         switch (Object.prototype.toString.call(_data)) {
             case "[object String]": {
+                //去除空格
+                _data = _data.trim().replace(/\s\s+/, " ").replace(/\s*(&|=)\s*/g, "$1");
+                console.log(_data)
                 if (!/^([a-zA-Z$_][a-zA-Z_0-9]+=\S)(&[a-zA-Z$_][a-zA-Z_0-9]+=\S)*$/.test(_data)) {
                     throw new Error("字段格式错误 格式比如：'id=1&name=2'");
                 }
+                _data = _data.split('&');
+                let newData = {};
+                for (let i = 0; i < _data.length; i++) {
+                    let item = _data[i].split("=");
+                    newData[item[0]] = this.escape(item[1]);
+                }
+                _data = newData;
                 break;
             }
             case "[object Object]": {
@@ -85,6 +96,10 @@ module.exports = class Model extends Mysql {
             default: {
                 throw new Error("只支持字符串和数组形式");
             }
+        }
+
+        for (let key in _data) {
+            _data[key] = this.escape(_data[key])
         }
         //合并字段  允许连贯
         this._data['data'] = Object.assign(this._data['data'] || {}, _data);
@@ -98,11 +113,10 @@ module.exports = class Model extends Mysql {
         let map = [];
         // console.log(_where)
         //如果是数组  就按照数组解析
-        for (let key in _where) {
 
-            //如果是数组
-            if (isArray) {
-
+        //如果是数组
+        if (isArray) {
+            for (let key = 0; key < _where.length; key++) {
                 //偶数
                 if (key % 2 == 1 && (_where[key].toUpperCase() == "AND" || _where[key].toUpperCase() == "OR")) {
 
@@ -129,7 +143,10 @@ module.exports = class Model extends Mysql {
                         whereStr = [whereStr.join(` ${logic} `)]
                     }
                 }
-            } else {
+            }
+        } else {
+
+            for (let key in _where) {
                 switch (Object.prototype.toString.call(_where[key])) {
                     case "[object String]": {
 
@@ -146,7 +163,47 @@ module.exports = class Model extends Mysql {
                         break;
                     }
                     case "[object Array]": {
-                        whereStr.push(this.whereCheck(_where[key], true));
+                        //如果数组包裹的值也是数组就继续解析逻辑符号
+
+                        if (!isArray && typeof _where[key][0] == 'string') {
+
+
+                            _where[key][0] = _where[key][0].toUpperCase();
+                            switch (_where[key][0]) {
+                                case "=":
+                                case "<>":
+                                case "!=":
+                                case "<":
+                                case ">":
+                                case "<=":
+                                case "<=":
+                                case "LIKE":
+                                case "NOT LIKE": {
+                                    whereStr.push(`\`${key}\` ${_where[key][0]} ${_where[key][1]}`);
+                                    break;
+                                }
+                                case "BETWEEN":
+                                case "NOT BETWEEN": {
+                                    whereStr.push(`\`${key}\` ${_where[key][0]} ${_where[key][1]} AND ${_where[key][2]}`);
+                                    break;
+                                }
+                                case "IN":
+                                case "NOT IN": {
+                                    whereStr.push(`\`${key}\` ${_where[key][0]} (${_where[key][1].join(',')})`);
+                                    break;
+                                }
+                                case "IS NULL":
+                                case "IS NOT NULL": {
+                                    whereStr.push(`\`${key}\` ${_where[key][0]}`);
+                                    break;
+                                }
+                                default: {
+                                    throw new Error("不存在的条件判断符号")
+                                }
+                            }
+                        } else {
+                            whereStr.push(this.whereCheck(_where[key], true));
+                        }
                         break;
                     }
                     case "[object Object]": {
@@ -159,6 +216,7 @@ module.exports = class Model extends Mysql {
                 }
             }
         }
+
         return `${whereStr.join(` ${logic} `)}`
     }
     /**
@@ -210,12 +268,12 @@ module.exports = class Model extends Mysql {
             throw new Error("参数格式错误  调用方法：limit('1,10') 或者 limit(1,10)");
         }
         let beforeKey;
-        for (let key in _limit) {
-            if (_limit[key] <= beforeKey) {
+        for (let i = 0; i < _limit.length; i++) {
+            if (_limit[i] <= beforeKey) {
                 throw new Error("参数格式错误  开始记录必须大于结束记录");
             }
-            _limit[key] = parseInt(_limit[key]);
-            beforeKey = key;
+            _limit[i] = parseInt(_limit[i]);
+            beforeKey = i;
         }
         this._data['limit'] = _limit;
     }
@@ -238,17 +296,54 @@ module.exports = class Model extends Mysql {
         //转换为limit
         this._data['limit'] = [(_page[0] - 1) * _page[1], _page[0] * _page[1]];
     }
+    //生成sql语句
+    createSql(type) {
+
+        let sql;
+        let { field, limit = '', where = '', order = '', table, data } = this._data;
+        if (!table) {
+            throw new Error("请选择操作的表");
+        }
+        switch (type) {
+            case "SELECT": {
+                sql = `SELECT ${field ? field.join(',') : '*'} FROM ${table} ${where && 'WHERE ' + where}${order && ' ORDER BY ' + order.join(',')}${limit && ' LIMIT ' + limit.join(',')};`
+                break;
+            }
+            case "INSERT": {
+                let newData = [];
+                let newField = []
+                for (let key in data) {
+                    newField.push('`' + key + '`');
+                    newData.push(data[key]);
+                }
+                sql = `INSERT INTO ${table}(${newField.join(',')}) VALUES(${newData.join(',')}) ${where && 'WHERE ' + where};`
+                break;
+            }
+            case "UPDATE": {
+                let newData = [];
+                for (let key in data) {
+                    newData.push(`${key}=${data[key]}`);
+                }
+                sql = `UPDATE ${table} SET ${newData.join()} ${where && 'WHERE ' + where};`
+                break;
+            }
+            default: {
+                throw new Error("sql类型错误");
+            }
+        }
+        this._data['sql'] = sql;
+    }
     group(_group) {
 
     }
     select() {
-
+        this.createSql("SELECT")
     }
     insert() {
-
+        this.createSql("INSERT")
     }
     update() {
-
+        this.createSql("UPDATE")
     }
 
     /**
