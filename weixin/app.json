@@ -1,12 +1,12 @@
 {
   "pages": [
+    "pages/sign/signIn/index",
     "pages/home/index",
     "pages/mine/changeCollege/index",
     "pages/mine/index",
     "pages/mine/setting/index",
     "pages/mine/changePwd/index",
     "pages/run_order/detail/index",
-    "pages/sign/signIn/index",
     "pages/run_order/create/index",
     "pages/sign/forgotPwd/index",
     "pages/sign/signUp/index",

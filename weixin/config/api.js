@@ -1,10 +1,10 @@
-export let host = "https://api.yizo.exvu.vip";
+export let host = "https://api.yizo.zhiyuan95.cn";
 
 
 export let apis = {
     "runOrders": ["GET", "/runOrders"],
     "collegelist": ["GET", '/colleges'],
-    "signIn": ["POST", '/session'],
+    "signIn": ["POST", '/account/signIn'],
     "updateUserInfo": ["PUT", '/users/:id'],
     "changePwd": ['PUT', '/users/pwd/:id'],
     "changeTel": ['PUT', '/users/tel'],

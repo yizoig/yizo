@@ -91,8 +91,7 @@ class Interface {
                 } catch (err) {
                     console.log(err);
                     //如果是自定義的異常錯誤  就返回錯誤信息 否則返回通用異常
-                    res.status(500);
-
+                    res.status(err.code/1000==5?500:200);
                     let returnMessage = {
                         code: err.code || jike.Code.SERVER_ERR
                     };

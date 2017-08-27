@@ -18,8 +18,8 @@ P('signIn/index', {
         try {
 
             let params = Validate.check({tel, password}, [
-                ['tel', 'tel', '手机号格式错误', Validate.MUST_VALIDATE],
-                ['password', 'require', '密码不能为空', Validate.MUST_VALIDATE]
+                // ['tel', 'tel', '手机号格式错误', Validate.MUST_VALIDATE],
+                // ['password', 'require', '密码不能为空', Validate.MUST_VALIDATE]
             ]);
             params['password'] = md5(params['password']);
             this.$showToast({
