@@ -15,7 +15,8 @@ module.exports = {
      PASSWORD_ERR:"请重新输入",
      TEL_EXISTS:"请确认手机号",
      TEL_NOTEXISTS:"请确认手机号",
-     
+
+     AVATAR_TYPE_ERR:"头像必须是png或者jpg的图片格式",
 
      NOT_CHANGE:"服务器没有做任何操作",
      //参数错误

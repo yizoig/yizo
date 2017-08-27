@@ -67,6 +67,10 @@ Interface.create('/users', UserController, [
                 Validate.EXISTS_VALIDATE,
                 [[0,1], 'genderErr','in']
             ],
+            avatar:[
+                Validate.EXISTS_VALIDATE,
+                ['require', 'avatarNotNullErr'],
+            ],
             code: [
                 Validate.MUST_VALIDATE,
                 [6, 'codeLengthErr', 'length']

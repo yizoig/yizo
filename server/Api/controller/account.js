@@ -1,5 +1,6 @@
 let AccountModel = require("../model/account");
 let fs = require('fs');
+let {setAvatar} = require("../comment/avatar");
 let SmsModel = require("../model/sms");
 let jwt = require("../comment/jwt");
 let { BaseError, Code } = jike;
@@ -45,21 +46,12 @@ module.exports = class AccountController extends jike.Controller {
      * 修改头像
      */
     async changeAvatar({ id ,avatar}){
-
-        let headdir = APP_PATH + '/static/upload/head/';
         
-        // //不存在目录就创建目录
-        if(!fs.existsSync(headdir)){
-            fs.mkdirSync(headdir);
-        }
-        
-        //移动文件到头像目录
-        if(fs.existsSync(avatar['path'])){
-            let imagesUtils = require("images");
-            imagesUtils(avatar['path']).size(200).save(headdir+id+'.png',{quality : 100})
-            return this.json(true)
-        }
-        return this.json(false)
+        let result = setAvatar({
+            avatar:avatar['path'],
+            id
+        })
+        return this.json(result)
     }
     /**
      * 修改手机号

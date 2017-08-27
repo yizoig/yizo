@@ -30,4 +30,7 @@ module.exports = {
     OLD_TEL_CODE_ERR:1109,
     //新手机号验证码错误
     NEW_TEL_CODE_ERR:1120,
+
+    //头像类型不正确
+    AVATAR_TYPE_ERR:1200
 }

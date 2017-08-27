@@ -1,6 +1,7 @@
 let UserModel = require("../model/user");
 let SmsModel = require("../model/sms");
 let {BaseError,Code} =jike;
+let {setAvatar} = require("../comment/avatar");
 let fs = require('fs');
 module.exports = class UserController extends jike.Controller {
 
@@ -35,13 +36,18 @@ module.exports = class UserController extends jike.Controller {
      * 用户注册
      * 
      */
-    async signUp({ account, password, code,nickname,gender }) {
+    async signUp({ account, password, code,nickname,gender,avatar }) {
 
         //首先验证验证码是否正确
         if(!(await new SmsModel().verifyCode(account,'signUp',code))){
             throw new BaseError(Code.TEL_CODE_ERR);
         }
         let insertId = await new UserModel().add({ account, password,nickname:nickname?nickname:'用户'+account,gender});
+        //如果注册时提交了用户的头像  就设置自定义头像  否则使用默认头像
+        setAvatar({
+            avatar,
+            id:insertId
+        })
         this.json(insertId);
     }
 
