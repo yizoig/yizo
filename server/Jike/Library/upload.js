@@ -4,7 +4,7 @@ module.exports = function (req, res, next) {
     let files =  {}; 
 
     if (req.files) {
-        for (let fileIndex = 0; fileIndex < req.files.length; fileIndex +  + ) {
+        for (let fileIndex = 0; fileIndex < req.files.length; fileIndex++) {
             
             
                     console.log(fileIndex)
