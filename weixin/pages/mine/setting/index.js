@@ -37,14 +37,13 @@ P('setting/index', {
                 if ("cancel" in res && res['cancel']) {
                     return;
                 }
-                let sex = '';
-                if (res.tapIndex == 0) {
-                    sex = 'male';
-                } else if (res.tapIndex == 1) {
-                    sex = 'female';
-                }
+
+                let gender = res.tapIndex;
                 let userinfo = that.data.userinfo;
-                if (userinfo && userinfo['sex'] == sex) {
+                if (userinfo && userinfo['gender'] == gender) {
+                    that.$showToast({
+                        title: '性别没有变动'
+                    })
                     return;
                 }
                 that.$showToast({
@@ -53,12 +52,11 @@ P('setting/index', {
 
                 })
                 let params = {};
-                params['sex'] = sex;
+                params['gender'] = gender;
                 params['id'] = userinfo['id'];
                 request('updateUserInfo', params).then((data) => {
-
                     setUserInfo({
-                        sex
+                        gender
                     });
                     let userinfo = getUserInfo();
                     that.setData({

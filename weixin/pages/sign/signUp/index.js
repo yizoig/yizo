@@ -6,7 +6,7 @@ P('signUp/index', {
     comps: [],
     data: {
         step: 1,
-        tel: '',
+        account: '',
         code: '',
         password: '',
         repeatPassword: '',
@@ -28,7 +28,7 @@ P('signUp/index', {
     sendCode: function (e) {
 
         //获取验证码
-        let {tel} = this.data;
+        let {account:tel} = this.data;
         try {
             let params = Validate.check({tel, type: 'signUp'}, [
                 ['type', 'require', '短信类型错误', Validate.MUST_VALIDATE],
@@ -88,10 +88,10 @@ P('signUp/index', {
         let {step} = this.data;
         if (step == 1) {
             try {
-                let {tel, code, signUp} = this.data
-                let params = Validate.check({tel, code}, [
+                let {account, code, signUp} = this.data
+                let params = Validate.check({account, code}, [
                     ['code', 'require', '短信验证码错误', Validate.MUST_VALIDATE],
-                    ['tel', 'tel', '手机号格式错误', Validate.MUST_VALIDATE]
+                    ['account', 'tel', '手机号格式错误', Validate.MUST_VALIDATE]
                 ]);
                 if (!signUp || (md5(params['code']) != signUp['code'])) {
                     this.$showToast({
@@ -113,7 +113,7 @@ P('signUp/index', {
 
 
             try {
-                let {tel, code, password, repeatPassword} = this.data;
+                let {account, code, password, repeatPassword} = this.data;
                 if (password != repeatPassword) {
                     this.$showToast({
                         title: '两次密码不一致',
@@ -122,18 +122,17 @@ P('signUp/index', {
                     return;
                 }
                 //获取微信用户信息
-                let {nickName: truename = '用户' + tel, gender: sex = 0, avatarUrl = null} = wx.getStorageSync('wxUserInfo');
+                let {nickName: truename = '用户' + account, gender: sex = 0, avatarUrl = null} = wx.getStorageSync('wxUserInfo');
 
                 sex = sex == 0 ? null : (sex == 1 ? 'male' : 'female');
 
-                let params = Validate.check({tel, code, password, truename, sex, avatarUrl}, [
+                let params = Validate.check({account, code, password, truename, sex, avatarUrl}, [
                     ['sex', 'require', '性别输入错误', Validate.EXISTS_VALIDATE],
                     ['truename', 'require', '姓名输入错误', Validate.EXISTS_VALIDATE],
                     ['password', 'require', '密码不能为空', Validate.MUST_VALIDATE],
                     ['code', 'require', '短信验证码错误', Validate.MUST_VALIDATE],
-                    ['tel', 'tel', '手机号格式错误', Validate.MUST_VALIDATE]
+                    ['account', 'tel', '手机号格式错误', Validate.MUST_VALIDATE]
                 ]);
-                params['password'] = md5(params['password']);
                 this.$showToast({
                     title: '注册中...',
                     icon: 'loading'
@@ -153,7 +152,7 @@ P('signUp/index', {
                     wx.setStorage({
                         key: "remember",
                         data: {
-                            tel, pwd: password
+                            account,password
                         }
                     });
 

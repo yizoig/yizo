@@ -15,16 +15,16 @@ P('rename/index', {
     },
     ontextChange: function (e) {
         this.setData({
-            truename: e.detail.value
+            nicename: e.detail.value
         })
     },
     onRename: function () {
 
-        let {truename, id} = this.data;
+        let {nicename, id} = this.data;
         try {
 
-            let params = Validate.check({truename, id}, [
-                ['truename', 'require', '姓名不能为空', Validate.MUST_VALIDATE]
+            let params = Validate.check({nicename, id}, [
+                ['nicename', 'require', '姓名不能为空', Validate.MUST_VALIDATE]
             ]);
             this.$showToast({
                 title:  '修改中...',
@@ -33,7 +33,7 @@ P('rename/index', {
             })
             request('updateUserInfo', params).then(data => {
 
-                setUserInfo({truename});
+                setUserInfo({nicename});
                 this.$showToast({
                     title:  '修改成功',
                     icon:'success'

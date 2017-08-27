@@ -7,7 +7,7 @@
         <block wx:if="{{userinfo}}">
             <template is="avatar" data="{{...userinfo,avatarUrl:avatarUrl}}"></template>
             <view class="info">
-                <view class="username iconfont icon-{{userinfo['sex']}}">{{userinfo['truename']}}</view>
+                <view class="username iconfont icon-{{userinfo['gender']==0?'female':'male'}}">{{userinfo['nicename']}}</view>
                 <block wx:if="{{userinfo['college_name']}}">
                     <view class="college">{{userinfo['college_name']}}</view>
                 </block>

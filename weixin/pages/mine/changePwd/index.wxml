@@ -8,10 +8,10 @@
         </view>
 
         <view class="item">
-            <input type="password" placeholder="原密码" maxlength="16" bindinput="ontextChange" data-name="oldpassword"/>
+            <input type="password" placeholder="原密码" maxlength="16" bindinput="ontextChange" data-name="password"/>
         </view>
         <view class="item">
-            <input type="password" placeholder="新密码" maxlength="16" bindinput="ontextChange" data-name="password"/>
+            <input type="password" placeholder="新密码" maxlength="16" bindinput="ontextChange" data-name="newPassword"/>
         </view>
 
     </view>

@@ -17,11 +17,16 @@ require('./lib/wxpage').A({
         })
         //自动登录
         let remember = wx.getStorageSync('remember');
+        console.log(remember);
         if(remember){
-            remember['password'] =remember['pwd'];
             request("signIn", remember).then(
-                data => {
+                result => {
                     console.log('自动登录成功');
+                    //保存用戶信息
+                    wx.setStorage({
+                        key: "userinfo",
+                        data:result.data
+                    });
                 },
                 reason => {
                     wx.removeStorage({key: 'remember'});

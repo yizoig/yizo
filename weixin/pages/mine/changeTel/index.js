@@ -6,19 +6,19 @@ P('changeTel/index', {
     comps: [],
     data: {
         step: 1,
-        oldtel: '',
-        oldtelCode: '',
+        newTel: '',
+        newCode: '',
         tel: '',
-        telCode: '',
+        code: '',
         unbindTel: null,
         bindTel: null
     },
     onShow: function () {
 
         let data = getUserInfo();
-        if (data && 'tel' in data) {
+        if (data && 'account' in data) {
             this.setData({
-                oldtel: data['tel']
+                tel: data['account']
             })
         }
     },
@@ -42,9 +42,9 @@ P('changeTel/index', {
         params['type'] = e.target.dataset.type;
         //获取不同的手机号
         if (params['type'] == 'unbindTel') {
-            params['tel'] = this.data.oldtel;
-        } else {
             params['tel'] = this.data.tel;
+        } else {
+            params['tel'] = this.data.newTel;
         }
         try {
 
@@ -108,12 +108,12 @@ P('changeTel/index', {
 
         if (step == 1) {
             try {
-                let {oldtel, oldtelCode, unbindTel} = this.data
-                let params = Validate.check({oldtel, oldtelCode}, [
-                    ['oldtelCode', 'require', '短信验证码错误', Validate.MUST_VALIDATE],
-                    ['oldtel', 'tel', '手机号格式错误', Validate.MUST_VALIDATE]
+                let {tel, code, unbindTel} = this.data
+                let params = Validate.check({tel, code}, [
+                    ['code', 'require', '短信验证码错误', Validate.MUST_VALIDATE],
+                    ['tel', 'tel', '手机号格式错误', Validate.MUST_VALIDATE]
                 ]);
-                if (!unbindTel || (md5(params['oldtelCode']) != unbindTel['code'])) {
+                if (!unbindTel || (md5(params['code']) != unbindTel['code'])) {
 
                     this.$showToast({
                         title: '短信验证码错误',
@@ -132,12 +132,12 @@ P('changeTel/index', {
             }
         } else if (step == 2) {
             try {
-                let {oldtel, oldtelCode, tel, telCode, bindTel} = this.data
-                let params = Validate.check({oldtel, oldtelCode, tel, telCode}, [
-                    ['telCode', 'require', '短信验证码错误', Validate.MUST_VALIDATE],
-                    ['tel', 'tel', '新手机号格式错误', Validate.MUST_VALIDATE]
+                let {tel, code, newTel, newCode, bindTel} = this.data
+                let params = Validate.check({tel, code, newTel, newCode}, [
+                    ['newCode', 'require', '短信验证码错误', Validate.MUST_VALIDATE],
+                    ['newTel', 'tel', '新手机号格式错误', Validate.MUST_VALIDATE]
                 ]);
-                if (!bindTel || (md5(params['telCode']) != bindTel['code'])) {
+                if (!bindTel || (md5(params['newCode']) != bindTel['code'])) {
                     this.$showToast({
                         title: '短信验证码错误',
                         icon: 'error'
@@ -156,8 +156,9 @@ P('changeTel/index', {
                         icon: 'success'
                     });
                     setUserInfo({
-                        tel
+                        account:newTel
                     })
+                    
                     this.$back();
                 }, reson => {
                     wx.showToast({

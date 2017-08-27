@@ -13,12 +13,12 @@
         </view>
         <view
                 bindtap="$bindRoute"
-                data-url="/pages/mine/rename/index?id={{userinfo['id']}}&truename={{userinfo['truename']}}"
+                data-url="/pages/mine/rename/index?id={{userinfo['id']}}&truename={{userinfo['nicename']}}"
                 class="item"
         >
             用户名
             <view class="text">
-                {{userinfo['truename']}}
+                {{userinfo['nicename']}}
                 <view class="iconfont icon-right-arrow" style="color:#51C332"></view>
             </view>
         </view>
@@ -36,7 +36,7 @@
         </view>
         <view class="item" bindtap="changeSex">
             性别
-            <view class="text iconfont icon-{{userinfo['sex']}}">
+            <view class="text iconfont icon-{{userinfo['gender']==0?'female':'male'}}">
                 <view class="iconfont icon-right-arrow" style="color:#51C332"></view>
             </view>
 

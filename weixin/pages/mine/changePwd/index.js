@@ -6,7 +6,7 @@ P('changePwd/index', {
     data: {
         id: '',
         password: '',
-        oldpassword: ''
+        newPassword: ''
     },
     onLoad: function (opts) {
         this.setData(opts);
@@ -17,24 +17,22 @@ P('changePwd/index', {
         this.setData(data);
     },
     changPwd: function () {
-        let {id,password, oldpassword} = this.data;
+        let {id,password, newPassword} = this.data;
 
         try {
 
-            let params = Validate.check({id, password, oldpassword}, [
-                ['oldpassword', 'require', '原密码不能为空', Validate.MUST_VALIDATE],
-                ['password', 'require', '新密码不能为空', Validate.MUST_VALIDATE]
+            let params = Validate.check({id, password, newPassword}, [
+                ['password', 'require', '原密码不能为空', Validate.MUST_VALIDATE],
+                ['newPassword', 'require', '新密码不能为空', Validate.MUST_VALIDATE]
             ]);
             let remember = wx.getStorageSync('remember');
-            params['oldpassword'] = md5(params['oldpassword']);
-            if (remember &&(remember['pwd'] != params['oldpassword'])) {
+            if (remember &&(remember['password'] != params['password'])) {
                 this.$showToast({
                     title: '原密码不正确',
                     icon: 'error'
                 })
                 return;
             }
-            params['password'] = md5(params['password']);
             params['id'] = id;
             this.$showToast({
                 title: '修改密码中...',

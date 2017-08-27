@@ -27,18 +27,22 @@ P('signIn/index', {
                 icon: 'loading'
             });
             request("signIn", params).then(
-                data => {
-
+                result => {
                     wx.setStorage({
                         key: "remember",
                         data: {
-                            account,pwd:params['password']
+                            account,
+                            password
                         }
                     });
                     //保存数据
                     this.$showToast({
                         title: "登录成功",
                         icon: 'success'
+                    });
+                    wx.setStorage({
+                        key: "userinfo",
+                        data:result.data
                     });
                     setTimeout(() => {
                         wx.switchTab({

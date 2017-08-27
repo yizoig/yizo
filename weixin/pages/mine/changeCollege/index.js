@@ -57,13 +57,13 @@ P('changeCollege/index', {
                 let {colleges} = this.data;
                 if ('refresh' in obj) {
                     colleges = [];
-                    data.page['current'] = 2;
+                    page['current'] = 2;
                 }
                 colleges.push.apply(colleges, data.data);
-                data.page['current']++;
+                page['current']++;
                 that.setData({
                     colleges,
-                    page: data.page,
+                    page: page,
                     loading: false
                 })
             }, reason => {
@@ -102,7 +102,7 @@ P('changeCollege/index', {
                 title: '修改中...',
                 icon: 'loading'
             });
-            request('updateUserInfo', params).then(data => {
+            request('changeCollege', params).then(data => {
 
                 setUserInfo({
                     college_id,
@@ -112,9 +112,9 @@ P('changeCollege/index', {
                     title: '修改成功',
                     icon: 'success'
                 })
-                setTimeout(function () {
+                setTimeout(()=> {
                     this.$back();
-                }.bind(this), 1000);
+                }, 1000);
             }, reason => {
                 this.$showToast({
                     title: reason,
