@@ -15,11 +15,11 @@ module.exports = class UserModel extends jike.Model {
          * 可以根据传入的参数进行筛选
          */
         let user = await this.table('accounts')
-            .field('accounts.id,users.user_id,account,nicename,gender,college,@create,@live,signin_time')
+            .field('accounts.id,users.user_id,account,nickname,gender,college,@create,@live,signin_time')
             .where([
                 {
                     account: where['search'] && ['like', `%${where['search']}%`],
-                    nicename: where['search'] && ['like', `%${where['search']}%`],
+                    nickname: where['search'] && ['like', `%${where['search']}%`],
                     _logic: "OR"
                 },
                 "and",
@@ -61,7 +61,7 @@ module.exports = class UserModel extends jike.Model {
     /**
      * 添加用户
      */
-    async add({ account, password }) {
+    async add({ account, password,nickname,gender }) {
 
 
         let [user = null] = await this.query(sqls.accountInfo, account);
@@ -87,7 +87,7 @@ module.exports = class UserModel extends jike.Model {
             }
         } else {
             //不存在登录账号，需要为用户添加一条登录账号记录
-            let { insertId: insertAccountId } = await this.query(sqls.addAccount, { account, password: md5(password).toString(), user_id: insertId, nicename: '用户' + account });
+            let { insertId: insertAccountId } = await this.query(sqls.addAccount, { account, password: md5(password).toString(), user_id: insertId, nickname,gender});
             if (insertAccountId) {
                 this.commit();
                 return insertAccountId;

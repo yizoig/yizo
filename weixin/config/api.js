@@ -1,4 +1,5 @@
-export let host = "https://api.yizo.zhiyuan95.cn";
+// export let host = "https://api.yizo.zhiyuan95.cn";
+export let host = "https://localhost:3000";
 
 
 export let apis = {

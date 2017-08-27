@@ -5,7 +5,7 @@
         当前用户名:{{cacheName}}
     </view>
     <view class="item">
-        <input bindinput="ontextChange" data-name="nicename"/>
+        <input bindinput="ontextChange" data-name="nickname"/>
     </view>
     <view class="btn-controller">
         <button

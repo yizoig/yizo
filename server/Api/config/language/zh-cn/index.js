@@ -9,11 +9,12 @@ module.exports = {
     idsFormatErr:'ids格式错误',
     modeOutRangeErr:'force值不在指定范围',
     codeLengthErr:"验证码必须是6位的纯数字",
-    passwordLengthErr:"密码长度太短(6-12位)",
-    newPasswordLengthErr:"新密码长度太短(6-12位)",
+    passwordLengthErr:"密码长度太短(6-18位)",
+    newPasswordLengthErr:"新密码长度太短(6-18位)",
     smsCodeTypeError:"短信类型不正确",
     collegeIDNotNullErr:"学校不能为空",
     collegeNameNotNullErr:'学校名不能为空',
-    niceNameNotNullErr:"昵称不能为空",
-    genderErr:"性别格式错误"
+    nicknameNotNullErr:"昵称不能为空",
+    genderErr:"性别格式错误",
+    avatarNotNullErr:"请上传头像"
 }

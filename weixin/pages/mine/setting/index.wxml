@@ -13,12 +13,12 @@
         </view>
         <view
                 bindtap="$bindRoute"
-                data-url="/pages/mine/rename/index?id={{userinfo['id']}}&truename={{userinfo['nicename']}}"
+                data-url="/pages/mine/rename/index?id={{userinfo['id']}}&truename={{userinfo['nickname']}}"
                 class="item"
         >
             用户名
             <view class="text">
-                {{userinfo['nicename']}}
+                {{userinfo['nickname']}}
                 <view class="iconfont icon-right-arrow" style="color:#51C332"></view>
             </view>
         </view>

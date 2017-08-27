@@ -35,13 +35,13 @@ module.exports = class UserController extends jike.Controller {
      * 用户注册
      * 
      */
-    async signUp({ account, password, code }) {
+    async signUp({ account, password, code,nickname,gender }) {
 
         //首先验证验证码是否正确
         if(!(await new SmsModel().verifyCode(account,'signUp',code))){
             throw new BaseError(Code.TEL_CODE_ERR);
         }
-        let insertId = await new UserModel().add({ account, password});
+        let insertId = await new UserModel().add({ account, password,nickname:nickname?nickname:'用户'+account,gender});
         this.json(insertId);
     }
 

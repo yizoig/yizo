@@ -18,6 +18,11 @@ module.exports = class Model extends Mysql {
         try {
             //进行字段映射
             for (let key in this._map) {
+                //过滤undefined的数据
+                if(typeof options[key]=="undefined"){
+                    delete options[key];
+                    continue;
+                }
                 if (options.hasOwnProperty(key)) {
                     options[this._map[key]] = options[key];
                     delete options[key];

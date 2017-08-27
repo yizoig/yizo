@@ -7,15 +7,17 @@ SELECT
   `users`.`user_id`,
   `account`,
   `password`,
-  `nicename`,
+  `nickname`,
   `gender`,
   `college`,
+  `college_name`,
   `balance`,
   `@create`,
   `@live`,
   `signin_time`
 FROM accounts
   RIGHT JOIN users ON accounts.user_id = users.user_id
+  LEFT JOIN colleges on colleges.college_id = users.college
 WHERE account = ?
 
 ##用户列表
@@ -24,7 +26,7 @@ WHERE account = ?
 SELECT
   id,
   account,
-  nicename,
+  nickname,
   gender,
   `@create`,
   `@live`,
@@ -39,7 +41,7 @@ LIMIT ?,?
 
 SELECT
   account,
-  nicename,
+  nickname,
   gender,
   college,
   college_name,
@@ -58,7 +60,7 @@ insert into users(balance) value(0);
 ##添加用户  在account添加用户登录信息
 #addUser2
 
-insert into accounts(account,password,nicename,user_id) values(?,?,?,?);
+insert into accounts(account,password,nickname,user_id) values(?,?,?,?);
 
 
 ##删除用户 

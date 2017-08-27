@@ -68,6 +68,8 @@ module.exports = class Mysql {
                 resolve(result);
             });
             this.sqls = this.sqls || [];
+
+            console.log(query.sql)
             //保存sql语句
             this.sqls.push(query.sql);
         }).catch((error) => {

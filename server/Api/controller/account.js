@@ -24,7 +24,7 @@ module.exports = class AccountController extends jike.Controller {
     /**
      * 获取用户头像
      */
-    async head({ id }) {
+    async avatar({ id }) {
         //读取头像
         let headdir = APP_PATH + '/static/upload/head/';
         let headPath = headdir + id + '.png';
@@ -40,6 +40,26 @@ module.exports = class AccountController extends jike.Controller {
             this.res.write(file, "binary");
             this.res.end();
         });
+    }
+    /**
+     * 修改头像
+     */
+    async changeAvatar({ id ,avatar}){
+
+        let headdir = APP_PATH + '/static/upload/head/';
+        
+        // //不存在目录就创建目录
+        if(!fs.existsSync(headdir)){
+            fs.mkdirSync(headdir);
+        }
+        
+        //移动文件到头像目录
+        if(fs.existsSync(avatar['path'])){
+            let imagesUtils = require("images");
+            imagesUtils(avatar['path']).size(200).save(headdir+id+'.png',{quality : 100})
+            return this.json(true)
+        }
+        return this.json(false)
     }
     /**
      * 修改手机号

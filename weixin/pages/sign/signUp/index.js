@@ -122,13 +122,11 @@ P('signUp/index', {
                     return;
                 }
                 //获取微信用户信息
-                let {nickName: truename = '用户' + account, gender: sex = 0, avatarUrl = null} = wx.getStorageSync('wxUserInfo');
-
-                sex = sex == 0 ? null : (sex == 1 ? 'male' : 'female');
-
-                let params = Validate.check({account, code, password, truename, sex, avatarUrl}, [
-                    ['sex', 'require', '性别输入错误', Validate.EXISTS_VALIDATE],
-                    ['truename', 'require', '姓名输入错误', Validate.EXISTS_VALIDATE],
+                let {nickName: nickname = '用户' + account, gender: gender = 0,avatarUrl} = wx.getStorageSync('wxUserInfo');
+                console.log(gender)
+                let params = Validate.check({account, code, password, nickname, gender}, [
+                    ['gender', ['0','1'], '性别输入错误', Validate.EXISTS_VALIDATE,'in'],
+                    ['nickname', 'require', '姓名输入错误', Validate.EXISTS_VALIDATE],
                     ['password', 'require', '密码不能为空', Validate.MUST_VALIDATE],
                     ['code', 'require', '短信验证码错误', Validate.MUST_VALIDATE],
                     ['account', 'tel', '手机号格式错误', Validate.MUST_VALIDATE]

@@ -57,7 +57,15 @@ Interface.create('/users', UserController, [
             password: [
                 Validate.MUST_VALIDATE,
                 ['require', 'passwordNullErr'],
-                [[6,12], 'passwordLengthErr', 'length']
+                [[6,18], 'passwordLengthErr', 'length']
+            ],
+            nickname: [
+                Validate.EXISTS_VALIDATE
+                ['require', 'nicknameNotNullErr']
+            ],
+            gender: [
+                Validate.EXISTS_VALIDATE,
+                [[0,1], 'genderErr','in']
             ],
             code: [
                 Validate.MUST_VALIDATE,

@@ -12,6 +12,7 @@ module.exports = class AccountModel extends jike.Model {
 
         let sql = type == 'user' ? sqls['userSignIn'] : sqls['adminSignIn'];
         let [user = null] = await this.query(sql, account);
+        console.log(user)
         if (!user) {
             throw new BaseError(Code.ACCOUNT_NOTEXISTS);
         }
@@ -21,6 +22,9 @@ module.exports = class AccountModel extends jike.Model {
         if (user['@live'] == 1) {
             throw new BaseError(Code.ACCOUNT_DISABLE);
         }
+        //刪除password字段和live字段
+        delete user['password'];
+        delete user['@live'];
         return user;
     }
     /**

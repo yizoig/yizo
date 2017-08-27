@@ -7,7 +7,7 @@ SELECT
   `admins`.`admin_id`,
   `account`,
   `password`,
-  `nicename`,
+  `nickname`,
   `gender`,
   `@create`,
   `@live`,

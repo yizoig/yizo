@@ -26,9 +26,9 @@ Interface.create('/account', AccountController, [
     //修改信息
     Route("/:id(\\d+)",'put','changeInfo',{
         validate: {
-            nicename: [
+            nickname: [
                 Validate.EXISTS_VALIDATE,
-                ['require', 'niceNameNotNullErr']
+                ['require', 'nicknameNotNullErr']
             ],
             gender: [
                 Validate.EXISTS_VALIDATE,
@@ -38,7 +38,20 @@ Interface.create('/account', AccountController, [
         needToken: false
     }),
     //账户头像   user  admin头像一致
-    Route("/head/:id(\\d+).png", 'get', 'head', {
+    Route("/avatar/:id(\\d+).png", 'get', 'avatar', {
+       
+        needToken: false
+    }),
+    /**
+     * 设置头像
+     */
+    Route("/avatar/:id(\\d+)", 'put', 'changeAvatar', {
+        validate: {
+            avatar: [
+                Validate.MUST_VALIDATE,
+                ['require', 'avatarNotNullErr']
+            ]
+        },
         needToken: false
     }),
     /**
@@ -80,7 +93,7 @@ Interface.create('/account', AccountController, [
                 password: [
                     Validate.MUST_VALIDATE,
                     ['require', 'passwordNullErr'],
-                    [[6, 12], 'passwordLengthErr', 'length']
+                    [[6, 18], 'passwordLengthErr', 'length']
                 ],
             },
             user:{
@@ -102,7 +115,7 @@ Interface.create('/account', AccountController, [
             newPassword: [
                 Validate.MUST_VALIDATE,
                 ['require', 'newPasswordNullErr'],
-                [[6, 12], 'newPasswordLengthErr', 'length']
+                [[6, 18], 'newPasswordLengthErr', 'length']
             ]
         },
         needToken: false
