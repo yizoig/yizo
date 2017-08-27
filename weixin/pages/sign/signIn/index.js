@@ -1,10 +1,10 @@
-import {request, Validate, md5} from '../../../lib/tools';
+import {request, Validate} from '../../../lib/tools';
 
 var P = require('../../../lib/wxpage');
 P('signIn/index', {
     comps: [],
     data: {
-        tel: '',
+        account: '',
         password: ''
     },
     ontextChange: function (e) {
@@ -13,15 +13,15 @@ P('signIn/index', {
         this.setData(data);
     },
     onSignIn: function () {
-        let {tel, password} = this.data;
+        let {account, password} = this.data;
 
         try {
 
-            let params = Validate.check({tel, password}, [
-                // ['tel', 'tel', '手机号格式错误', Validate.MUST_VALIDATE],
-                // ['password', 'require', '密码不能为空', Validate.MUST_VALIDATE]
+            console.log({account, password})
+            let params = Validate.check({account, password}, [
+                ['account', 'tel', '手机号格式错误', Validate.MUST_VALIDATE],
+                ['password', 'require', '密码不能为空', Validate.MUST_VALIDATE]
             ]);
-            params['password'] = md5(params['password']);
             this.$showToast({
                 title: "登录中...",
                 icon: 'loading'
@@ -32,7 +32,7 @@ P('signIn/index', {
                     wx.setStorage({
                         key: "remember",
                         data: {
-                            tel,pwd:params['password']
+                            account,pwd:params['password']
                         }
                     });
                     //保存数据

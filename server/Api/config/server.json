@@ -1,7 +1,11 @@
 {
     "server": {
         "port": 3000,
-        "protocol": "http"
+        "protocol": "https",
+        "credentials":{
+            "key": "./credentials/api.yizo.zhiyuan95.cn.key",
+            "cert": "./credentials/api.yizo.zhiyuan95.cn.crt"
+        }
     },
     "secret":"yizo",
     "mysql": {

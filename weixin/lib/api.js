@@ -1,5 +1,18 @@
 import {host,apis} from "../config/api.js";
 import {signOut} from "./user";
+import Code from '../config/code.js';
+import Detail from '../config/detail.js';
+
+
+
+
+let code ={};
+for(let key in Code){
+    code[Code[key]] = Detail[key];
+}
+
+
+// console.log(code)
 /**
  *
  * @param api 请求的api
@@ -40,7 +53,7 @@ export function request(api, data) {
 
 
                 //不在登录界面
-                if (res.data.status == 401 && api != 'signIn') {
+                if ([1001,1001,1002,1003].includes(parseInt(res.data.code)) && api != 'signIn') {
                     setTimeout(function () {
                         signOut();
                         wx.navigateTo({
@@ -49,15 +62,10 @@ export function request(api, data) {
                     }, 2000);
                     reject("用户登录失效,2秒后自动跳转登录界面!");
                 }
-                //服务器异常
-                if (res.statusCode == 502 || res.statusCode == 500) {
-                    reject("服务器异常");
-                }
-                //2开头的请求是对的
-                if (Math.floor(res.data.status / 100) !== 2) {
-                    reject(res.data.detail)
-                }
 
+                if(res.data.code!=0){
+                    reject(code[res.data.code])
+                }
                 let keys = Object.keys(res.header);
                 if (keys.indexOf("access-token") !== -1) {
                     // wx.showToast({

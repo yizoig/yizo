@@ -115,20 +115,20 @@ var Validate = (function () {
     };
     Validate.regex = function (reg, value) {
         var validate = {
-            'require': '/\\S+/',
-            'email': '/^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\.\\w+([-.]\\w+)*$/',
-            'tel': '/^((13[0-9])|(15[^4,\\D])|(18[0,0-9]))\\d{8}$/g',
-            'api': '/^(((\\/[A-Za-z0-9-+.]+)|(\\/:[^0-9]\\w*)))+$/g',
-            'number': '/^\\d+$/g'
+            'require': /\S+/,
+            'email': /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/,
+            'tel': /^((13[0-9])|(15[^4,\D])|(18[0,0-9]))\d{8}$/g,
+            'api': /^(((\/[A-Za-z0-9-+.]+)|(\/:[^0-9]\w*)))+$/g,
+            'number': /^\d+$/g
         };
         if (reg in validate) {
             reg = validate[reg];
         }
         try {
-            reg = eval(reg);
             return reg.test(typeof value !== 'undefined' ? value : '');
         }
         catch (e) {
+            console.log(e)
             return false;
         }
     };
