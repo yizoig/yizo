@@ -7,6 +7,7 @@ let http = require('http');
 let https = require("https"); 
 let fs = require("fs"); 
 let serverConfig = require(APP_PATH + '/config/server'); 
+let bodyParser = require("body-parser");
 let multer = require('multer')
 let {Interface } = require('./Library/interface'); 
 let upload = require("./Library/upload.js"); 
@@ -47,7 +48,13 @@ module.exports = class Server {
      */
     async middleConfig() {
 
+
+        
         await Log("加载解析参数中间件中...".yellow); 
+        //解析 x-wwww-form-urlencoded
+        this.app.use(bodyParser.urlencoded()) //extended为false表示使用querystring来解析数据，这是URL-encoded解析器  
+        // 解析 application/json   
+        this.app.use(bodyParser.json()) //添加
         this.app.use(multer( {dest:APP_PATH + '/runtime/cache'}).any()); 
 
         await Log("加载上传文件的中间件中...".yellow); 
