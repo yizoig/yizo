@@ -1,0 +1,36 @@
+<import src="/comps/toast/index.wxml"/>
+<view id="sign">
+    <template is="toast" data="{{...toast}}"></template>
+
+    <!--加载条-->
+    <template is="toast" data="{{...toast}}"></template>
+    <view class="signBox">
+        <view class="item">
+            <image src="../../../image/male-avatar.png" class="logo"/>
+        </view>
+        <view class="item">
+            <input placeholder="手机号" maxlength="11" type="number" bindinput="ontextChange" data-name="tel"/>
+        </view>
+        <view class="item">
+            <input type="password" placeholder="密码" bindinput="ontextChange" data-name="password"/>
+        </view>
+    </view>
+    <view class="btn-controller">
+        <button class="btn blue" bindtap="onSignIn">登录</button>
+        <button
+                class="btn"
+                bindtap="$bindRedirect"
+                data-url="/pages/sign/signUp/index"
+        >
+            注册
+        </button>
+    </view>
+    <view
+            bindtap="$bindRedirect"
+            data-url="/pages/sign/forgotPwd/index"
+            class="link"
+            style="text-align: right"
+    >
+        忘记密码
+    </view>
+</view>

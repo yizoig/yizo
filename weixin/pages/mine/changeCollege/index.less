@@ -1,0 +1,76 @@
+@import (css) "/comps/spin/index.wxss";
+
+#college{
+  background: #F6F6F6;
+  height: 100%;
+  .search{
+    position: fixed;
+    left: 0;
+    right: 0;
+    top:0;
+    background: #DCDCDD;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 10rpx 20rpx;
+    height:70rpx;
+    .iconfont{
+      flex:1;
+      padding:0 10rpx;
+      display: flex;
+      background: #fff;
+      border-radius: 10rpx;
+      line-height: 50rpx;
+      input{
+        flex:1;
+        font-size: 25rpx;
+        margin:0 10px;
+        background: #fff;
+      }
+    }
+    .link{
+      margin: 0 10rpx;
+    }
+  }
+  .list{
+    margin-top: 70rpx;
+
+    .item{
+      line-height: 70rpx;
+      font-size: 25rpx;
+      padding:0 30rpx;
+      border-bottom: 1rpx solid #ddd;
+      background: #ffffff;
+      &.current{
+        background: #f6f6f6;
+        line-height: 50rpx;
+      }
+    }
+    .load-more {
+      font-size: 25rpx;
+      background: #F6F6F6;
+      text-align: center;
+      padding: 15rpx;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      .loading{
+        margin-right: 5px;
+      }
+    }
+  }
+  .go-top{
+    z-index:888;
+    padding: 15rpx;
+    font-size: 45rpx;
+    box-shadow: 0 2px 8px rgba(0,0,0,.2);
+    background: #fff;
+    border-radius: 100%;
+    position: fixed;
+    right: 20rpx;
+    bottom: 30rpx;
+  }
+  .go-top-active{
+
+  }
+}

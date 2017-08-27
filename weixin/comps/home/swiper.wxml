@@ -1,0 +1,9 @@
+<template name="swiper">
+    <swiper id="swiper" indicator-dots="true" autoplay="true" interval="5000" duration="1000" indicator-color="#fff" indicator-active-color="#3385ff">
+        <block wx:for="{{headImage}}" wx:key="{{item.url}}">
+            <swiper-item>
+                <image class="swiper-image" src="{{item.url}}" mode="scaleToFill"></image>
+            </swiper-item>
+        </block>
+    </swiper>
+</template>

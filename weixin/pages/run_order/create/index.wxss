@@ -1,0 +1,31 @@
+#run_order_create .item {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 7rpx solid #F5F7F9;
+  padding: 10rpx 20rpx;
+}
+#run_order_create .item .label {
+  width: 150rpx;
+  line-height: 50rpx;
+  font-size: 30rpx;
+}
+#run_order_create .item .input {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  line-height: 50rpx;
+  font-size: 25rpx;
+}
+#run_order_create .item .input radio,
+#run_order_create .item .input checkbox {
+  margin-left: 10rpx;
+}
+#run_order_create .item textarea {
+  height: 150rpx;
+}
+#run_order_create .btn-controller {
+  margin-top: 50rpx;
+}
+#run_order_create .btn-controller button {
+  width: 87%;
+}

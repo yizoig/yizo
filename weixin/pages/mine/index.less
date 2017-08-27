@@ -1,0 +1,67 @@
+@import (css) "/comps/user/avatar.wxss";
+#mine {
+  background: #fff;
+  font-size: 50rpx;
+  .header{
+    border-bottom: 1px solid #F5F7F9;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 30rpx;
+    font-weight: bold;
+    position: relative;
+
+    .info{
+      font-size: 28rpx;
+      text-align: center;
+      margin-top: 15rpx;
+      .username,.college{
+        line-height: 40rpx;
+      }
+    }
+    .signout{
+      position: absolute;
+      right: 25rpx;
+      top:11rpx;
+    }
+  }
+  .modules{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding: 15rpx;
+    background: #fff;
+    .module-item{
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      background: #fff;
+      flex: 1;
+      .module-image{
+        width: 30px;
+        height: 30px;
+        margin: 0 auto;
+        margin-top: 10px;
+      }
+      .module-text{
+        margin-top: 10px;
+        font-size: 14px;
+      }
+    }
+  }
+  .menu{
+    .menu-item{
+      line-height: 50rpx;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 15rpx 0;
+      font-size: 32rpx;
+      .iconfont{
+        margin: 0 15rpx;
+      }
+      //border-top:1rpx solid #e6e6e6;
+      border-top:20rpx solid #F5F7F9;
+    }
+  }
+}

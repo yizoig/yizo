@@ -1,0 +1,33 @@
+<import src="/comps/toast/index.wxml"/>
+<import src="/comps/spin/index.wxml"/>
+<view id="college">
+    <template is="toast" data="{{...toast}}"></template>
+    <view class="search">
+        <view class="iconfont icon-search" style="font-size: 15px"><input bindinput="search" value="{{search}}"/></view>
+        <text class="link">取消</text>
+    </view>
+
+    <view class="list">
+        <block wx:if="{{userinfo['college_name']}}">
+            <view class="item current">
+                <text>当前学校:{{userinfo['college_name']}}</text>
+            </view>
+        </block>
+
+        <view wx:for="{{colleges}}">
+            <view class="item" bindtap="changCollege" data-id="{{item['college_id']}}"
+                  data-name="{{item['college_name']}}">
+                <text>{{item['college_name']}}({{item['college_id']}})</text>
+                <view class="iconfont icon-right-arrow" style="color:#000;font-weight:bold;float: right"></view>
+            </view>
+        </view>
+        <view class="load-more" bindtap="{{(data.length>=page.total) || loading ?null:'loadMore'}}">
+            <view wx:if="{{loading}}">
+                <template is="spin" ></template>
+            </view>
+            {{loading?'玩命加载中':(data.length>=page.total?"已经到底了":"加载更多")}}
+        </view>
+    </view>
+    <view class="go-top iconfont icon-right-arrow" style="transform: rotate(-90deg)" hover-class="go-top-active"
+          catchtap="goTop"></view>
+</view>

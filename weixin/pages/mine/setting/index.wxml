@@ -1,0 +1,65 @@
+<import src="/comps/user/avatar.wxml"/>
+<import src="/comps/toast/index.wxml"/>
+<view id="setting">
+    <template is="toast" data="{{...toast}}"></template>
+
+    <view class="item-group base-info">
+        <view class="item avatar-item" bindtap="changeAvatar">
+            用户头像
+            <view class="text">
+                <template is="avatar" data="{{...userinfo,avatarUrl:avatarUrl}}"></template>
+                <view class="iconfont icon-right-arrow" style="color:#51C332"></view>
+            </view>
+        </view>
+        <view
+                bindtap="$bindRoute"
+                data-url="/pages/mine/rename/index?id={{userinfo['id']}}&truename={{userinfo['truename']}}"
+                class="item"
+        >
+            用户名
+            <view class="text">
+                {{userinfo['truename']}}
+                <view class="iconfont icon-right-arrow" style="color:#51C332"></view>
+            </view>
+        </view>
+        <view
+                class="item"
+                bindtap="$bindRoute"
+                data-url="/pages/mine/changeCollege/index"
+        >
+            学校
+            <view class="text">
+                {{userinfo['college_name'] || '没有选择学校'}}
+                <view class="iconfont icon-right-arrow" style="color:#51C332"></view>
+            </view>
+
+        </view>
+        <view class="item" bindtap="changeSex">
+            性别
+            <view class="text iconfont icon-{{userinfo['sex']}}">
+                <view class="iconfont icon-right-arrow" style="color:#51C332"></view>
+            </view>
+
+        </view>
+    </view>
+
+    <view class="item-group account-security">
+        <view class="item"
+              bindtap="$bindRoute"
+              data-url="/pages/mine/changePwd/index?id={{userinfo['id']}}">
+            修改密码
+            <view class="text">
+                <view class="iconfont icon-right-arrow" style="color:#51C332"></view>
+            </view>
+        </view>
+        <view
+                class="item"
+                bindtap="$bindRoute"
+                data-url="/pages/mine/changeTel/index">
+            <view class="text">
+                <view class="iconfont icon-right-arrow" style="color:#51C332"></view>
+            </view>
+            修改手机号
+        </view>
+    </view>
+</view>

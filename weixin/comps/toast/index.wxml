@@ -1,0 +1,20 @@
+<import src="/comps/spin/index.wxml"/>
+<template name="toast">
+<view>
+    <view class="app-toast {{mask?'app-toast-mask':''}}" wx:if="{{show}}">
+        <view style="display: inline-block">
+            <view class="app-toast-box ">
+                <view class="toast-icon">
+                    <block wx:if="{{icon=='loading'}}">
+                        <template is="spin" data="{{...toast}}"></template>
+                    </block>
+                    <block wx:else>
+                        <view class="iconfont icon-{{icon}}"></view>
+                    </block>
+                </view>
+                <view class="toast-content">{{title}}</view>
+            </view>
+        </view>
+    </view>
+</view>
+</template>

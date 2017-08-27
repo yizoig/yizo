@@ -1,0 +1,18 @@
+<import src="/comps/toast/index.wxml"/>
+<view id="rename">
+    <template is="toast" data="{{...toast}}"></template>
+    <view class="item">
+        当前用户名:{{cacheName}}
+    </view>
+    <view class="item">
+        <input bindinput="ontextChange" data-name="tel"/>
+    </view>
+    <view class="btn-controller">
+        <button
+                class="btn blue"
+                bindtap="onRename"
+        >
+            修改
+        </button>
+    </view>
+</view>

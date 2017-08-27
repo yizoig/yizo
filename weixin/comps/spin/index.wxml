@@ -1,0 +1,8 @@
+<template name="spin">
+    <view class="loading">
+        <view style="left: 0;top: 0;"></view>
+        <view style="right: 0;top: 0;animation-delay: .4s;"></view>
+        <view style=" right: 0;bottom: 0;animation-delay: .8s;"></view>
+        <view style=" left: 0; bottom: 0;animation-delay: 1.2s;"></view>
+    </view>
+</template>

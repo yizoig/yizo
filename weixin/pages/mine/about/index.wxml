@@ -1,0 +1,27 @@
+<!-- 关于Yizo界面html-->
+<view id="about">
+    <view class="logo">
+        <image class="top-confirmpay-image" src="../../../image/index.png"/>
+        <text>yizo校园</text>
+    </view>
+    <view class="content">
+        联系我们:
+        <view class="item">
+            客服Q Q :3312687972
+        </view>
+        <!--<view class="item">-->
+            <!--联系电话:18311540605-->
+        <!--</view>-->
+        <view class="item">
+            官方网址:yizo.exvu.vip
+        </view>
+    </view>
+    <view class="bottom">
+        <view class="version">v1.0.0</view>
+        <view class="link">用户协议</view>
+        <view class="descrtion">
+            <view>遵义师范学院软件开发创新实验室</view>
+            <view>2017 yizo.exvu.vip</view>
+        </view>
+    </view>
+</view>

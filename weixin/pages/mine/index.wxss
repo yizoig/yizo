@@ -1,0 +1,64 @@
+@import "/comps/user/avatar.wxss";
+#mine {
+  background: #fff;
+  font-size: 50rpx;
+}
+#mine .header {
+  border-bottom: 1px solid #F5F7F9;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 30rpx;
+  font-weight: bold;
+  position: relative;
+}
+#mine .header .info {
+  font-size: 28rpx;
+  text-align: center;
+  margin-top: 15rpx;
+}
+#mine .header .info .username,
+#mine .header .info .college {
+  line-height: 40rpx;
+}
+#mine .header .signout {
+  position: absolute;
+  right: 25rpx;
+  top: 11rpx;
+}
+#mine .modules {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding: 15rpx;
+  background: #fff;
+}
+#mine .modules .module-item {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  background: #fff;
+  flex: 1;
+}
+#mine .modules .module-item .module-image {
+  width: 30px;
+  height: 30px;
+  margin: 0 auto;
+  margin-top: 10px;
+}
+#mine .modules .module-item .module-text {
+  margin-top: 10px;
+  font-size: 14px;
+}
+#mine .menu .menu-item {
+  line-height: 50rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 15rpx 0;
+  font-size: 32rpx;
+  border-top: 20rpx solid #F5F7F9;
+}
+#mine .menu .menu-item .iconfont {
+  margin: 0 15rpx;
+}

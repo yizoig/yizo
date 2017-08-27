@@ -1,0 +1,77 @@
+@import (css) "/comps/spin/index.wxss";
+.app-toast {
+  position: fixed;
+  text-align: center;
+  margin:0 auto;
+  left:0;
+  right:0;
+  bottom: 100rpx;
+  color: rgba(0,0,0,.65);
+  z-index: 999;
+  .app-toast-box {
+    padding: 3px 5px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.2);
+    background: #fff;
+    display: flex;
+    flex-direction: row;
+    border-radius: 10rpx;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+
+    .toast-icon {
+      display:flex;
+      margin-right: 5px;
+      .iconfont{
+        font-size: 18px;
+        &.icon-success{
+          color: #09BB07;
+        }
+        &.icon-error{
+          color: #f00;
+        }
+        &.icon-warn{
+          color: #E6A623;
+        }
+      }
+    }
+    .toast-content {
+      font-size: 25rpx;
+
+    }
+  }
+  &-mask {
+    background: rgba(0, 0, 0, 0.1);
+    top: 0;
+    bottom: 0;
+
+    z-index: 999;
+    .app-toast-box{
+      margin-top: 300rpx;
+      padding: 5px;
+      flex-direction: column;
+      min-width:100px;
+      min-height:100px;
+      .toast-icon{
+        margin-right: 0px;
+        padding: 15px;
+        .iconfont{
+          font-size: 45px;
+        }
+        .loading{
+          width: 32px;
+          height: 32px;
+          view{
+            width: 14px;
+            height: 14px;
+          }
+        }
+      }
+      .toast-content{
+        margin-bottom: 10px;
+      }
+    }
+
+  }
+
+}

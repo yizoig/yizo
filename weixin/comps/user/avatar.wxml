@@ -1,0 +1,3 @@
+<template name="avatar">
+    <image src="{{id?'https://api.yizo.exvu.vip/users/head/'+id+'.png':(avatarUrl?avatarUrl:'/image/male-avatar.png')}}" class="avatar"></image>
+</template>

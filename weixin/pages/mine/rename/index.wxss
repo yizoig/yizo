@@ -1,0 +1,16 @@
+#rename {
+  padding: 40rpx;
+  font-size: 30rpx;
+}
+#rename .item {
+  margin: 20rpx 0;
+}
+#rename .item input {
+  height: 80rpx;
+  line-height: 80rpx;
+  font-size: 40rpx;
+  border-bottom: 1px solid #ddd;
+}
+#rename .btn-controller .btn {
+  line-height: 70rpx;
+}
