@@ -23,8 +23,22 @@ Interface.create('/account', AccountController, [
         },
         needToken: false
     }),
+    //修改信息
+    Route("/:id(\\d+)",'put','changeInfo',{
+        validate: {
+            nicename: [
+                Validate.EXISTS_VALIDATE,
+                ['require', 'niceNameNotNullErr']
+            ],
+            gender: [
+                Validate.EXISTS_VALIDATE,
+                [[0,1], 'genderErr','in']
+            ]
+        },
+        needToken: false
+    }),
     //账户头像   user  admin头像一致
-    Route("/head/(:id).png", 'get', 'head', {
+    Route("/head/:id(\\d+).png", 'get', 'head', {
         needToken: false
     }),
     /**
@@ -79,7 +93,7 @@ Interface.create('/account', AccountController, [
         needToken: false
     }),
     //旧密码换新密码
-    Route('/pwd/:id', 'put', 'changePwd', {
+    Route('/pwd/:id(\\d+)', 'put', 'changePwd', {
         validate: {
             password: [
                 Validate.MUST_VALIDATE,
@@ -93,4 +107,5 @@ Interface.create('/account', AccountController, [
         },
         needToken: false
     }),
+    
 ])

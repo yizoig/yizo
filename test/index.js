@@ -27,7 +27,9 @@ function test(){
         ], "and", [
             { age: "sadfasd" }, "or", { sex: "sadfasd", id: 1 }
         ]
-    ]).insert();
+    ])
+    
+    .insert();
     console.log(model._data.sql)
     model.data("id      =     1&   adf = 2   ").where([
         [
@@ -43,7 +45,9 @@ function test(){
         ], "and", [
             { age: "sadfasd" }, "or", { sex: "#sadfasd", id: 1 }
         ]
-    ]).select();
+    ])
+    .join("student on strdent.id=user.id")
+    .select();
     console.log(model._data.sql)
 }
 function testData(){

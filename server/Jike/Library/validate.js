@@ -115,11 +115,14 @@ module.exports = (function () {
         if (Object.prototype.toString.call(ruleValue) === '[object RegExp]' && rule != 'regex') {
             throw new BaseError(Code.SERVER_ERR, "请保证验证条件和验证类型都为regex");
         }
+
+
+       
         switch (rule) {
 
             case 'varType': {
-
                 switch (ruleValue) {
+                    
                     case 'Number': {
                         return Object.prototype.toString.call(value) == '[object Number]';
                     }
@@ -144,7 +147,6 @@ module.exports = (function () {
                     case 'StringArray': {
                         console.log(Object.prototype.toString.call(value))
                         if (Object.prototype.toString.call(value) == '[object Array]') {
-                            
                             for (let k in value) {
                                 
                                 if (Object.prototype.toString.call(value[k]) !== '[object String]') {

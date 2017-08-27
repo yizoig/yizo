@@ -1,4 +1,6 @@
-let Mysql = require("./mysql");
+let Mysql = require("../Db/mysql");
+let {BaseError} = require('../Library/error')
+let { Code } = require("../Code/code");
 module.exports = class Model extends Mysql {
 
 
@@ -35,6 +37,8 @@ module.exports = class Model extends Mysql {
     }
     table(_table) {
         this._data['table'] = _table;
+
+        return this;
     }
     //连贯操作
     /**
@@ -131,11 +135,17 @@ module.exports = class Model extends Mysql {
 
                     } else {
                         map.push(Object.getOwnPropertyNames(_where[key]).length > 1);
-                        whereStr.push(this.whereCheck(_where[key], Object.prototype.toString.call(_where[key]) == "[object Array]"));
+                        console.log(_where[key])
+                        whereStr.push(this.whereCheck(_where[key],Object.prototype.toString.call(_where[key]) == "[object Array]"));
                     }
                     if (key > 0) {
                         //如果是多个条件就添加括号
                         for (let k in whereStr) {
+
+                            if(!whereStr[k]){
+                                whereStr[k] = '1=1'
+                                continue;
+                            }
                             if (map[k]) {
                                 whereStr[k] = `(${whereStr[k]})`
                             }
@@ -145,7 +155,11 @@ module.exports = class Model extends Mysql {
                 }
             }
         } else {
-
+            for(let key in _where){
+                if (typeof _where[key] == "undefined"){
+                    delete _where[key]
+                }
+            }
             for (let key in _where) {
                 switch (Object.prototype.toString.call(_where[key])) {
                     case "[object String]": {
@@ -156,7 +170,6 @@ module.exports = class Model extends Mysql {
                                 logic = _where[key].toUpperCase();
                             }
                         } else {
-
                             whereStr.push(`\`${key}\`=${this.escape(_where[key])}`)
                         }
 
@@ -179,7 +192,7 @@ module.exports = class Model extends Mysql {
                                 case "<=":
                                 case "LIKE":
                                 case "NOT LIKE": {
-                                    whereStr.push(`\`${key}\` ${_where[key][0]} ${_where[key][1]}`);
+                                    whereStr.push(`\`${key}\` ${_where[key][0]} '${_where[key][1]}'`);
                                     break;
                                 }
                                 case "BETWEEN":
@@ -211,7 +224,7 @@ module.exports = class Model extends Mysql {
                         break;
                     }
                     default: {
-                        whereStr.push(`\`${key}\`=${this.escape(_where[key])}`)
+                            whereStr.push(`\`${key}\`=${this.escape(_where[key])}`)
                     }
                 }
             }
@@ -229,6 +242,7 @@ module.exports = class Model extends Mysql {
      */
     where(_where) {
 
+
         switch (Object.prototype.toString.call(_where)) {
             case "[object String]": {
                 if (!/^([a-zA-Z$_][a-zA-Z_0-9]+=\S)( (and|or) [a-zA-Z$_][a-zA-Z_0-9]+=\S)*$/.test(_data)) {
@@ -239,6 +253,7 @@ module.exports = class Model extends Mysql {
                 break;
             }
             case "[object Array]": {
+                
                 this._data['where'] = this.whereCheck(_where, true);
                 break;
             }
@@ -276,6 +291,7 @@ module.exports = class Model extends Mysql {
             beforeKey = i;
         }
         this._data['limit'] = _limit;
+        return this;
     }
     /**
      * 分页
@@ -295,18 +311,19 @@ module.exports = class Model extends Mysql {
 
         //转换为limit
         this._data['limit'] = [(_page[0] - 1) * _page[1], _page[0] * _page[1]];
+        return this;
     }
     //生成sql语句
     createSql(type) {
 
         let sql;
-        let { field, limit = '', where = '', order = '', table, data } = this._data;
+        let { field, limit = '', where = '', order, table, data, join: tjoin = [''] } = this._data;
         if (!table) {
             throw new Error("请选择操作的表");
         }
         switch (type) {
             case "SELECT": {
-                sql = `SELECT ${field ? field.join(',') : '*'} FROM ${table} ${where && 'WHERE ' + where}${order && ' ORDER BY ' + order.join(',')}${limit && ' LIMIT ' + limit.join(',')};`
+                sql = `SELECT ${field ? field.join(',') : '*'} FROM ${table} ${tjoin.join(" join ")} ${where && 'WHERE ' + where}${order && ' ORDER BY ' + order.join(',')}${limit && ' LIMIT ' + limit.join(',')};`
                 break;
             }
             case "INSERT": {
@@ -331,19 +348,23 @@ module.exports = class Model extends Mysql {
                 throw new Error("sql类型错误");
             }
         }
+        console.log(sql)
         this._data['sql'] = sql;
     }
     group(_group) {
-
+        return this;
     }
-    select() {
+    async select() {
         this.createSql("SELECT")
+        return await this.query(this._data['sql'])
     }
-    insert() {
+    async insert() {
         this.createSql("INSERT")
+        return await this.query(this._data['sql'])
     }
-    update() {
+    async update() {
         this.createSql("UPDATE")
+        return await this.query(this._data['sql'])
     }
 
     /**
@@ -364,34 +385,44 @@ module.exports = class Model extends Mysql {
                 if (!/^[a-zA-Z$_][a-zA-Z_0-9]+(\s*(desc|asc)|)(,[a-zA-Z$_][a-zA-Z_0-9]+(\s*(desc|asc)|))*$/ig.test(_order)) {
                     throw new Error("参数格式错误  比如:id desc,name,age asc");
                 }
-                let _orderArr = _order.split(',');
-                _order = {};
-                for (let key in _orderArr) {
-
-                    let item = (_orderArr[key] + "").split(" ");
-                    _order[item[0]] = item[1] ? (item[1] + "").toUpperCase() : "ASC"
-                }
+                let newOrder = _order.split(',');
+                _order = newOrder;
                 break;
             }
             case "[object Object]": {
 
+                let newOrder = [];
                 for (let key in _order) {
                     _order[key] = (_order[key] + "").toUpperCase();
-
+                    newOrder.push(`${key} ${_order[key]}`)
                     if (_order[key] !== "DESC" && _order[key] !== "ASC") {
                         throw new Error("参数值必须是desc或者asc");
                     }
                 }
+                _order = newOrder;
                 break
             }
             default: {
                 throw new Error("参数格式错误  支持字符串或对象");
             }
         }
-        this._data['order'] = _order;
+        this._data['order'] = _order.concat(this._data['order'] || []);
+        return this;
     }
     distinct(_distinct) {
         this._data['distinct'] = _distinct;
+        return this;
     }
+    /**
+     * 连接
+     */
+    join(_join) {
 
+
+        if (!this._data['join']) {
+            this._data['join'] = [''];
+        }
+        this._data['join'].push(_join);
+        return this;
+    }
 }

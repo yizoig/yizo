@@ -43,10 +43,9 @@ class Interface {
              * childrenPath 子路由地址
              * args 驗證參數等等
              */
+
             let { method, name: childrenPath, args = {}, action } = router;
             expressRouter[method](childrenPath, async (req, res, next) => {
-
-
                 try {
                     //输出用户请求api 创建controller
                     let controller = new controllerClass(req, res, next);
@@ -66,6 +65,7 @@ class Interface {
                         req.body || {},
                         req.files || {},
                     );
+                    console.log( params.ids)
                     for (let key in params) {
 
                         try {
@@ -83,6 +83,7 @@ class Interface {
                                 validate[key] = args.validate[key];
                             }
                         }
+                        console.log(params)
                         params = Validate.autoCheck(params, validate);
                     }
                     //执行action方法 將請求參數傳遞給指定的控制器方法

@@ -11,7 +11,7 @@ module.exports = {
     ACCOUNT_EXISTS: 1100,
     //账户不存在
     ACCOUNT_NOTEXISTS: 1101,
-    //账户存在
+    //账户被禁用
     ACCOUNT_DISABLE: 1102,
     //密码错误
     PASSWORD_ERR: 1103,

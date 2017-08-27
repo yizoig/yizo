@@ -63,3 +63,8 @@ update accounts set password=? where password=? and id=?;
 #changePwdByTel
 
 update accounts set password=? where account=?;
+
+#修改登录信息
+#changeInfo
+
+update accounts set ? where id=?

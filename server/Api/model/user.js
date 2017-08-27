@@ -1,4 +1,4 @@
-let { DataBaseError, Status, crypto: { md5 } } = jike;
+let { BaseError, Code, crypto: { md5 } } = jike;
 
 module.exports = class UserModel extends jike.Model {
 
@@ -8,8 +8,34 @@ module.exports = class UserModel extends jike.Model {
     /**
      * 获取用户列表
      */
-    async list({ current, pageSize, search }) {
-        let user = await this.query(sqls.userList, (current - 1) * pageSize, current * pageSize);
+    async list({ current, pageSize, where, order }) {
+
+        order = Object.assign(order||{},{ id: "ASC" })
+        /**
+         * 可以根据传入的参数进行筛选
+         */
+        let user = await this.table('accounts')
+            .field('accounts.id,users.user_id,account,nicename,gender,college,@create,@live,signin_time')
+            .where([
+                {
+                    account: where['search'] && ['like', `%${where['search']}%`],
+                    nicename: where['search'] && ['like', `%${where['search']}%`],
+                    _logic: "OR"
+                },
+                "and",
+                {
+                    '@live': where['live'] || 0,
+                    gender: where['gender'],
+                    college: where['college']
+                }
+            ])
+            .join(" users ON accounts.user_id = users.user_id")
+            .limit((current - 1) * pageSize, current * pageSize)
+            .order({
+                id:order['id'],
+                '@create':order['create']
+            })
+            .select();
         return user;
     }
     /**
@@ -17,10 +43,9 @@ module.exports = class UserModel extends jike.Model {
      */
     async getUserInfo(id) {
 
-
         let [user = null] = await this.query(sqls.userInfo, id);
         if (!user) {
-            throw new DataBaseError(Status.NOT_FOUND, "该用户不存在", "该用户不存在");
+            throw new BaseError(Code.ACCOUNT_NOTEXISTS);
         }
         return user;
     }
@@ -42,17 +67,15 @@ module.exports = class UserModel extends jike.Model {
         let [user = null] = await this.query(sqls.accountInfo, account);
         //判断用户是否已经存在
         if (user && user['user_id']) {
-            throw new DataBaseError(Status.INVALID_REQUEST, "请换个账号再试", "登录名已经被占用");
+            throw new BaseError(Code.ACCOUNT_EXISTS);
         }
         //开启事务
         await this.startTrans();
         //在用户表中添加用户基本信息
         let { insertId = null } = await this.query(sqls.addUser1);
         if (!insertId) {
-            throw new DataBaseError(Status.SERVER_ERROR, "服务器异常");
+            throw new BaseError(Code.UN_KNOWN_ERROR);
         }
-
-
         console.log(insertId, 1212)
         //判断是否已经有登录账号
         if (user) {
@@ -71,7 +94,8 @@ module.exports = class UserModel extends jike.Model {
             }
         }
         this.rollback();
-        throw new DataBaseError(Status.INVALID_REQUEST, "添加失败", "请重试");
+        //操作失败  未知错误
+        throw new BaseError(Code.UN_KNOWN_ERROR);
     }
 
     /**

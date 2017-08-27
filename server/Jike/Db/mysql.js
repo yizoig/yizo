@@ -1,6 +1,6 @@
 let mysqlUtil = require("mysql");
 //获取配置
-let {mysql:config} = require(APP_PATH+"/config/server.json")
+let { mysql: config } = require(APP_PATH + "/config/server.json")
 
 config = Object.assign({
     connectionLimit: 5,
@@ -9,7 +9,7 @@ config = Object.assign({
     password: "root",
     database: "demo",
     dateStrings: "timestamp"
-},config);
+}, config);
 //创建连接池
 var pool;
 module.exports = class Mysql {
@@ -32,6 +32,12 @@ module.exports = class Mysql {
         this.transFlag = false;
     }
     /**
+     * 转义工具
+     */
+    escape(value) {
+        return pool.escape(value);
+    }
+    /**
      * 获取链接
      */
     async getConnection() {
@@ -43,7 +49,7 @@ module.exports = class Mysql {
                 resolve();
             })
         }).catch((error) => {
-             console.log(error,1)
+            console.log(error, 1)
         });
     }
     async query(options) {
@@ -65,7 +71,7 @@ module.exports = class Mysql {
             //保存sql语句
             this.sqls.push(query.sql);
         }).catch((error) => {
-             throw error;
+            throw error;
         });
     }
     /**
@@ -85,7 +91,7 @@ module.exports = class Mysql {
                 resolve();
             })
         }).catch((error) => {
-             console.log(error,1)
+            console.log(error, 1)
         });
     }
     /**
@@ -124,7 +130,7 @@ module.exports = class Mysql {
                 resolve();
             });
         }).catch((error) => {
-             console.log(error,'commit')
+            console.log(error, 'commit')
         });
     }
 }

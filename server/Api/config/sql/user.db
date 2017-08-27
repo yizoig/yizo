@@ -43,11 +43,12 @@ SELECT
   gender,
   college,
   college_name,
-  `@create`
+  `@create`,
+  signin_time
 FROM accounts
   JOIN users ON users.`user_id` = accounts.`user_id`
-  JOIN colleges ON colleges.`college_id` = users.`college`
-WHERE id = ?;
+  LEFT JOIN colleges ON colleges.`college_id` = users.`college`
+WHERE id = 1;
 
 ##添加用户 在User表添加上用户信息
 #addUser1

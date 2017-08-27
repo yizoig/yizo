@@ -38,11 +38,11 @@ Interface.create('/users', UserController, [
         validate: {
             ids: [
                 Validate.MUST_VALIDATE,
-                ['StringArray', 'idsFormatErr', 'varType']
+                ['Array', 'idsFormatErr', 'varType']
             ],
             mode: [
                 Validate.EXISTS_VALIDATE,
-                [[-1, 0, 1], 'forceOutRangeErr', 'in']
+                [[-1, 0, 1], 'modeOutRangeErr', 'in']
             ]
         },
         needToken: false
@@ -67,7 +67,7 @@ Interface.create('/users', UserController, [
         needToken: false
     }),
     //获取用户基本信息
-    Route('/info/:id','get','getUserInfo',{
+    Route('/:id(\\d+)','get','getUserInfo',{
         needToken: false
     }),
     /**

@@ -78,4 +78,17 @@ module.exports = class AccountController extends jike.Controller {
 
         this.json(result);
     }
+    /**
+     * 修改信息 
+     */
+    async changeInfo(params) {
+        //获取信息
+        let { id, ...data } = params;
+        if (Object.getOwnPropertyNames(data).length == 0) {
+            throw new BaseError(Code.NOT_CHANGE);
+        }
+        let result = await new AccountModel().changeInfo(id, data);
+
+        this.json(result);
+    }
 }

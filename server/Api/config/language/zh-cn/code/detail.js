@@ -16,6 +16,8 @@ module.exports = {
      TEL_EXISTS:"请确认手机号",
      TEL_NOTEXISTS:"请确认手机号",
      
+
+     NOT_CHANGE:"服务器没有做任何操作",
      //参数错误
      PARAMS_ERR:"请查看API参数文档",
      //API不存在

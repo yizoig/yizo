@@ -25,10 +25,10 @@ module.exports = class SmsModel extends jike.Model {
      */
     async verifyCode(tel, type, code) {
 
-        // let newCode = codes[`code_${tel}_${type}`];
-        // if (!newCode || newCode != code) {
-        //     return false;
-        // }
+        let newCode = codes[`code_${tel}_${type}`];
+        if (!newCode || newCode != code) {
+            return false;
+        }
         return true;
     }
 

@@ -1,16 +1,16 @@
 let UserModel = require("../model/user");
 let SmsModel = require("../model/sms");
-let {BaseError,Status} =jike;
+let {BaseError,Code} =jike;
 let fs = require('fs');
 module.exports = class UserController extends jike.Controller {
 
     /**
      * 获取所有的用户
      */
-    async list({ current = 1, pageSize = 10, search, order = {} }) {
+    async list({ current = 1, pageSize = 10,where={live:0}, order }) {
 
-        let users = await new UserModel().list({ current, pageSize, search });
-        return this.success(users);
+        let users = await new UserModel().list({ current, pageSize, where,order });
+        return this.json(users);
     }
     /**
      * 添加用户
@@ -19,7 +19,7 @@ module.exports = class UserController extends jike.Controller {
 
         let result = await new UserModel().add({ account, password });
 
-        return this.success(result)
+        return this.json(result)
     }
     /**
      * 删除用户
@@ -29,7 +29,7 @@ module.exports = class UserController extends jike.Controller {
      */
     async  delete({ ids, mode = 1 }) {
         let result = await new UserModel().delete(ids, mode)
-        return this.success(result);
+        return this.json(result);
     }
     /**
      * 用户注册
@@ -39,10 +39,10 @@ module.exports = class UserController extends jike.Controller {
 
         //首先验证验证码是否正确
         if(!(await new SmsModel().verifyCode(account,'signUp',code))){
-            throw new BaseError(Status.INVALID_REQUEST,"","验证码错误");
+            throw new BaseError(Code.TEL_CODE_ERR);
         }
         let insertId = await new UserModel().add({ account, password});
-        this.success(insertId);
+        this.json(insertId);
     }
 
     /**
@@ -52,7 +52,7 @@ module.exports = class UserController extends jike.Controller {
 
         let user = await new UserModel().getUserInfo(id);
 
-        this.success(user);
+        this.json(user);
     }
     /**
      * 修改学校
@@ -60,6 +60,6 @@ module.exports = class UserController extends jike.Controller {
     async changeCollege({id,college}){
 
         let result = await new UserModel().changeCollege(id,college);
-        this.success(result);
+        this.json(result);
     }
 }

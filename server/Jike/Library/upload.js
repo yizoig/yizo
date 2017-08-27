@@ -3,8 +3,11 @@ module.exports = function (req, res, next) {
     console.log("进入文件上传中间件");
     let files = {};
 
-    for (let fileIndex in req.files) {
 
+    for (let fileIndex=0;fileIndex<req.files.length;fileIndex++) {
+
+
+        console.log(fileIndex)
         let file = req.files[fileIndex];
         //获取文件
         let md5 = md5File.sync(file.path)

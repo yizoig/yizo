@@ -76,4 +76,12 @@ module.exports = class AccountModel extends jike.Model {
         let { affectedRows } = await this.query(sqls.changePwdByTel, md5(password), tel);
         return affectedRows > 0;
     }
+    /**
+     * 修改用户信息
+     */
+    async changeInfo(id,data){
+
+        let { affectedRows } = await this.query(sqls.changeInfo, data, id);
+        return affectedRows > 0;
+    }
 }
