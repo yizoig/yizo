@@ -44,11 +44,15 @@ module.exports = class UserController extends jike.Controller {
         }
         let insertId = await new UserModel().add({ account, password,nickname:nickname?nickname:'用户'+account,gender});
         //如果注册时提交了用户的头像  就设置自定义头像  否则使用默认头像
-        setAvatar({
-            avatar,
-            id:insertId
-        })
-        this.json(insertId);
+        try{
+            setAvatar({
+                avatar,
+                id:insertId
+            })
+        }catch(e){}finally{
+            this.json(insertId);
+        }
+        
     }
 
     /**

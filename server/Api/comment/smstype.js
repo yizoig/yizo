@@ -1,2 +1,2 @@
 
-module.exports = ["signUp","unbindTel","bindTel","changePwd"];
+module.exports = ["signUp","unbindTel","bindTel","resetPwd"];

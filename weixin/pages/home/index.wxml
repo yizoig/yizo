@@ -27,15 +27,15 @@
     <view class="btn-controller">
         <button
                 bindtap="onCreateBefore"
-                data-type="delivery"
+                data-type="find"
                 class="btn blue"
-        >校园跑腿
+        >寻找跑腿
         </button>
         <button
                 bindtap="onCreateBefore"
-                data-type="food"
+                data-type="give"
                 class="btn green"
-        >食堂带餐
+        >我来跑腿
         </button>
     </view>
     <view class="run-order-list">

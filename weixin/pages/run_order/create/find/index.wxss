@@ -10,6 +10,7 @@
   font-size: 30rpx;
 }
 #run_order_create .item .input {
+  width: 100%;
   flex: 1;
   display: flex;
   flex-wrap: wrap;

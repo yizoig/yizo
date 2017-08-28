@@ -14,8 +14,13 @@ module.exports = class CollegeModel extends jike.Model {
      * 获取学校列表
      */
     async list({ current, pageSize, search }) {
-        let user = await this.query(sqls.collegeList, (current - 1) * pageSize, current * pageSize);
-        return user;
+
+        let colleges = await this.table('colleges')
+            .where({college_name: search && ['like', `%${search+''}%`]})
+            .limit((current - 1) * pageSize, current * pageSize)
+            .select();
+
+        return colleges;
     }
     /**
      * 添加学校

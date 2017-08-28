@@ -6,7 +6,7 @@ module.exports = class CollegeController extends jike.Controller {
     /**
     * 获取所有的学校
     */
-    async list({ current = 1, pageSize = 10, search, order = {} }) {
+    async list({ current = 1, pageSize = 10, search}) {
 
         let colleges = await new CollegeModel().list({ current, pageSize, search });
         return this.json(colleges);

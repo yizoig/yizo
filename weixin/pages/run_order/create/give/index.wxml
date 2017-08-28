@@ -1,0 +1,28 @@
+<import src="/comps/toast/index.wxml"/>
+<view id="run_order_create">
+    <template is="toast" data="{{...toast}}"></template>
+    <view class="item">
+        <label class="label">标题</label>
+        <input placeholder="你在那里，可以带拿什么" class="input" data-name="title"
+               bindinput="changeValue"/>
+
+    </view>
+    <view class="item">
+        <label class="label">性别限制</label>
+        <radio-group class="input" data-name="gender_constraint" bindchange="changeValue">
+            <radio value="-1"/>
+            不限
+            <radio value="0"/>
+            男
+            <radio value="1"/>
+            女
+        </radio-group>
+    </view>
+    <view class="item">
+        <label class="label">详细描述</label>
+        <textarea class="input" data-name="content" bindinput="changeValue" placeholder="你在那里，可以带拿什么"/>
+    </view>
+    <view class="btn-controller">
+        <button class="btn blue" bindtap="onCreate">发布</button>
+    </view>
+</view>

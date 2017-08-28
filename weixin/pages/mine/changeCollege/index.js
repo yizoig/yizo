@@ -9,7 +9,7 @@ P('changeCollege/index', {
         colleges: [],
         page: {
             current: 1,
-            pageSize:10
+            pageSize:20
         },
         userinfo: null,
         loading: false

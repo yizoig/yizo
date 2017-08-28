@@ -122,7 +122,7 @@ P('signUp/index', {
                     return;
                 }
                 //获取微信用户信息
-                let {nickName: nickname = '用户' + account, gender: gender = 0,avatarUrl} = wx.getStorageSync('wxUserInfo');
+                let {nickName: nickname = '用户' + account, gender: gender = 0,avatar} = wx.getStorageSync('wxUserInfo');
                 console.log(gender)
                 let params = Validate.check({account, code, password, nickname, gender}, [
                     ['gender', ['0','1'], '性别输入错误', Validate.EXISTS_VALIDATE,'in'],
@@ -135,7 +135,7 @@ P('signUp/index', {
                     title: '注册中...',
                     icon: 'loading'
                 });
-                request('signUp', params).then(data => {
+                request('signUp', params,avatar?"upload":"normal",{filePath:avatar,name:'avatar'}).then(data => {
 
                     this.$showToast({
                         title: '注册成功',
@@ -161,6 +161,7 @@ P('signUp/index', {
                     });
                 });
             } catch (e) {
+                console.log(e)
                 this.$showToast({
                     title: e.message,
                     icon: 'error'

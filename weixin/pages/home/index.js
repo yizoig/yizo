@@ -63,6 +63,7 @@ P('home', {
         }
     },
     onCreateBefore: function (e) {
+
         let {userInfo} = this.data;
         if (!userInfo) {
             this.$showToast({
@@ -81,7 +82,7 @@ P('home', {
             },1000);
             return;
         }
-        this.$route('/pages/run_order/create/index?type=' + e.target.dataset.type)
+        this.$route(`/pages/run_order/create/${e.target.dataset.type}/index`)
     },
     switab: function (e) {
         let {list, userInfo} = this.data;

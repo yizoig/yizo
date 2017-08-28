@@ -120,7 +120,6 @@ P('forgotPwd/index', {
                     ['code', 'require', '短信验证码错误', Validate.MUST_VALIDATE],
                     ['password', 'require', '短信验证码错误', Validate.MUST_VALIDATE]
                 ]);
-                params['password'] = md5(params['password']);
                 this.$showToast({
                     title: '重置密码中...',
                     icon: 'loading'

@@ -3,7 +3,7 @@ import {request, Validate} from "../../../lib/tools"
 
 var P = require('../../../lib/wxpage');
 
-P('run_order/create/index', {
+P('run_order/create/give/index', {
     comps: [],
     data: {
         capital:0,
@@ -11,12 +11,6 @@ P('run_order/create/index', {
         demands:[]
     },
     onLoad: function (opt) {
-
-        if (opt['type'] == 'food') {
-            wx.setNavigationBarTitle({
-                title: '食堂代餐'
-            })
-        }
         let data = this.data;
         let userinfo = getUserInfo();
         if (userinfo) {
@@ -46,7 +40,7 @@ P('run_order/create/index', {
                 ['capital', 'number', '本金必须是数字', Validate.MUST_VALIDATE],
                 ['commission', 'number', '佣金必须是数字', Validate.MUST_VALIDATE],
                 ['gender_constraint', ["0","1","2"], '请勾选性别限制', Validate.MUST_VALIDATE,'in'],
-                ['description', 'require', '请填写描述', Validate.MUST_VALIDATE],
+                ['content', 'require', '请填写描述', Validate.MUST_VALIDATE],
                 ['contact', 'require', '请填写联系人', Validate.MUST_VALIDATE],
                 ['number', 'tel', '联系电话格式不正确', Validate.MUST_VALIDATE],
             ]);

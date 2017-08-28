@@ -20,7 +20,7 @@ for(let key in Code){
  * @param valid 参数验证
  * @returns {Promise}
  */
-export function request(api, data,type='normal') {
+export function request(api, data,type='normal',file={}) {
     return new Promise((resolve, reject) => {
 
         let token = wx.getStorageSync("access-token");
@@ -44,34 +44,55 @@ export function request(api, data,type='normal') {
             }
         }
         switch(type){
-            case "normal":{
-                 //请求数据
+         
+            case "upload":{
+
+                let {filePath='',name=''} = file;
+                console.log(filePath,name)
+                wx.uploadFile({
+                    url,
+                    filePath,
+                    name,
+                    formData:data,
+                    rejectUnauthorized: false,
+                    success:(res)=>{
+                        try{
+                            resolve(success(res))
+                        }catch(e){
+                            reject(e);
+                       }
+                    },
+                    fail:(err)=>{
+                        reject(fail(err));
+                    }
+                  })
+                  break;
+            }
+            case "normal":
+            default:{
+                //请求数据
                 wx.request({
                     url,
                     method: apis[api][0],
                     data: data,
                     header,
-                    success,
-                    fail
-                })
-            }
-            case "upload":{
+                    success:(res)=>{
+                        try{
 
-                let {filePath,name} = data;
-                wx.uploadFile({
-                    url,
-                    filePath,
-                    name,
-                    formData,
-                    success,
-                    fail
-                  })
-            }
+                            resolve(success(res))
+                        }catch(e){
+                            reject(e.message);
+                       }
+                    },
+                    fail:(err)=>{
+                        reject(fail(err));
+                    }
+                })
+           }
         }
        
     })
 }
-
 function success(res) {
 
     //不在登录界面
@@ -82,11 +103,11 @@ function success(res) {
                 url: '../../logins/login/login'
             })
         }, 2000);
-        reject("用户登录失效,2秒后自动跳转登录界面!");
+        throw new Error("用户登录失效,2秒后自动跳转登录界面!");
     }
 
     if(res.data.code!=0){
-        reject(code[res.data.code])
+        throw new Error(code[res.data.code])
     }
     let keys = Object.keys(res.header);
     if (keys.indexOf("access-token") !== -1) {
@@ -106,10 +127,13 @@ function success(res) {
         })
     }
     console.log(res.data);
-    resolve(res.data);
+    return res.data;
 }
 
 function fail(err) {
     console.log(err);
-    reject("网络不可达");
+    if(err && err['errMsg']=="request:fail request:fail"){
+        return "连接服务器失败";
+    }
+    return "网络不可达";
 }

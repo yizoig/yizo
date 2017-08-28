@@ -8,11 +8,23 @@ require('./lib/wxpage').A({
 
         //获取微信用户信息
         wx.getUserInfo({
-            success: function (res) {
-                wx.setStorage({
-                    key: "wxUserInfo",
-                    data: res.userInfo
-                });
+            success: function (result) {
+                
+                let {userInfo} = result;
+                //保存头像
+                wx.downloadFile({
+                    url: userInfo.avatarUrl, //仅为示例，并非真实的资源
+                    success: function(res) {
+                        //保存头像缓存
+                        userInfo.avatar = res.tempFilePath;
+                        wx.setStorage({
+                            key: "wxUserInfo",
+                            data: userInfo
+                        });
+                    }
+                })
+               
+                
             }
         })
         //自动登录

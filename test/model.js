@@ -1,6 +1,6 @@
-let Mysql = require("../Db/mysql");
-let {BaseError} = require('../Library/error')
-let { Code } = require("../Code/code");
+let Mysql = require("./mysql");
+// let {BaseError} = require('../Library/error')
+// let { Code } = require("../Code/code");
 module.exports = class Model extends Mysql {
 
 
@@ -115,7 +115,7 @@ module.exports = class Model extends Mysql {
         let whereStr = [];
         let logic = "AND";
         let map = [];
-        // console.log(_where)
+        console.log(_where)
         //如果是数组  就按照数组解析
 
         //如果是数组
@@ -229,7 +229,7 @@ module.exports = class Model extends Mysql {
                 }
             }
         }
-
+        console.log(whereStr)
         return `${whereStr.join(` ${logic} `)}`
     }
     /**
@@ -258,6 +258,7 @@ module.exports = class Model extends Mysql {
                 break;
             }
             case "[object Object]": {
+
                 this._data['where'] = this.whereCheck(_where);
                 break;
             }
@@ -266,7 +267,6 @@ module.exports = class Model extends Mysql {
             }
         }
         return this;
-
     }
     /**
      * 
@@ -317,7 +317,7 @@ module.exports = class Model extends Mysql {
     createSql(type) {
 
         let sql;
-        let { field, limit = '', where = '', order, table, data, join: tjoin = [''] } = this._data;
+        let { field, limit = '', where = '', order='', table, data, join: tjoin = [''] } = this._data;
         if (!table) {
             throw new Error("请选择操作的表");
         }

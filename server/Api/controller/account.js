@@ -1,6 +1,6 @@
 let AccountModel = require("../model/account");
 let fs = require('fs');
-let {setAvatar} = require("../comment/avatar");
+let {getAvatar,setAvatar} = require("../comment/avatar");
 let SmsModel = require("../model/sms");
 let jwt = require("../comment/jwt");
 let { BaseError, Code } = jike;
@@ -27,20 +27,11 @@ module.exports = class AccountController extends jike.Controller {
      */
     async avatar({ id }) {
         //读取头像
-        let headdir = APP_PATH + '/static/upload/head/';
-        let headPath = headdir + id + '.png';
-        fs.exists(headPath, async (exists) => {
-
-            if (!exists) {
-                headPath = headdir + `_0.png`;
-            }
-            this.header("Content-Type", "image/png");
-            //异步读取图片
-            let file = fs.readFileSync(headPath, "binary");
-            //返回二进制流
-            this.res.write(file, "binary");
-            this.res.end();
-        });
+        let file = getAvatar(id);
+        //返回二进制流
+        this.res.write(file, "binary");
+        this.res.end();
+     
     }
     /**
      * 修改头像
@@ -83,7 +74,7 @@ module.exports = class AccountController extends jike.Controller {
     async changePwdByTel({ tel, password, code }) {
         //首先验证验证码是否正确
         let model = new SmsModel();
-        if (!(await model.verifyCode(tel, 'changePwd', code))) {
+        if (!(await model.verifyCode(tel, 'resetPwd', code))) {
             throw new BaseError(Code.TEL_CODE_ERR);
         }
         let result = await new AccountModel().changePwdByTel(tel, password);

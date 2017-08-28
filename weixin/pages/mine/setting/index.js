@@ -32,7 +32,7 @@ P('setting/index', {
     changeSex: function (e) {
         let that = this;
         wx.showActionSheet({
-            itemList: ['男', '女'],
+            itemList: ['女','男'],
             success: function (res) {
                 if ("cancel" in res && res['cancel']) {
                     return;

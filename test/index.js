@@ -9,10 +9,10 @@ model.table("user");
     try {
         // testField();
         // testData()
-        // testWhere()
+        testWhere()
         // testLimit()
         // testPage()
-        test();
+        // test();
     } catch (e) {
         console.log(e)
     }
@@ -104,43 +104,47 @@ function testLimit() {
     console.log(model._data)
 }
 function testWhere() {
-    // id =1 and name =2
-    model.where({ id: 1, name: '121', _logic: "OR" });
+
+    let where = {search:'1212'}
+    model.where({college_name: where['search'] && ['like', `%${where['search']}%`]}).select();
     console.log(model._data)
+    // // id =1 and name =2
+    // model.where({ id: 1, name: '121', _logic: "OR" });
+    // console.log(model._data)
 
-    //id =1 or name=2
+    // //id =1 or name=2
 
-    model.where([
-        { id: "1" }, "or", { name: 2 }, "and", { sex: 1 }
-    ])
-    console.log(model._data)
-    //id=1 or name=2 and age=3 ==> (id=1 or name=2) and age=3
+    // model.where([
+    //     { id: "1" }, "or", { name: 2 }, "and", { sex: 1 }
+    // ])
+    // console.log(model._data)
+    // //id=1 or name=2 and age=3 ==> (id=1 or name=2) and age=3
 
-    model.where([
-        { id: 1, name: 2, _logic: "or" },
-        "and",
-        { id: 3 }
-    ])
-    console.log(model._data)
+    // model.where([
+    //     { id: 1, name: 2, _logic: "or" },
+    //     "and",
+    //     { id: 3 }
+    // ])
+    // console.log(model._data)
 
-    //id=1 or name=2 and (age=3 or sex=4) ==>（id=1 or name=2） and (age=3 or sex=4)
-    model.where([
-        [
-            { id: 1 }, "or", { name: 2 }
-        ], "and", [
-            { age: "sadfasd" }, "or", { sex: "sadfasd", id: 1 }
-        ]
-    ])
-    console.log(model._data)
+    // //id=1 or name=2 and (age=3 or sex=4) ==>（id=1 or name=2） and (age=3 or sex=4)
+    // model.where([
+    //     [
+    //         { id: 1 }, "or", { name: 2 }
+    //     ], "and", [
+    //         { age: "sadfasd" }, "or", { sex: "sadfasd", id: 1 }
+    //     ]
+    // ])
+    // console.log(model._data)
 
 
 
-    model.where([
-        [
-            { id:['not in',[1,2,34,5]] }, "or", { name: ["is not null"] }
-        ], "and", [
-            { age: ["<>",1] }, "or", { sex: "sadfasd", id: ["BETWEEN",1,3] }
-        ]
-    ])
-    console.log(model._data)
+    // model.where([
+    //     [
+    //         { id:['not in',[1,2,34,5]] }, "or", { name: ["is not null"] }
+    //     ], "and", [
+    //         { age: ["<>",1] }, "or", { sex: "sadfasd", id: ["BETWEEN",1,3] }
+    //     ]
+    // ])
+    // console.log(model._data)
 }

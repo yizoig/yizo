@@ -322,7 +322,7 @@ module.exports = class Model extends Mysql {
     createSql(type) {
 
         let sql;
-        let { field, limit = '', where = '', order, table, data, join: tjoin = [''] } = this._data;
+        let { field, limit = '', where = '', order='', table, data, join: tjoin = [''] } = this._data;
         if (!table) {
             throw new Error("请选择操作的表");
         }

@@ -3,7 +3,7 @@
     <template is="toast" data="{{...toast}}"></template>
     <view class="item">
         <label class="label">标题</label>
-        <input placeholder="{{type=='food'?'食堂带餐，带水果':'你想要带什么'}}" class="input" data-name="title"
+        <input placeholder="代拿包裹、食堂代餐、包裹代为保管" class="input" data-name="title"
                bindinput="changeValue"/>
 
     </view>
@@ -20,7 +20,7 @@
         <input value="{{commission}}" class="input" type="number" data-name="commission" bindinput="changeValue" value="{{commission}}"/>
     </view>
     <view class="item">
-        <label class="label">性别</label>
+        <label class="label">性别限制</label>
         <radio-group class="input" data-name="gender_constraint" bindchange="changeValue">
             <radio value="0"/>
             不限
@@ -43,7 +43,7 @@
     </view>
     <view class="item">
         <label class="label">详细描述</label>
-        <textarea class="input" data-name="description" bindinput="changeValue"/>
+        <textarea class="input" data-name="content" bindinput="changeValue"/>
     </view>
     <view class="item">
         <label class="label">联系人</label>

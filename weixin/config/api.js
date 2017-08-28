@@ -1,5 +1,5 @@
 // export let host = "https://api.yizo.zhiyuan95.cn";
-export let host = "https://localhost:3000";
+export let host = "https://127.0.0.1:3000";
 
 
 export let apis = {
@@ -12,7 +12,7 @@ export let apis = {
     "changeTel": ['PUT', '/account/tel'],
     "sendCode": ['GET', '/smsCode/:tel/:type'],
     "signUp": ['POST', '/users/signUp'],
-    "resetPwd": ['PUT', '/users/pwd/tel/:tel'],
+    "resetPwd": ['PUT', '/account/pwd/tel/:tel'],
     "createRunOrder": ['POST', '/runOrders'],
     "commentList": ['GET', '/runOrders/comment'],
     "updateOrder": ['PUT', '/runOrders/:id'],
