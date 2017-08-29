@@ -65,7 +65,6 @@ class Interface {
                         req.body || {},
                         req.files || {},
                     );
-                    console.log(params)
                     for (let key in params) {
 
                         try {

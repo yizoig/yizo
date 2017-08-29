@@ -6,6 +6,19 @@ let { Interface, Route, Validate } = jike;
  */
 Interface.create('/runOrder', RunOrderController, [
 
+    Route('/','get','list',{
+        validate:{
+            current: [
+                Validate.EXISTS_VALIDATE,
+                ['number', 'currentNumberErr']
+            ],
+            pageSize: [
+                Validate.EXISTS_VALIDATE,
+                ['number', 'pageSizeNumberErr']
+            ]
+        },
+        needToken:false
+    }),
     /**
      * 创建订单
      */
@@ -25,7 +38,7 @@ Interface.create('/runOrder', RunOrderController, [
             ],
             gender:[
                 Validate.MUST_VALIDATE,
-                [['-1','0','1'], 'genderConstraintTypeErr','in']
+                [[-1,0,1], 'genderConstraintTypeErr','in']
             ],
             address:[
                 Validate.MUST_VALIDATE,
@@ -35,7 +48,7 @@ Interface.create('/runOrder', RunOrderController, [
                 Validate.MUST_VALIDATE,
                 ['NumberArray', 'runOrderMoneyTypeErr','varType']
             ],
-            demand:[
+            demands:[
                 Validate.MUST_VALIDATE,
                 ['StringArray', 'demandTypeErr','varType']
             ],
@@ -48,7 +61,7 @@ Interface.create('/runOrder', RunOrderController, [
                 ['tel', 'telErr']
             ],
         },
-        needToken:false
+        needToken:true
     }),
     Route('/give', 'post', 'giveRun', {
         validate:{
@@ -66,7 +79,19 @@ Interface.create('/runOrder', RunOrderController, [
             ],
             gender:[
                 Validate.MUST_VALIDATE,
-                [['-1','0','1'], 'genderConstraintTypeErr','in']
+                [[-1,0,1], 'genderConstraintTypeErr','in']
+            ],
+            address:[
+                Validate.MUST_VALIDATE,
+                ['require', 'ValueNotNullErr']
+            ],
+            contact:[
+                Validate.MUST_VALIDATE,
+                ['require', 'ValueNotNullErr']
+            ],
+            number:[
+                Validate.MUST_VALIDATE,
+                ['tel', 'telErr']
             ]
         }
     })

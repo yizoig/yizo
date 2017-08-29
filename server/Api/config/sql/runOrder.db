@@ -1,0 +1,7 @@
+##创建跑单基本表
+#createRunOrder
+INSERT INTO run_orders SET ?;
+
+##创建炮弹详情表
+#createRunOrderDetail
+INSERT INTO run_order_details SET ?;

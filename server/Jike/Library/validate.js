@@ -136,7 +136,7 @@ module.exports = (function () {
 
                         if (Object.prototype.toString.call(value) == '[object Array]') {
 
-                            for (let k in value) {
+                            for (let k=0;k<value.length;k++) {
                                 if (Object.prototype.toString.call(value[k]) !== '[object Number]') {
                                     return false;
                                 }
@@ -145,9 +145,8 @@ module.exports = (function () {
                         return true;
                     }
                     case 'StringArray': {
-                        console.log(Object.prototype.toString.call(value))
                         if (Object.prototype.toString.call(value) == '[object Array]') {
-                            for (let k in value) {
+                            for (let k=0;k<value.length;k++) {
                                 
                                 if (Object.prototype.toString.call(value[k]) !== '[object String]') {
                                     return false;
@@ -177,7 +176,9 @@ module.exports = (function () {
             case 'in':
             case 'notin': {
                 //判断规则是数组
+
                 if (Object.prototype.toString.call(ruleValue) === '[object Array]') {
+                    
                     return rule == 'in' ? ruleValue.includes(value) : !ruleValue.includes(value);
                 }
                 throw new BaseError(Code.SERVER_ERR, ruleValue + ":规则必须是数组");

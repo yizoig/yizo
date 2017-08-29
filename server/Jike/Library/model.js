@@ -328,7 +328,7 @@ module.exports = class Model extends Mysql {
         }
         switch (type) {
             case "SELECT": {
-                sql = `SELECT ${field ? field.join(',') : '*'} FROM ${table} ${tjoin.join(" join ")} ${where && 'WHERE ' + where}${order && ' ORDER BY ' + order.join(',')}${limit && ' LIMIT ' + limit.join(',')};`
+                sql = `SELECT ${field ? field.join(',') : '*'} FROM ${table} ${tjoin.join(" ")} ${where && 'WHERE ' + where}${order && ' ORDER BY ' + order.join(',')}${limit && ' LIMIT ' + limit.join(',')};`
                 break;
             }
             case "INSERT": {
@@ -429,11 +429,17 @@ module.exports = class Model extends Mysql {
      */
     join(_join) {
 
-
         if (!this._data['join']) {
             this._data['join'] = [''];
         }
-        this._data['join'].push(_join);
+        if(typeof _join ==="string"){
+
+            _join = _join.trim();
+            if(!/^((right|left|inner)\s+)?join/.test(_join)){
+                _join = 'join '+_join;
+            }
+            this._data['join'].push(_join);
+        }
         return this;
     }
 }
