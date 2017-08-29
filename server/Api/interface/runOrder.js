@@ -6,6 +6,7 @@ let { Interface, Route, Validate } = jike;
  */
 Interface.create('/runOrder', RunOrderController, [
 
+    //获取所有订单
     Route('/','get','list',{
         validate:{
             current: [
