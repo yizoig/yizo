@@ -5,6 +5,8 @@ module.exports = class CollegeModel extends jike.Model {
 
     constructor() {
         super();
+
+        this._table="colleges";
         this._map = {
             id: "college_id",
             name: "college_name"
@@ -15,12 +17,12 @@ module.exports = class CollegeModel extends jike.Model {
      */
     async list({ current, pageSize, search }) {
 
-        let colleges = await this.table('colleges')
-            .where({college_name: search && ['like', `%${search+''}%`]})
-            .limit((current - 1) * pageSize, current * pageSize)
-            .select();
+        let count = await this.where({college_name: search && ['like', `%${search+''}%`]}).count();
+        let colleges = await this.where({college_name: search && ['like', `%${search+''}%`]})
+                .limit((current - 1) * pageSize,pageSize)
+                .select();
 
-        return colleges;
+        return {colleges,count};
     }
     /**
      * 添加学校

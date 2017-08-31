@@ -8,19 +8,20 @@ module.exports = class RunOrderController extends jike.Controller {
     async list({ current, pageSize, where, order }) {
 
         let model = new RunOrderModel();
-        let result = await model.list({ current, pageSize, where, order });
-        return this.json(result)
-
+        let {orders,count} = await model.list({ current, pageSize, where, order });
+        return this.json({data:orders,count})
     }
     //创建找跑跑的订单
-    async findRun({ content, title, college, address, gender, demands, contact, number, money }) {
+    async findRun({ content, title, college, address, gd_constraint, demands, contact, number, money }) {
 
         let model = new RunOrderModel();
         //生成id 
         let id = "F" + this.makeId();
-        let result = await model.add({ id, content, title, college, address, gender, demands, contact, number, money, type: "F" });
+        let result = await model.add({ id, content, title, college, address,gd_constraint, demands, contact, number, money, type: "F" });
         //创建找跑跑的订单
-        return this.json(result)
+        return this.json({
+            data:result
+        })
     }
     /**
      * 生成id
@@ -31,13 +32,15 @@ module.exports = class RunOrderController extends jike.Controller {
         return date.format("yyyyMMddhhmmss") + time.substr(time.length - 3);
     }
 
-    async giveRun({ content, title, college, address, gender, contact, number }) {
+    async giveRun({ content, title, college, address, gd_constraint, contact, number }) {
 
         let model = new RunOrderModel();
         //生成id 
         let id = "G" + this.makeId();
-        let result = await model.add({ id, content, title, college, address, gender, contact, number, type: "G" });
+        let result = await model.add({ id, content, title, college, address, gd_constraint, contact, number, type: "G" });
         //创建找跑跑的订单
-        return this.json(result)
+        return this.json({
+            data:result
+        })
     }
 }

@@ -52,15 +52,18 @@ P('changeCollege/index', {
             this.setData({
                 loading: true
             })
-            request('collegelist', page).then((data) => {
+            request('collegelist', page).then((result) => {
 
                 let {colleges} = this.data;
                 if ('refresh' in obj) {
                     colleges = [];
                     page['current'] = 2;
                 }
-                colleges.push.apply(colleges, data.data);
-                page['current']++;
+                colleges.push.apply(colleges, result.data);
+                if(colleges.length!=0){
+                    page['current']++;
+                }
+                page['count'] = result.count;
                 that.setData({
                     colleges,
                     page: page,
@@ -105,7 +108,7 @@ P('changeCollege/index', {
             request('changeCollege', params).then(data => {
 
                 setUserInfo({
-                    college_id,
+                    college:college_id,
                     college_name
                 })
                 this.$showToast({

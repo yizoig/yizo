@@ -14,13 +14,13 @@ P('home', {
         pageSize: 10,
         list: {
             all: {
-                current: 1, items: []
+                current: 1, items: [],count:0
             },
             creater: {
-                current: 1, items: []
+                current: 1, items: [],count:0
             },
             runner: {
-                current: 1, items: []
+                current: 1, items: [],count:0
             }
         },
         loading:false
@@ -104,30 +104,31 @@ P('home', {
 
     },
     loadMore: function (refresh = false) {
-
         this.setData({
             loading:true
         })
         let {pageSize, currentTab, userInfo, list} = this.data;
-
         let params = {};
         params['current'] = list[currentTab]['current'] || 1;
         params['pageSize'] = pageSize;
 
         if (currentTab !== 'all') {
-            params[currentTab] = userInfo['id'];
+            params['where'] = {};
+            params['where'][currentTab] = userInfo['id'];
         }
         if (refresh === true) {
             params['current'] = 1;
         }
-        request("runOrders", params).then((result) => {
+        request("runOrderlist", params).then((result) => {
 
             //先进行数据处理
             for (let item of result.data) {
 
-                item['type'] = item['order_id'].indexOf("D") == 0 ? 'delivery' : 'food';
-                item['commission'] = JSON.parse(item['commission']);
-                item['_c'] = getDateDiff(new Date(item['_c']));
+                item['type'] = item['order_id'].charAt(0);
+                
+                item['money']&&( item['money'] = JSON.parse(item['money']));
+                
+                item['_c'] = getDateDiff(new Date(item['_c']).getTime());
             }
             if (refresh === true) {
                 list[currentTab]['items'] = result.data;
@@ -135,8 +136,11 @@ P('home', {
             } else {
                 list[currentTab]['items'].push.apply(list[currentTab]['items'], result.data);
             }
-            list[currentTab] = Object.assign(list[currentTab],result.page);
-            list[currentTab]['current']++;
+            if(result.data.length!=0){
+                list[currentTab]['current']++;
+            }
+            list[currentTab]['count'] = result.count;
+            
             this.setData({
                 list,
                 loading:false

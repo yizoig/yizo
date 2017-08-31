@@ -4,7 +4,7 @@ let config = {
     connectionLimit: 5,
     host: "localhost",
     user: "root",
-    password: "root",
+    password: "coder123456",
     database: "demo",
     dateStrings: "timestamp"
 }

@@ -21,12 +21,12 @@
     </view>
     <view class="item">
         <label class="label">性别限制</label>
-        <radio-group class="input" data-name="gender_constraint" bindchange="changeValue">
-            <radio value="0"/>
+        <radio-group class="input" data-name="gd_constraint" bindchange="changeValue">
+            <radio value="-1"/>
             不限
-            <radio value="1"/>
+            <radio value="0"/>
             男
-            <radio value="2"/>
+            <radio value="1"/>
             女
         </radio-group>
     </view>

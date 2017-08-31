@@ -16,6 +16,10 @@ Interface.create('/runOrder', RunOrderController, [
             pageSize: [
                 Validate.EXISTS_VALIDATE,
                 ['number', 'pageSizeNumberErr']
+            ],
+            order:[
+                Validate.EXISTS_VALIDATE,
+                ['Object', 'ObjectErr','varType']
             ]
         },
         needToken:false
@@ -37,7 +41,7 @@ Interface.create('/runOrder', RunOrderController, [
                 Validate.MUST_VALIDATE,
                 ['require', 'ValueNotNullErr']
             ],
-            gender:[
+            gd_constraint:[
                 Validate.MUST_VALIDATE,
                 [[-1,0,1], 'genderConstraintTypeErr','in']
             ],
@@ -78,7 +82,7 @@ Interface.create('/runOrder', RunOrderController, [
                 Validate.MUST_VALIDATE,
                 ['require', 'ValueNotNullErr']
             ],
-            gender:[
+            gd_constraint:[
                 Validate.MUST_VALIDATE,
                 [[-1,0,1], 'genderConstraintTypeErr','in']
             ],

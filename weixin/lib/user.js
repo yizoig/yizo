@@ -23,7 +23,14 @@ export function setUserInfo(data) {
     }
 
 }
+export function saveUserInfo(data) {
+    wx.removeStorageSync("userinfo")
+    wx.setStorage({
+        key: "userinfo",
+        data
+    });
 
+}
 export function signOut() {
     //移除token
     wx.removeStorage({key: 'access-token'});
@@ -43,8 +50,7 @@ function replace(source, target) {
 export function isUserInfoFull() {
 
     let userinfo = getUserInfo();
-
-    if(userinfo['college_id'] || userinfo['sex']){
+    if(!userinfo['college'] || userinfo['   gender']==null){
         return false;
     }
     return true;

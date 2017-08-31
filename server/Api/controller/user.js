@@ -11,7 +11,9 @@ module.exports = class UserController extends jike.Controller {
     async list({ current = 1, pageSize = 10,where={live:0}, order }) {
 
         let users = await new UserModel().list({ current, pageSize, where,order });
-        return this.json(users);
+        this.json({
+            data:users
+        })
     }
     /**
      * 添加用户
@@ -20,7 +22,9 @@ module.exports = class UserController extends jike.Controller {
 
         let result = await new UserModel().add({ account, password });
 
-        return this.json(result)
+        this.json({
+            data:result
+        })
     }
     /**
      * 删除用户
@@ -30,7 +34,9 @@ module.exports = class UserController extends jike.Controller {
      */
     async  delete({ ids, mode = 1 }) {
         let result = await new UserModel().delete(ids, mode)
-        return this.json(result);
+        this.json({
+            data:result
+        })
     }
     /**
      * 用户注册
@@ -50,7 +56,9 @@ module.exports = class UserController extends jike.Controller {
                 id:insertId
             })
         }catch(e){}finally{
-            this.json(insertId);
+            this.json({
+                data:insertId
+            })
         }
         
     }
@@ -62,7 +70,9 @@ module.exports = class UserController extends jike.Controller {
 
         let user = await new UserModel().getUserInfo(id);
 
-        this.json(user);
+        this.json({
+            data:user
+        })
     }
     /**
      * 修改学校
@@ -70,6 +80,8 @@ module.exports = class UserController extends jike.Controller {
     async changeCollege({id,college}){
 
         let result = await new UserModel().changeCollege(id,college);
-        this.json(result);
+        this.json({
+            data:result
+        })
     }
 }

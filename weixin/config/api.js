@@ -3,7 +3,7 @@ export let host = "https://127.0.0.1:3000";
 
 
 export let apis = {
-    "runOrders": ["GET", "/runOrders"],
+  
     "collegelist": ["GET", '/colleges'],
     "signIn": ["POST", '/account/signIn'],
     "updateUserInfo": ["PUT", '/account/:id'],
@@ -13,7 +13,12 @@ export let apis = {
     "sendCode": ['GET', '/smsCode/:tel/:type'],
     "signUp": ['POST', '/users/signUp'],
     "resetPwd": ['PUT', '/account/pwd/tel/:tel'],
-    "createRunOrder": ['POST', '/runOrders'],
+
+
+
+    "runOrderlist": ["GET", "/runOrder"],
+    "FindRunOrder": ['POST', '/runOrder/find'],
+    "giveRunOrder": ['POST', '/runOrder/give'],
     "commentList": ['GET', '/runOrders/comment'],
     "updateOrder": ['PUT', '/runOrders/:id'],
     "addComment": ['post', '/runOrders/comment'],

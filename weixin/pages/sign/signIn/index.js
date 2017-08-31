@@ -1,5 +1,5 @@
 import {request, Validate} from '../../../lib/tools';
-
+import {saveUserInfo} from '../../../lib/user'
 var P = require('../../../lib/wxpage');
 P('signIn/index', {
     comps: [],
@@ -40,10 +40,7 @@ P('signIn/index', {
                         title: "登录成功",
                         icon: 'success'
                     });
-                    wx.setStorage({
-                        key: "userinfo",
-                        data:result.data
-                    });
+                    saveUserInfo(result.data)
                     setTimeout(() => {
                         wx.switchTab({
                             url: '/pages/mine/index'

@@ -26,4 +26,6 @@ function empty(data){
         }
     }
 }
-module.exports = {getType,empty}
+// module.exports = {getType,empty}
+
+global.Util = {getType,empty};

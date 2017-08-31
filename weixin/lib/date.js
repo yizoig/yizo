@@ -1,17 +1,18 @@
 export default function getDateDiff(dateTimeStamp){
-    var minute = 1000 * 60;
-    var hour = minute * 60;
-    var day = hour * 24;
-    var halfamonth = day * 15;
-    var month = day * 30;
-    var now = new Date().getTime();
-    var diffValue = now - dateTimeStamp;
+    let minute = 1000 * 60;
+    let hour = minute * 60;
+    let day = hour * 24;
+    let halfamonth = day * 15;
+    let month = day * 30;
+    let now = new Date().getTime();
+    let diffValue = now - dateTimeStamp;
     if(diffValue < 0){return;}
-    var monthC =diffValue/month;
-    var weekC =diffValue/(7*day);
-    var dayC =diffValue/day;
-    var hourC =diffValue/hour;
-    var minC =diffValue/minute;
+    let monthC =diffValue/month;
+    let weekC =diffValue/(7*day);
+    let dayC =diffValue/day;
+    let hourC =diffValue/hour;
+    let minC =diffValue/minute;
+    let result ="";
     if(monthC>=1){
         result="" + parseInt(monthC) + "月前";
     }

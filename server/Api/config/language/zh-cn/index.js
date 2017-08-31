@@ -18,8 +18,7 @@ module.exports = {
     genderErr:"性别格式错误",
     avatarNotNullErr:"请上传头像",
 
-
-
+    ObjectErr:"必须是对象",
     ValueNotNullErr:"值不能为空",
     genderConstraintTypeErr:"性别限制格式错误",
     runOrderMoneyTypeErr:"跑跑价格格式错误",

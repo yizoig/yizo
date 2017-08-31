@@ -29,7 +29,7 @@
         >
             学校
             <view class="text">
-                {{userinfo['college_name'] || '没有选择学校'}}
+                <view style="color:{{userinfo['college_name']?'':'#f00'}}">{{userinfo['college_name'] || '没有选择学校'}}</view>
                 <view class="iconfont icon-right-arrow" style="color:#51C332"></view>
             </view>
 
@@ -37,6 +37,7 @@
         <view class="item" bindtap="changeSex">
             性别
             <view class="text iconfont icon-{{userinfo['gender']==0?'female':'male'}}">
+                <view style="color:{{userinfo['gender']!==null?'':'#f00'}}">{{userinfo['gender']!==null?'':'没有设置性别'}}</view>
                 <view class="iconfont icon-right-arrow" style="color:#51C332"></view>
             </view>
 

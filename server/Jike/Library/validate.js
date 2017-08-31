@@ -129,8 +129,8 @@ module.exports = (function () {
                     case 'Array': {
                         return Object.prototype.toString.call(value) == '[object Array]';
                     }
-                    case 'object': {
-                        return Object.prototype.toString.call(value) == '[object Array]';
+                    case 'Object': {
+                        return Object.prototype.toString.call(value) == '[object Object]';
                     }
                     case 'NumberArray': {
 

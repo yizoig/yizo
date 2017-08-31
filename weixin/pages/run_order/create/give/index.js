@@ -1,7 +1,7 @@
-import {getUserInfo} from "../../../lib/user";
-import {request, Validate} from "../../../lib/tools"
+import {getUserInfo} from "../../../../lib/user";
+import {request, Validate} from "../../../../lib/tools"
 
-var P = require('../../../lib/wxpage');
+var P = require('../../../../lib/wxpage');
 
 P('run_order/create/give/index', {
     comps: [],
@@ -14,13 +14,11 @@ P('run_order/create/give/index', {
         let data = this.data;
         let userinfo = getUserInfo();
         if (userinfo) {
-            data['contact'] = userinfo['truename'];
-            data['number'] = userinfo['tel'];
-            data['creater'] = userinfo['id'];
-            data['college'] = userinfo['college_id'];
+            data['contact'] = userinfo['nickname'];
+            data['number'] = userinfo['account'];
+            data['college'] = userinfo['college'];
         }
 
-        data['type'] = opt['type'];
         this.setData(data)
     },
     changeValue: function (e) {
@@ -37,20 +35,16 @@ P('run_order/create/give/index', {
             params = Validate.check(params, [
                 ['title', 'require', '请填写标题', Validate.MUST_VALIDATE],
                 ['address', 'require', '请填写地址', Validate.MUST_VALIDATE],
-                ['capital', 'number', '本金必须是数字', Validate.MUST_VALIDATE],
-                ['commission', 'number', '佣金必须是数字', Validate.MUST_VALIDATE],
-                ['gender_constraint', ["0","1","2"], '请勾选性别限制', Validate.MUST_VALIDATE,'in'],
+                ['gd_constraint', ["-1","0","1"], '请勾选性别限制', Validate.MUST_VALIDATE,'in'],
                 ['content', 'require', '请填写描述', Validate.MUST_VALIDATE],
                 ['contact', 'require', '请填写联系人', Validate.MUST_VALIDATE],
                 ['number', 'tel', '联系电话格式不正确', Validate.MUST_VALIDATE],
             ]);
-            params['commission'] = JSON.stringify([].concat(parseInt(params['capital']), parseInt(params['commission'])));
-            params['demands'] = JSON.stringify(params['demands']);
             this.$showToast({
                 title: "创建中",
                 icon: 'loading'
             });
-            request('createRunOrder', params).then(data => {
+            request('giveRunOrder', params).then(data => {
 
                 this.$showToast({
                     title: "创建成功",

@@ -1,5 +1,5 @@
 import {request} from "./lib/tools"
-
+import {signOut,saveUserInfo} from './lib/user'
 require('./lib/wxpage').A({
     config: {
         route: '/pages/$page'
@@ -35,15 +35,14 @@ require('./lib/wxpage').A({
                 result => {
                     console.log('自动登录成功');
                     //保存用戶信息
-                    wx.setStorage({
-                        key: "userinfo",
-                        data:result.data
-                    });
+                    saveUserInfo(result.data)
                 },
                 reason => {
-                    wx.removeStorage({key: 'remember'});
+                    signOut();
                 }
             );
+        }else{
+            signOut();
         }
     }
 })

@@ -25,7 +25,7 @@
             <view wx:if="{{loading}}">
                 <template is="spin" ></template>
             </view>
-            {{loading?'玩命加载中':(data.length>=page.total?"已经到底了":"加载更多")}}
+            {{loading?'玩命加载中':(page.count<=page.total?"已经到底了":"加载更多")}}
         </view>
     </view>
     <view class="go-top iconfont icon-right-arrow" style="transform: rotate(-90deg)" hover-class="go-top-active"

@@ -1,36 +1,49 @@
 let Model = require("./model");
-require("./utils/Array");
 
-let model = new Model();
-model.table("user");
+let model = new Model("admin");
+model.table("user,sdf").alias("aaa");
 //查询数据
 (async () => {
 
     try {
         // testField();
+        // console.log(model._data)
         // testData()
-        testWhere()
+        // testWhere()
         // testLimit()
         // testPage()
-        // test();
+        test();
+        // testOrder();
+        // await testSum();
     } catch (e) {
         console.log(e)
     }
 })()
 //定义错误
+async function testSum(){
 
+
+    // console.log(model._data.sql)
+    // console.log('avg:'+await model.avg('name'));
+    // console.log(model._data.sql)
+    // console.log('min:'+await model.min('name'));
+    // console.log(model._data.sql)
+    // console.log('max:'+await model.max('name'));
+    // console.log(model._data.sql)
+    // console.log('count:'+await model.count('name'));
+    // console.log(model._data.sql)
+    // console.log('sum:'+await model.sum('name'));
+}
 function test(){
 
-    model.data("id      =     1&   adf = 2   ").where([
-        [
-            { id: 1 }, "or", { name: 2 }
-        ], "and", [
-            { age: "sadfasd" }, "or", { sex: "sadfasd", id: 1 }
-        ]
-    ])
-    
-    .insert();
-    console.log(model._data.sql)
+    // model.data("id      =     1&   adf = 2   ").where([
+    //     [
+    //         { id: 1 }, "or", { name: 2 }
+    //     ], "and", [
+    //         { age: "sadfasd" }, "or", { sex: "sadfasd", id: 1 }
+    //     ]
+    // ]).insert();
+    // console.log(model._data.sql)
     model.data("id      =     1&   adf = 2   ").where([
         [
             { id: 1 }, "or", { name: 2 }
@@ -39,52 +52,53 @@ function test(){
         ]
     ]).update();
     console.log(model._data.sql)
-    model.field("id as ids,df").where([
-        [
-            { id: 1 }, "or", { name: 2 }
-        ], "and", [
-            { age: "sadfasd" }, "or", { sex: "#sadfasd", id: 1 }
-        ]
-    ])
-    .join("student on strdent.id=user.id")
-    .select();
-    console.log(model._data.sql)
+    // model.alias("a").field("id as ids,df").where([
+    //     [
+    //         { id: 1 }, "or", { name: 2 }
+    //     ], "and", [
+    //         { age: "sadfasd" }, "or", { sex: "#sadfasd", id: 1 }
+    //     ]
+    // ]).page('1,2').group("asd").order("a desc").having("a>1")
+    // .join("student on strdent.id=user.id")
+    // .select();
+    // console.log(model._data.sql)
 }
 function testData(){
 
     model.data("id      =     1&   adf = 2   ");
-    console.log(model._data)
+    console.log(model._data.data)
     model.data({
-        id:1,
+        id:5,
         add:2,
-        bbb:3
+        bbb:3,
+        i
     });
-    console.log(model._data)
+    console.log(model._data.data)
 }
 function testField(){
 
 
     model.field("id,adf,adf");
-    console.log(model._data)
+    console.log(model._data.field)
     model.field("id AS college_id1,adf,adf as id");
-    console.log(model._data)
+    console.log(model._data.field)
     model.field(`
-        count(id)             as college_id2,
+        count(id)            as college_id2,
         name as college_name
     `);
-    console.log(model._data)
+    console.log(model._data.field)
 }
 
 function testOrder(){
 
     model.order("      id      desc    ");
-    console.log(model._data)
+    console.log(model._data.order)
     model.order("id   desc   , name asc");
-    console.log(model._data)
+    console.log(model._data.order)
     model.order("id desc,name");
-    console.log(model._data)
+    console.log(model._data.order)
     model.order({id:"asc",name:"desc"});
-    console.log(model._data)
+    console.log(model._data.order)
 }
 
 function testPage() {
