@@ -1,5 +1,5 @@
-import {request} from "./lib/tools"
-import {signOut,saveUserInfo} from './lib/user'
+import { request } from "./lib/tools"
+import { signOut, saveUserInfo } from './lib/user'
 require('./lib/wxpage').A({
     config: {
         route: '/pages/$page'
@@ -9,12 +9,12 @@ require('./lib/wxpage').A({
         //获取微信用户信息
         wx.getUserInfo({
             success: function (result) {
-                
-                let {userInfo} = result;
+
+                let { userInfo } = result;
                 //保存头像
                 wx.downloadFile({
                     url: userInfo.avatarUrl, //仅为示例，并非真实的资源
-                    success: function(res) {
+                    success: function (res) {
                         //保存头像缓存
                         userInfo.avatar = res.tempFilePath;
                         wx.setStorage({
@@ -23,14 +23,14 @@ require('./lib/wxpage').A({
                         });
                     }
                 })
-               
-                
+
+
             }
         })
         //自动登录
         let remember = wx.getStorageSync('remember');
         console.log(remember);
-        if(remember){
+        if (remember) {
             request("signIn", remember).then(
                 result => {
                     console.log('自动登录成功');
@@ -41,7 +41,7 @@ require('./lib/wxpage').A({
                     signOut();
                 }
             );
-        }else{
+        } else {
             signOut();
         }
     }

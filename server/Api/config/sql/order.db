@@ -1,0 +1,4 @@
+##创建订单
+#addOrder
+
+insert into orders(order_id,creater,college) values (?);

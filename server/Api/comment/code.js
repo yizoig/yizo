@@ -6,7 +6,7 @@ module.exports = {
     //登录失败，账号或密码错误
     SIGNIN_ERR: 1002,
     //没有权限操作
-    UAUTH:1003,
+    UNAUTH:1003,
     //账户存在
     ACCOUNT_EXISTS: 1100,
     //账户不存在
@@ -32,5 +32,6 @@ module.exports = {
     NEW_TEL_CODE_ERR:1120,
 
     //头像类型不正确
-    AVATAR_TYPE_ERR:1200
+    AVATAR_TYPE_ERR:1200,
+    ORDER_TYPE_ERR:2000
 }

@@ -5,6 +5,7 @@ module.exports = {
     TOKEN_INVALID: "身份已失效",
     //登录失败，账号或密码错误
     SIGNIN_ERR: "账号或密码错误",
+    UNAUTH:"您没有权限操作",
     //账户存在
     ACCOUNT_EXISTS: "账户已被占用",
     //账户不存在
@@ -24,6 +25,15 @@ module.exports = {
     OLD_TEL_CODE_ERR: "旧手机号验证码错误",
     //新手机号验证码错误
     NEW_TEL_CODE_ERR: "新手机号验证码错误",
+
+    ORDER_TYPE_ERR:"订单无效",
+
+
+
+
+
+
+
 
     //参数错误
     PARAMS_ERR: "参数错误",

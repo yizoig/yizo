@@ -5,6 +5,8 @@ module.exports = {
      TOKEN_INVALID: "请重新登录",
      //登录失败，账号或密码错误
      SIGNIN_ERR: "请重新登录",
+     
+     UNAUTH:"您没有权限操作",
      //账户存在
      ACCOUNT_EXISTS: "请确认账户是否被占用",
      //账户不存在
@@ -17,6 +19,19 @@ module.exports = {
      TEL_NOTEXISTS:"请确认手机号",
 
      AVATAR_TYPE_ERR:"头像必须是png或者jpg的图片格式",
+
+     ORDER_TYPE_ERR:"订单无效",
+
+
+
+
+
+
+
+
+
+
+
 
      NOT_CHANGE:"服务器没有做任何操作",
      //参数错误

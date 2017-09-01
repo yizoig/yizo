@@ -50,13 +50,13 @@ class Interface {
                     //输出用户请求api 创建controller
                     let controller = new controllerClass(req, res, next);
                     console.log("控制器:", `${controller}`.green, "方法:", `${action}`.green);
-                    global.reqUser = { type: 'user' };
+                    controller.reqUser = {};
                     //needtoken默认为true
                     if (!("needToken" in args) || args.needToken) {
                         console.log("需要token");
                         let { verifyToken = () => { } } = require(APP_PATH + "/comment/jwt");
                         let user = await verifyToken(req.header('access-token'));
-                        global.reqUser = user;
+                        controller.reqUser = user;
                     }
                     //参数格式化
                     let params = Object.assign(
@@ -74,8 +74,9 @@ class Interface {
                     //當存在參數驗證條件時 对参数进行验证
                     if ("validate" in args) {
 
+                        let { type = null } = controller.reqUser;
                         //将公用的参数验证和不同身份的参数验证合并
-                        let validate = Object.assign(args.validate['base'] || {}, args.validate[reqUser.type || 'user'] || {});
+                        let validate = Object.assign(args.validate['base'] || {}, args.validate[type || 'user'] || {});
                         for (let key in args.validate) {
 
                             if (Object.prototype.toString.call(args.validate[key]) === '[object Array]') {
@@ -90,7 +91,7 @@ class Interface {
                 } catch (err) {
                     console.log(err);
                     //如果是自定義的異常錯誤  就返回錯誤信息 否則返回通用異常
-                    res.status(err.code/1000==5?500:200);
+                    res.status(err.code / 1000 == 5 ? 500 : 200);
                     let returnMessage = {
                         code: err.code || jike.Code.SERVER_ERR
                     };
