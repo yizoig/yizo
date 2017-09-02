@@ -31,8 +31,9 @@ P('home', {
     },
     onView: function (e) {
         let {list, currentTab} = this.data;
-
-        this.$route('/pages/run_order/detail/index?data=' + JSON.stringify(list[currentTab]['items'][e.currentTarget.dataset.index]))
+        
+        let type = list[currentTab]['items'][e.currentTarget.dataset.index]['type']=='F'?'find':'give';
+        this.$route(`/pages/run_order/detail/${type}/index?data=` + JSON.stringify(list[currentTab]['items'][e.currentTarget.dataset.index]))
 
     },
     onLoad:function () {
@@ -126,7 +127,7 @@ P('home', {
 
                 item['type'] = item['order_id'].charAt(0);
                 
-                item['money']&&( item['money'] = JSON.parse(item['money']));
+                item['money']&&( item['money'] = item['money'].split(","));
                 
                 item['_c'] = getDateDiff(new Date(item['_c']).getTime());
             }

@@ -6,7 +6,7 @@
     <template is="toast" data="{{...toast}}"></template>
     <view class="detail-top">
         <view class="creater">
-            <template is="avatar" data="{{id:detail['creater_id']}}"></template>
+            <template is="avatar" data="{{id:detail['creater']}}"></template>
             <view class="username iconfont icon-female">{{detail['creater_name']}}</view>
         </view>
         <view class="center">
@@ -29,10 +29,9 @@
         </view>
     </view>
     <view class="detail-content">
-        <view class="title">{{detail['title']}}</view>
+        <view class="title">{{detail['content']}}</view>
         <view class="address iconfont icon-point">{{detail['address']}}</view>
-        <view class="money iconfont icon-money">佣金:{{detail['commission'][1]}} 本金:{{detail['commission'][0]}}</view>
-        <view class="description iconfont icon-desc">{{detail['description']}}</view>
+        <view class="money iconfont icon-money">佣金:{{detail['money'][1]}} 本金:{{detail['money'][0]}}</view>
         <block wx:if="{{detail['gender_constraint']==0}}">
             <view class="gender_constraint" style="background: #cccccc">不限制</view>
         </block>

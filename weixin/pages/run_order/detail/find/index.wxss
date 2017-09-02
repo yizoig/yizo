@@ -9,6 +9,7 @@
 }
 #run-order-detail .detail-top .creater,
 #run-order-detail .detail-top .runner {
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,6 +24,11 @@
 #run-order-detail .detail-top .runner .username {
   margin-top: 5rpx;
   font-size: 25rpx;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 100%;
+  text-align: center;
 }
 #run-order-detail .detail-top .creater .order-task,
 #run-order-detail .detail-top .runner .order-task {
@@ -32,6 +38,7 @@
   padding: 5rpx 10rpx;
 }
 #run-order-detail .detail-top .center {
+  flex: 1;
   margin: 0 20rpx;
   font-size: 25rpx;
   text-align: center;

@@ -1,4 +1,4 @@
-module.exports = {
+                                                                                                                                            module.exports = {
     //令牌错误
     TOKEN_ERR: "身份验证失败",
     //令牌失效

@@ -1,5 +1,5 @@
 // export let host = "https://api.yizo.zhiyuan95.cn";
-export let host = "https://127.0.0.1:3000";
+export let host = "https://192.168.1.122:3000";
 
 
 export let apis = {
@@ -16,7 +16,7 @@ export let apis = {
 
 
 
-    "runOrderlist": ["GET", "/runOrder"],
+    "runOrderlist": ["GET", "/order/run"],
     "FindRunOrder": ['POST', '/runOrder/find'],
     "giveRunOrder": ['POST', '/runOrder/give'],
     "commentList": ['GET', '/runOrders/comment'],

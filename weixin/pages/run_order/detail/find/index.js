@@ -1,9 +1,9 @@
-import {isUserInfoFull,getUserInfo} from "../../../lib/user";
-import {request, getDateDiff, Validate} from "../../../lib/tools"
+import {isUserInfoFull,getUserInfo} from "../../../../lib/user";
+import {request, getDateDiff, Validate} from "../../../../lib/tools"
 
-var P = require('../../../lib/wxpage');
+var P = require('../../../../lib/wxpage');
 
-P('run_order/detail/index', {
+P('run_order/detail/find/index', {
     comps: [],
     data: {
         comment: [],
@@ -35,7 +35,7 @@ P('run_order/detail/index', {
         this.setData({
             userInfo
         });
-        this.loadComment();
+        // this.loadComment();
     },
     onLoad: function (opt) {
 

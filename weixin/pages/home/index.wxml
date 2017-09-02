@@ -1,9 +1,9 @@
 <import src="/comps/home/swiper.wxml"/>
-<import src="/comps/user/avatar.wxml"/>
+
 <import src="/comps/toast/index.wxml"/>
 <import src="/comps/spin/index.wxml"/>
+<import src="/comps/order/order_run.wxml"/>
 <view class="home">
-
 
     <!--加载条-->
     <template is="toast" data="{{...toast}}"></template>
@@ -29,106 +29,18 @@
                 bindtap="onCreateBefore"
                 data-type="find"
                 class="btn blue"
-        >寻找跑腿
+        >聘佣跑腿
         </button>
         <button
                 bindtap="onCreateBefore"
                 data-type="give"
                 class="btn green"
-        >我来跑腿
+        >代跑腿
         </button>
     </view>
     <view class="run-order-list">
         <block wx:for="{{list[currentTab]['items']}}" wx:key="{{*this}}" wx:for-index="index">
-            <view class="order-item" hover-class="order-item-active" bindtap="onView" data-index="{{index}}">
-                <block wx:if="{{item.gender_constraint !== null}}">
-                    <view class="gender-constraint">
-                        <block wx:if="{{item.gender_constraint == 0}}">
-                             <view class="ribbon-wrapper">
-                                <view class="ribbon" style="background-color: #FF0852;">限女生</view>
-                            </view>
-                        </block>
-                        <block wx:elif="{{item.gender_constraint == 1}}">
-                            <view class="ribbon-wrapper">
-                                    <view class="ribbon" style="background-color: #1C79FF;">限男生</view>
-                            </view>
-                        </block>
-                    </view>
-                </block>
-                <view class="item-top">
-                    <template is="avatar" data="{{id:item['creater_id']}}"></template>
-                    <view class="info">
-                        <view>
-                            <view class="iconfont icon-{{item['creater_gender']==0?'female':'male'}}"></view>
-                            <text class="username">{{item['creater_name']}}</text>
-                        </view>
-                        <view>
-                            <text class="time">{{item['_c']}}</text>
-                            <text class="college">{{item['college_name']}}</text>
-                        </view>
-                    </view>
-                </view>
-                <view class="item-content">
-
-                    <!--跑单类型-->
-                    <block wx:if="{{item['type']=='F'}}">
-                        <text class="order-type" style="background: #1C79FF">找</text>
-                    </block>
-                    <block wx:elif="{{item['type']=='G'}}">
-                        <text class="order-type" style="background: #f60">跑</text>
-                    </block>
-
-                    <view class="title ">{{item['title']}}</view>
-                    <view>
-                        <view class="address">
-                            <view class="iconfont icon-point"></view>
-                            {{item['address']}}
-                        </view>
-                        <view class="description">
-                            <view class="iconfont icon-desc"></view>
-                            {{item['content']}}
-                        </view>
-                    </view>
-                </view>
-                <view class="item-bottom">
-
-                    <block wx:if="{{item.status>=0}}">
-                        <block wx:if="{{item.status==0}}">
-                            <view class="tag" style="background:#6ECC7F;">新发布</view>
-                        </block>
-                        <block wx:elif="{{item.status == 1 ||item.status == 2 }}">
-                            <view class="tag" style="background:#ff6600;">进行中</view>
-                        </block>
-                        <block wx:elif="{{item.status == 3}}">
-                            <view class="tag" style="background:#438EFC;">已送达</view>
-                        </block>
-                        <block wx:elif="{{item.status == 4}}">
-                            <view class="tag" style="background:#438EFC;">已结单</view>
-                        </block>
-                      
-                    </block>
-                    <block wx:else>
-                        <view class="tag" style="background:#aaa;">已取消</view>
-                    </block>
-                    <block wx:if="{{item.money}}">
-                        <view class="tag" style="background-color:{{item.status>=0?'#ff75a7':'#aaa'}};">
-                                赚{{item['money'][1]}}元
-                        </view>
-                    </block>
-                   
-                    <block wx:if="{{item['status']==0 && !userInfo}}">
-                        <button class="grab" catchtap="orderTask" hover-class="order-task-active"
-                                data-index="{{index}}">{{item['type']=='F'?'立即抢单':'我需要带'}}
-                        </button>
-                    </block>
-                    <block wx:elif="{{item['status']==0 && userInfo['id']!=item['creater_id'] && (item.gender_constraint==-1 || (userInfo['gender']==null  || userInfo['gender']==item.gender_constraint ))}}">
-                        <button class="grab" catchtap="orderTask" hover-class="order-task-active"
-                                data-index="{{index}}">{{item['type']=='F'?'立即抢单':'我需要带'}}
-                        </button>
-                    </block>
-                    <view>{{item.gender_constraint}}</view>
-            </view>
-            </view>
+            <template is="order_run" data="{{...item,index:index}}"></template>
         </block>
         <view class="load-more"
               bindtap="{{(list[currentTab]['items'].length>=list[currentTab]['total'] || loading )?null:'loadMore'}}">
