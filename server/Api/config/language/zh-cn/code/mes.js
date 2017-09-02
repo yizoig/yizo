@@ -27,7 +27,7 @@ module.exports = {
     NEW_TEL_CODE_ERR: "新手机号验证码错误",
 
     ORDER_TYPE_ERR:"订单无效",
-
+    NOT_OWN_ERR:"只有本人才能操作",
 
 
 

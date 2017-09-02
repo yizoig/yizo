@@ -21,8 +21,7 @@ module.exports = {
      AVATAR_TYPE_ERR:"头像必须是png或者jpg的图片格式",
 
      ORDER_TYPE_ERR:"订单无效",
-
-
+     NOT_OWN_ERR:"只有本人才能操作",
 
 
 

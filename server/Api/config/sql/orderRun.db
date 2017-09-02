@@ -1,0 +1,31 @@
+##创建跑跑订单
+#addOrderRun
+insert into order_runs set ?;
+
+##获取订单创建人和跑跑 不用 
+#getUserToOrder   
+SELECT
+  run_orders.run_order_id,
+  creater,
+  GROUP_CONCAT(user_id) as users
+FROM run_orders
+  JOIN run_order_details ON run_orders.run_order_id = run_order_details.run_order_id
+  where run_orders.run_order_id = ?
+GROUP BY run_orders.run_order_id;
+
+##获取订单的创建人和跑跑信息
+#gerInfoToOrderRun
+SELECT
+  creater,
+  runner,
+  status
+FROM orders
+  JOIN order_runs ON order_runs.`order_id` = orders.`order_id`
+WHERE orders.order_id = ?;
+
+
+##修改信息
+#updateOrderRun
+UPDATE orders_runs
+SET ?
+WHERE order_id = ?

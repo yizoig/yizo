@@ -1,4 +1,9 @@
 ##创建订单
 #addOrder
 
-insert into orders(order_id,creater,college) values (?);
+insert into orders(order_id,creater,college) values (?,?,?);
+
+
+##取消订单
+#setStatus
+update orders set status =? where order_id = ?

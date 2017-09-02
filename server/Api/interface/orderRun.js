@@ -42,7 +42,75 @@ Interface.create('/order', OrderRunController, [
                 Validate.MUST_VALIDATE,
                 ['tel', 'telErr']
             ],
+            deadline:[
+                Validate.EXISTS_VALIDATE,
+                ['require', 'telErr']
+            ],
         },
         needToken:false
+    }),
+    //取消订单
+    Route('/recruit/cancel', 'delete', 'cancel', {
+        validate:{
+            id:[
+                Validate.MUST_VALIDATE,
+                ['require', 'orderNotNull']
+            ]
+        }
+    }),
+    /**
+     * 抢单
+     */
+    Route("/recruit/grab",'delete','grab',{
+        validate:{
+            id:[
+                Validate.MUST_VALIDATE,
+                ['require', 'orderNotNull']
+            ]
+        }
+    }),
+    /**
+     * 放弃跑腿
+     */
+    Route("/recruit/quit",'delete','quit',{
+        validate:{
+            id:[
+                Validate.MUST_VALIDATE,
+                ['require', 'orderNotNull']
+            ]
+        }
+    }),
+    /**
+     * 发货
+     */
+    Route("/recruit/deliver",'put','deliver',{
+        validate:{
+            id:[
+                Validate.MUST_VALIDATE,
+                ['require', 'orderNotNull']
+            ]
+        }
+    }),
+    /**
+     * 完成
+     */
+    Route("/recruit/finally",'put','finally',{
+        validate:{
+            id:[
+                Validate.MUST_VALIDATE,
+                ['require', 'orderNotNull']
+            ]
+        }
+    }),
+    /**
+     * 结束
+     */
+    Route("/recruit/end",'put','end',{
+        validate:{
+            id:[
+                Validate.MUST_VALIDATE,
+                ['require', 'orderNotNull']
+            ]
+        }
     }),
 ])
