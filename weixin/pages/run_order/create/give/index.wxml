@@ -1,11 +1,9 @@
 <import src="/comps/toast/index.wxml"/>
 <view id="run_order_create">
     <template is="toast" data="{{...toast}}"></template>
-    <view class="item">
-        <label class="label">标题</label>
-        <input placeholder="你在那里，能帮忙带什么" class="input" data-name="title"
-               bindinput="changeValue"/>
-
+     <view class="item">
+        <label class="label">详细描述</label>
+        <textarea class="input" data-name="content" bindinput="changeValue" placeholder="对带的东西说明、限制"/>
     </view>
      <view class="item">
         <label class="label">目的地</label>
@@ -22,10 +20,7 @@
             女
         </radio-group>
     </view>
-    <view class="item">
-        <label class="label">详细描述</label>
-        <textarea class="input" data-name="content" bindinput="changeValue" placeholder="对带的东西说明、限制"/>
-    </view>
+   
        <view class="item">
         <label class="label">联系人</label>
         <input class="input" data-name="contact" bindinput="changeValue" value="{{contact}}"/>

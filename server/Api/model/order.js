@@ -50,7 +50,6 @@ module.exports = class OrderModel extends jike.Model {
                         
                         if(orders[i]['order_id'] ==orderRuns[j]['order_id']){
         
-                           
                             orders[i] = Object.assign(orders[i],orderRuns[j]);
                             break;
                         }

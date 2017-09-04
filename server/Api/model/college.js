@@ -28,7 +28,7 @@ module.exports = class CollegeModel extends jike.Model {
      * 添加学校
      */
     async add(name) {
-        let { insertId = null } = await this.query(sqls.addcollege, name);
+        let { insertId = null } = await this.query(sqls.college.addcollege, name);
         return insertId;
     }
     /**
@@ -37,14 +37,14 @@ module.exports = class CollegeModel extends jike.Model {
     async delete(ids) {
 
         //学校不存在约束才删除
-        let [colleges] = await this.query(sqls.usersInCollege, ids);
+        let [colleges] = await this.query(sqls.college.usersInCollege, ids);
         //获取被应用的学校
         colleges = colleges["colleges"].toString("utf-8").split(",") || [];
         //筛选出没有被约束的记录再删除
         ids = ids.filter(value => !colleges.includes(value + ''))
 
         //删除没有被约束的数据
-        let { affectedRows } = await this.query(sqls.delColleges, ids);
+        let { affectedRows } = await this.query(sqls.college.delColleges, ids);
         return affectedRows > 0;
     }
     /**
@@ -52,7 +52,7 @@ module.exports = class CollegeModel extends jike.Model {
      */
     async update({ id,name }) {
         //删除没有被约束的数据
-        let { affectedRows } = await this.query(sqls.updateCollege, name,id);
+        let { affectedRows } = await this.query(sqls.college.updateCollege, name,id);
         return affectedRows > 0;
     }
 }

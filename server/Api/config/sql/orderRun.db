@@ -23,9 +23,33 @@ FROM orders
   JOIN order_runs ON order_runs.`order_id` = orders.`order_id`
 WHERE orders.order_id = ?;
 
-
+multi
 ##修改信息
 #updateOrderRun
 UPDATE orders_runs
 SET ?
 WHERE order_id = ?
+
+
+##添加多用户的跑跑订单
+#addMultiRunOrder
+insert into order_multi_runs set ?
+
+##獲取多用戶訂單的創建人和用户
+#getMultiCreateAndUser
+SELECT
+  creater,
+  GROUP_CONCAT(USER),
+  orders.`status`
+FROM orders
+  JOIN order_multi_runs ON order_multi_runs.`order_id` = orders.`order_id`
+  JOIN order_multi_run_details ON order_multi_runs.`order_id` = order_multi_run_details.`order_id`
+WHERE order_multi_run_details.`status` > 0 AND orders.`order_id`= ? ;
+
+##添加多用户订单用户详情单
+#addMultiOrderDetail
+INSERT INTO order_multi_run_details SET ?;
+
+##更新detail
+#updateMutilOrderDetail
+update order_multi_run_details set ? where user=? and order_id=?;

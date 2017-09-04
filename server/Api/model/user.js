@@ -43,7 +43,7 @@ module.exports = class UserModel extends jike.Model {
      */
     async getUserInfo(id) {
 
-        let [user = null] = await this.query(sqls.userInfo, id);
+        let [user = null] = await this.query(sqls.user.userInfo, id);
         if (!user) {
             throw new BaseError(Code.ACCOUNT_NOTEXISTS);
         }
@@ -54,7 +54,7 @@ module.exports = class UserModel extends jike.Model {
      */
     async exists(account) {
 
-        let [user = null] = await this.query(sqls.accountInfo, account);
+        let [user = null] = await this.query(sqls.account.accountInfo, account);
         //如果登录表没有此账号  或者登录表中的user_id为空就表示没有用户存在
         return user && user['user_id'];
     }
@@ -64,7 +64,7 @@ module.exports = class UserModel extends jike.Model {
     async add({ account, password,nickname,gender }) {
 
 
-        let [user = null] = await this.query(sqls.accountInfo, account);
+        let [user = null] = await this.query(sqls.account.accountInfo, account);
         //判断用户是否已经存在
         if (user && user['user_id']) {
             throw new BaseError(Code.ACCOUNT_EXISTS);
@@ -72,7 +72,7 @@ module.exports = class UserModel extends jike.Model {
         //开启事务
         await this.startTrans();
         //在用户表中添加用户基本信息
-        let { insertId = null } = await this.query(sqls.addUser1);
+        let { insertId = null } = await this.query(sqls.user.addUser1);
         if (!insertId) {
             throw new BaseError(Code.UN_KNOWN_ERROR);
         }
@@ -80,14 +80,14 @@ module.exports = class UserModel extends jike.Model {
         //判断是否已经有登录账号
         if (user) {
             //存在登录账号 ，只需要在字段设置user_id
-            let { affectedRows } = await this.query(sqls.updAccountsByAccount, { user_id: insertId }, account);
+            let { affectedRows } = await this.query(sqls.account.updAccountsByAccount, { user_id: insertId }, account);
             if (affectedRows) {
                 this.commit();
                 return user['id'];
             }
         } else {
             //不存在登录账号，需要为用户添加一条登录账号记录
-            let { insertId: insertAccountId } = await this.query(sqls.addAccount, { account, password: md5(password).toString(), user_id: insertId, nickname,gender});
+            let { insertId: insertAccountId } = await this.query(sqls.account.addAccount, { account, password: md5(password).toString(), user_id: insertId, nickname,gender});
             if (insertAccountId) {
                 this.commit();
                 return insertAccountId;
@@ -109,19 +109,19 @@ module.exports = class UserModel extends jike.Model {
         switch (mode) {
             case -1: {
                 //删除用户
-                let { affectedRows } = await this.query(sqls.delUser, ids);
+                let { affectedRows } = await this.query(sqls.user.delUser, ids);
                 //删除没有引用的登录表
                 await this.query(sqls.delnotReferAccount);
                 return affectedRows > 0;
             }
             case 0: {
                 //解除禁用
-                let { affectedRows } = await this.query(sqls.disabledUser, 0, ids)
+                let { affectedRows } = await this.query(sqls.user.disabledUser, 0, ids)
                 return affectedRows > 0;
             }
             case 1: {
                 //禁用用户
-                let { affectedRows } = await this.query(sqls.disabledUser, 1, ids)
+                let { affectedRows } = await this.query(sqls.user.disabledUser, 1, ids)
                 return affectedRows > 0;
             }
         }
@@ -130,7 +130,7 @@ module.exports = class UserModel extends jike.Model {
      * 修改用户的学校
      */
     async changeCollege(id, college) {
-        let { affectedRows } = await this.query(sqls.changeCollege, college, id)
+        let { affectedRows } = await this.query(sqls.user.changeCollege, college, id)
         return affectedRows > 0;
     }
 }

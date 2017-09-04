@@ -20,7 +20,7 @@ module.exports  = function loadDBsql(){
         // console.log(values);
         //拆分所有sql及sql变量名称
         let sql_arr = values.map(str=>str.match(/#\w+/));
-
+        sqls[fileName] = {};
         sql_arr.forEach((item)=>{
 
             //获取sql和名称
@@ -29,7 +29,7 @@ module.exports  = function loadDBsql(){
             let name = item[0];
             name = name.replace(/#/ig,'');
 
-            sqls[name] = sql;
+            sqls[fileName][name] = sql;
         })
     });
    global.sqls = sqls;

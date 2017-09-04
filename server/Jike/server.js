@@ -52,7 +52,7 @@ module.exports = class Server {
         
         await Log("加载解析参数中间件中...".yellow); 
         //解析 x-wwww-form-urlencoded
-        this.app.use(bodyParser.urlencoded()) //extended为false表示使用querystring来解析数据，这是URL-encoded解析器  
+        this.app.use(bodyParser.urlencoded({ extended: false})) //extended为false表示使用querystring来解析数据，这是URL-encoded解析器  
         // 解析 application/json   
         this.app.use(bodyParser.json()) //添加
         this.app.use(multer( {dest:APP_PATH + '/runtime/cache'}).any()); 
