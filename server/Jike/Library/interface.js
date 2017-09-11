@@ -71,6 +71,7 @@ class Interface {
                             params[key] = JSON.parse(params[key])
                         } catch (e) { }
                     }
+
                     //當存在參數驗證條件時 对参数进行验证
                     if ("validate" in args) {
 

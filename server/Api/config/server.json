@@ -9,9 +9,9 @@
     },
     "secret":"yizo",
     "mysql": {
-        "host": "119.29.189.99",
+        "host": "localhost",
         "user": "root",
-        "password": "coder123456",
+        "password": "root",
         "database": "new_yizo"
     },
     "redis":{

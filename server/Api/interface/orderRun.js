@@ -47,7 +47,6 @@ Interface.create('/order', OrderRunController, [
                 ['require', 'telErr']
             ],
         },
-        needToken:false
     }),
     //取消订单
     Route('/recruit/cancel', 'delete', 'cancel', {
@@ -61,7 +60,7 @@ Interface.create('/order', OrderRunController, [
     /**
      * 抢单
      */
-    Route("/recruit/grab",'delete','grab',{
+    Route("/recruit/grab",'post','grab',{
         validate:{
             id:[
                 Validate.MUST_VALIDATE,

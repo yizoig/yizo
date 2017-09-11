@@ -37,25 +37,25 @@ async function  verifyToken(token = '') {
     /**
      * 判断token是否过期
      */
-    //获取当前时间戳
-    let currentStamp = new Date().getTime();
-    //判断token是否过期
-    console.log("过期倒计时", (payload.iat + expTime * 60 * 1000 - currentStamp) / 1000);
-    if (payload.iat + expTime * 60 * 1000 < currentStamp) {
+    // //获取当前时间戳
+    // let currentStamp = new Date().getTime();
+    // //判断token是否过期
+    // console.log("过期倒计时", (payload.iat + expTime * 60 * 1000 - currentStamp) / 1000);
+    // if (payload.iat + expTime * 60 * 1000 < currentStamp) {
 
-        //如果token过期并且在更新时间范围内就更新  否则就必须重新登录
-        if (payload.iat + (expTime + updateTime) * 60 * 1000 > currentStamp) {
-            //更新token
-            token = makeToken(payload, secret);
+    //     //如果token过期并且在更新时间范围内就更新  否则就必须重新登录
+    //     if (payload.iat + (expTime + updateTime) * 60 * 1000 > currentStamp) {
+    //         //更新token
+    //         token = makeToken(payload, secret);
 
-        } else {
-            throw new jike.BaseError(Code.TOKEN_INVALID);
-        }
-    }
+    //     } else {
+    //         throw new jike.BaseError(Code.TOKEN_INVALID);
+    //     }
+    // }
 
     console.log(payload)
     let model = new Model();
-    let [user=null] = await model.query(sqls[`is_${payload.type}`], payload['sub']);
+    let [user=null] = await model.query(sqls.account[`is_${payload.type}`], payload['sub']);
     if(!user){
         throw new jike.BaseError(Code.UAUTH);
     }

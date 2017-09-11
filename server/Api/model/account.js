@@ -10,7 +10,9 @@ module.exports = class AccountModel extends jike.Model {
      */
     async signIn({ account, password, type }) {
 
-        let sql = type == 'user' ? sqls['userSignIn'] : sqls['adminSignIn'];
+        let sql = type == 'user' ? sqls.user['userSignIn'] : sqls.admin['adminSignIn'];
+
+        console.log(type,sql)
         let [user = null] = await this.query(sql, account);
         console.log(user)
         if (!user) {

@@ -54,9 +54,6 @@ module.exports = class Model extends Mysql {
      * @param {*} options
      */
     async query(sql, ...options) {
-
-
-
         sql = sql.replace(/\s+/g,' ');
         try {
             //进行字段映射
@@ -68,7 +65,7 @@ module.exports = class Model extends Mysql {
             return result;
         } catch (e) {
             console.log(e);
-            return false;
+            throw new BaseError(Code.SQL_ERR,e.message);
         }
 
     }

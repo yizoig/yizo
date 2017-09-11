@@ -35,6 +35,8 @@ module.exports = class OrderRunController extends jike.Controller{
 
         let model = new OrderRunModel();
         let result = await model.grab(id,this.reqUser);
+
+
         return this.json({
             data:result
         })

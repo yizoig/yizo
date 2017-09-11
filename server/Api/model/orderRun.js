@@ -2,7 +2,7 @@ let {BaseError,Code,crypto:{md5}} = jike;
 /**
  * -4 系统取消订单 
  * -3 管理员取消订单
- * -2 取消订单
+ * -2 创建人取消订单
  * -1 取消抢单
  * 0 创建
  * 1 抢单
@@ -15,7 +15,7 @@ module.exports = class OrderRunModel extends jike.Model {
     async add({id,content, college, address, gender_constraint, demands, contact, number, money,deadline=null},reqUser){
         //第一步  在订单表中创建数据
         await this.startTrans();
-        let {affectedRow:affectedRow1} = await this.query(sqls.order.addOrder,id,reqUser.id||1,college);
+        let {affectedRow:affectedRow1} = await this.query(sqls.order.addOrder,id,reqUser.id,college);
         //第二步 创建跑跑订单
         let {affectedRow:affectedRow2} = await this.query(sqls.orderRun.addOrderRun,{
             order_id:id,
@@ -30,7 +30,7 @@ module.exports = class OrderRunModel extends jike.Model {
             return false
         }
         await this.commit();
-        return true;
+        return id;
     }
     /**
      * 取消订单
@@ -74,14 +74,16 @@ module.exports = class OrderRunModel extends jike.Model {
         if(!data){
             throw new BaseError(Code.ORDER_TYPE_ERR);
         }
+
+        console.log(data);
         //存在跑跑
-        if(data['status']!=0){
+        if(data['status']!=0 || data['creater']==reqUser['id']){
             return false;
         }
         //开启事务
         await this.startTrans();
-        let {affectedRow:affectedRow1} = await this.query(sqls.order.setStatus,1,id)
-        let  {affectedRows:affectedRow2} = await this.query(sqls.order.updateOrderRun,{
+        let {affectedRows:affectedRow1=0} = await this.query(sqls.order.setStatus,1,id)
+        let  {affectedRows:affectedRow2=0} = await this.query(sqls.orderRun.updateOrderRun,{
             runner:reqUser['id']
         },id);
         if(affectedRow1<=0 || affectedRow2<=0){
@@ -129,7 +131,7 @@ module.exports = class OrderRunModel extends jike.Model {
         if(reqUser['id']!=data['runner']){
             throw new BaseError(Code.NOT_OWN_ERR);
         }
-        if(reqUser['status']!=1){
+        if(data['status']!=1){
             return false;
         }
         let {affectedRow} = await this.query(sqls.order.setStatus,2,id);
@@ -137,7 +139,7 @@ module.exports = class OrderRunModel extends jike.Model {
         return affectedRow>0;
     }
      /**
-     * 配送中
+     * 完成
      */
     async finally(id,reqUser){
         let [data=null] = await this.query(sqls.orderRun.gerInfoToOrderRun,id);
@@ -148,7 +150,7 @@ module.exports = class OrderRunModel extends jike.Model {
         if(reqUser['id']!=data['runner']){
             throw new BaseError(Code.NOT_OWN_ERR);
         }
-        if(reqUser['status']!=2){
+        if(data['status']!=2){
             return false;
         }
         let {affectedRow} = await this.query(sqls.order.setStatus,3,id);
@@ -156,7 +158,7 @@ module.exports = class OrderRunModel extends jike.Model {
         return affectedRow>0;
     }
      /**
-     * 配送中
+     * 结束
      */
     async end(id,reqUser){
         let [data=null] = await this.query(sqls.orderRun.gerInfoToOrderRun,id);
@@ -167,10 +169,10 @@ module.exports = class OrderRunModel extends jike.Model {
         if(reqUser['id']!=data['creater']){
             throw new BaseError(Code.NOT_OWN_ERR);
         }
-        if(reqUser['status']!=3){
+        if(data['status']!=3){
             return false;
         }
-        let {affectedRow} = await this.query(sqls.orderRun.setStatus,4,id);
+        let {affectedRow} = await this.query(sqls.order.setStatus,4,id);
 
         return affectedRow>0;
     }

@@ -72,7 +72,13 @@ module.exports = class Mysql {
             console.log(query.sql)
             //保存sql语句
             this.sqls.push(query.sql);
-        }).catch((error) => {
+        }).catch(async (error) => {
+            console.log(error)
+            this.transFlag && await this.rollback();
+            //释放连接
+
+            console.log(this.connection)
+            this.connection = null;
             throw error;
         });
     }

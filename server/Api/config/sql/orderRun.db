@@ -22,11 +22,9 @@ SELECT
 FROM orders
   JOIN order_runs ON order_runs.`order_id` = orders.`order_id`
 WHERE orders.order_id = ?;
-
-multi
 ##修改信息
 #updateOrderRun
-UPDATE orders_runs
+UPDATE order_runs
 SET ?
 WHERE order_id = ?
 
@@ -39,12 +37,12 @@ insert into order_multi_runs set ?
 #getMultiCreateAndUser
 SELECT
   creater,
-  GROUP_CONCAT(USER),
+  GROUP_CONCAT(USER) AS users,
   orders.`status`
 FROM orders
   JOIN order_multi_runs ON order_multi_runs.`order_id` = orders.`order_id`
   JOIN order_multi_run_details ON order_multi_runs.`order_id` = order_multi_run_details.`order_id`
-WHERE order_multi_run_details.`status` > 0 AND orders.`order_id`= ? ;
+WHERE orders.`order_id`= ? ;
 
 ##添加多用户订单用户详情单
 #addMultiOrderDetail
@@ -53,3 +51,14 @@ INSERT INTO order_multi_run_details SET ?;
 ##更新detail
 #updateMutilOrderDetail
 update order_multi_run_details set ? where user=? and order_id=?;
+
+
+##当所有的订单都结束  关闭订单
+#setOrderEnd
+UPDATE orders
+SET orders.`status` = 4
+WHERE NOT EXISTS(
+    SELECT `status`
+    FROM order_multi_run_details
+    WHERE order_multi_run_details.`status` <> 4 AND order_multi_run_details.`order_id` = ?
+) AND `order_id` = ?;
