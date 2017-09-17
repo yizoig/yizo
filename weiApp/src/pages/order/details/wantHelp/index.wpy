@@ -1,0 +1,35 @@
+
+<script>
+import wepy from 'wepy'
+import 'wepy-async-function'
+import request from '../../../../utils/api'
+import {apis} from '../../../../config/api'
+import Avatar from '../../../../components/users/avatar/index'
+export default class WantHelp extends wepy.page {
+  data = {
+    detail: {},
+    uid: '1'
+  }
+  components = {
+    avatar: Avatar
+  }
+  onLoad(opt) {
+    this.id = opt.id || null
+    this.loadData()
+  }
+  loadData() {
+    try {
+      request(apis.wantHelpOrder.info, { id: this.id }).then(({ data }) => {
+        this.detail = data.info
+        this.$apply()
+      }, reson => {
+        console.log(reson)
+      })
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+</script>
+<style src="./index.less" lang="less"></style>
+<template lang="wxml" src="./index.wxml"></template>

@@ -1,0 +1,16 @@
+<template lang="wxml" src="./index.wxml"></template>
+<script>
+import wepy from 'wepy'
+// import request from '../../utils/api'
+// import { host } from '../../config/api'
+export default class Release extends wepy.page {
+  methods = {
+    navigateTo: function (url) {
+      wepy.navigateTo({
+        url
+      })
+    }
+  }
+}
+</script>
+<style src="./index.less" lang="less"></style>

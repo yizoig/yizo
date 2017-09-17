@@ -1,0 +1,46 @@
+<template lang="wxml" src="./index.wxml"></template>
+<script>
+import wepy from 'wepy'
+import 'wepy-async-function'
+// import request from '../../utils/api'
+// import { host } from '../../config/api'
+import Avatar from '../../components/users/avatar/index'
+import login from '../../components/mixins/login'
+export default class Mine extends wepy.page {
+  data = {
+    id: 1,
+    userinfo: null,
+    weiInfo: null
+  }
+  components = {
+    avatar: Avatar
+  }
+  mixins = [login]
+  methods = {
+    navigateTo: function(url) {
+      wepy.navigateTo({
+        url
+      })
+    }
+  }
+  async onLoad() {
+    try {
+      /**
+       * 获取用户信息
+       */
+      let { data: weiInfo } = await wepy.getStorage({
+        key: 'weiInfo'
+      })
+      let { data: userinfo } = await wepy.getStorage({
+        key: 'userinfo'
+      })
+      this.weiInfo = weiInfo
+      this.userinfo = userinfo
+      this.$apply()
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+</script>
+<style src="./index.less" lang="less"></style>

@@ -1,0 +1,19 @@
+<view id="setting">
+    <view class="item-group account-security">
+        <view class="item" @tap="navigateTo({{'/pages/mine/changePwd/index?id='+userinfo['id']}})">
+            修改密码
+            <view class="text">
+                <view class="iconfont icon-right-arrow" style="color:#51C332"></view>
+            </view>
+        </view>
+        <view
+                class="item"
+                @tap="navigateTo({{'/pages/mine/changeTel/index'}})"
+                data-url="/pages/mine/changeTel/index">
+                修改手机号
+            <view class="text">
+                <view class="iconfont icon-right-arrow" style="color:#51C332"></view>
+            </view>
+        </view>
+    </view>
+</view>

@@ -1,0 +1,50 @@
+<template lang="wxml" src="./index.wxml"></template>
+<script>
+import wepy from 'wepy'
+import request from '../../utils/api'
+import { host } from '../../config/api'
+export default class Index extends wepy.page {
+  data = {
+    collegelogo: host + '/college/logo/',
+    colleges: []
+  }
+
+  methods = {
+    onSelect: function(e) {
+      let { id = null } = e.currentTarget.dataset
+      let college = this.getCollege(id)
+
+      console.log(college)
+      wepy.setStorageSync('college', college)
+      wepy.switchTab({
+        url: `/pages/home/index`
+      })
+    }
+  }
+  getCollege(id) {
+    for (let i = 0; i < this.colleges.length; i++) {
+      if (this.colleges[i]['college_id'] === id) {
+        return this.colleges[i]
+      }
+    }
+    return null
+  }
+  onLoad() {
+    this.loadData()
+  }
+  loadData() {
+    request('collegelist', {}).then(({ data }) => {
+      let { list: colleges } = data
+      for (let i = 0; i < colleges.length; i++) {
+        colleges[i]['logo'] = this.collegelogo + colleges[i]['college_id'] + '.png'
+      }
+      console.log(colleges)
+      this.colleges = colleges || []
+      this.$apply()
+    }, reason => {
+      console.log(reason)
+    })
+  }
+}
+</script>
+<style src="./index.less" lang="less"></style>

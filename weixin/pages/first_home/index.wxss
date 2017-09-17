@@ -1,0 +1,32 @@
+#nearCollege .title {
+  border-left: 8rpx  solid #3385ff;
+  padding-left: 20rpx;
+  font-size: 32rpx;
+  margin: 30rpx;
+}
+#nearCollege .list .item-active {
+  background: #f8f8f8;
+}
+#nearCollege .list .item {
+  margin: 10rpx;
+  display: flex;
+  flex-direction: row;
+  border: 1px solid #f8f8f8;
+  padding: 15rpx;
+}
+#nearCollege .list .item .logo {
+  margin: 0 20rpx;
+  width: 200rpx;
+  height: 200rpx;
+}
+#nearCollege .list .item .info .name {
+  line-height: 87rpx;
+  font-size: 35rpx;
+}
+#nearCollege .list .item .info .mes {
+  font-size: 25rpx;
+  color: #4D4D4D;
+}
+#nearCollege .list .item .info .mes text {
+  margin-right: 18rpx;
+}

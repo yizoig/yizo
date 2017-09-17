@@ -4,20 +4,20 @@ module.exports = class OrderModel extends jike.Model {
     async list(current=0,pageSize=10){
 
         //查询出id
-        let orders = await this.query(`select
-                order_id,
-                creater,
-                nickname as creater_name,
-                college,
-                college_name,
-                nickname AS runner_name,
-                status,
-                _c,
-                _d
-            from orders
-            LEFT JOIN accounts on creater = accounts.id
-            left join colleges on college_id =college 
-            ORDER BY _c DESC  limit ?,?;`,
+            let orders = await this.query(`select
+                    order_id,
+                    creater,
+                    nickname as creater_name,
+                    gender as creater_gender,
+                    college,
+                    college_name,
+                    status,
+                    _c,
+                    _d
+                from orders
+                LEFT JOIN accounts on creater = accounts.id
+                left join colleges on college_id =college 
+                ORDER BY _c DESC  limit ?,?;`,
             current*pageSize,pageSize);
         //将id组合数组
         let ids = [];
@@ -27,11 +27,13 @@ module.exports = class OrderModel extends jike.Model {
         //获取跑跑的信息
         let orderRuns = await this.query(`SELECT
                     order_id,
+                    title,
                     content,
                     gender_constraint,
                     money,
                     runner,
                     nickname AS runner_name,
+                    gender AS runner_gender,
                     contact,
                     contact_number,
                     address,
@@ -40,7 +42,7 @@ module.exports = class OrderModel extends jike.Model {
                 LEFT JOIN accounts ON order_runs.runner = accounts.id where order_id in (?)`,
             ids);
         let orderMultiRuns = await this.query(`
-                SELECT order_id,content,max_number,deadline FROM order_multi_runs
+                SELECT order_id,title,content,max_number,deadline FROM order_multi_runs
                 WHERE order_id IN (?)`,ids);
         for(let i=0;i<orders.length;i++){
             

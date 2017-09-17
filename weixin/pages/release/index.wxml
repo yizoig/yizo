@@ -1,0 +1,23 @@
+<view id="release">
+    <view class="item">
+        <view class="icon"></view>
+        <view class="mes">
+            <view class="name">发布求助</view>
+            <view class="desc">让全校的学生帮你解决问题</view>
+        </view>
+    </view>
+    <view class="item">
+        <view class="icon"></view>
+        <view class="mes">
+            <view class="name">发布求购</view>
+            <view class="desc">从朋友身边淘宝贝</view>
+        </view>
+    </view>
+    <view class="item">
+        <view class="icon"></view>
+        <view class="mes">
+            <view class="name">闲置信息</view>
+            <view class="desc">把宝贝换钱</view>
+        </view>
+    </view>
+</view>

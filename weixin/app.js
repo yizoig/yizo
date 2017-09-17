@@ -5,6 +5,7 @@ require('./lib/wxpage').A({
         route: '/pages/$page'
     },
     onLaunch: function () {
+        
 
         //获取微信用户信息
         wx.getUserInfo({

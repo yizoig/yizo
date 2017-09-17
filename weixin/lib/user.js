@@ -50,7 +50,7 @@ function replace(source, target) {
 export function isUserInfoFull() {
 
     let userinfo = getUserInfo();
-    if(!userinfo['college'] || userinfo['   gender']==null){
+    if(!userinfo['college'] || userinfo['gender']==null){
         return false;
     }
     return true;

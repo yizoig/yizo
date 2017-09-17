@@ -1,0 +1,24 @@
+<template lang="wxml">
+  {{id}}
+  <image src="{{id?('https://localhost:3000/account/avatar/'+id+'.png'):url}}" class="avatar"></image>
+</template>
+<script>
+import wepy from 'wepy'
+import 'wepy-async-function'
+export default class Avatar extends wepy.component {
+  data = {
+    id: '',
+    url: ''
+  }
+  onLoad() {
+    console.log(this)
+  }
+}
+</script>
+<style >
+.avatar {
+  border-radius: 50%;
+  width: 130rpx;
+  height: 130rpx;
+}
+</style>

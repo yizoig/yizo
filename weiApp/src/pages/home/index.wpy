@@ -1,0 +1,26 @@
+<template lang="wxml" src="./index.wxml"></template>
+<script>
+import wepy from 'wepy'
+// import request from '../../utils/api'
+// import { host } from '../../config/api'
+import Menus from '../../components/menus/index'
+import WantHelpOrder from '../../components/order/list/wantHelp/index'
+export default class Home extends wepy.page {
+  config ={
+    'enablePullDownRefresh': true,
+    'backgroundColor': '#3385ff'
+  }
+  data = {
+    college: null
+  }
+  components = {
+    menu: Menus,
+    runOrdersPost: WantHelpOrder
+  };
+  onLoad() {
+    this.college = wepy.getStorageSync('college')
+    this.$apply()
+  }
+}
+</script>
+<style src="./index.less" lang="less"></style>

@@ -20,9 +20,7 @@ module.exports = class AccountController extends jike.Controller {
             type,
             id: type == 'user' ? user['user_id'] : user['admin_id']
         }));
-        return this.json({
-            data:user
-        });
+        return this.json(user);
     }
     /**
      * 获取用户头像

@@ -1,0 +1,55 @@
+
+<template src="./index.wxml" ></template>
+
+<script>
+import wepy from 'wepy'
+import { apis } from '../../../../config/api'
+import { getDateDiff, request } from '../../../../utils/tools'
+import Avatar from '../../../users/avatar/index'
+import Toast from '../../../toast/index'
+export default class WantHelpOrder extends wepy.component {
+  data = {
+    orderList: []
+  }
+  methods = {
+    onView: function(e) {
+      wepy.navigateTo({
+        url: '/pages/order/details/wantHelp/index?id=' + e.currentTarget.dataset.id
+      })
+    }
+  }
+  components = {
+    avatar: Avatar,
+    toast: Toast
+  }
+  onLoad() {
+    this.loadMore()
+  }
+  loadMore() {
+    this.$invoke('toast', 'showToast', {
+      title: '加载中',
+      icon: 'loading',
+      mask: true
+    })
+    request(apis.wantHelpOrder.list, {}).then(({ data }) => {
+      let { orders = [] } = data
+      /**
+       * 先进行数据处理
+       */
+      for (let i = 0; i < orders.length; i++) {
+        orders[i]['_c'] = getDateDiff(new Date(orders[i]['_c']).getTime())
+      }
+      this.$invoke('toast', 'hiddenToast')
+      this.orderList.push.apply(this.orderList, orders)
+      this.$apply()
+    }).catch(reson => {
+      this.$invoke('toast', 'showToast', {
+        title: reson,
+        icon: 'error',
+        mask: true
+      })
+    })
+  }
+}
+</script>
+<style lang="less" src="./index.less" ></style>

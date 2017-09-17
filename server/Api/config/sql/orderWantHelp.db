@@ -1,0 +1,56 @@
+##获取求助信息的条数
+#count
+SELECT count(*) AS count
+FROM orders
+  LEFT JOIN order_want_helps ON orders.order_id = order_want_helps.order_id
+  LEFT JOIN accounts runner_user ON order_want_helps.runner = runner_user.id
+  JOIN accounts creater_user ON orders.creater = creater_user.id
+
+##获取所有求助信息
+#list
+SELECT
+  orders.order_id,
+  college,
+  title,
+  gender_constraint,
+  reward_type,
+  reward,
+  creater,
+  creater_user.nickname AS creater_name,
+  creater_user.gender   AS creater_gender,
+  address,
+  deadline,
+  status
+FROM orders
+  LEFT JOIN order_want_helps ON orders.order_id = order_want_helps.order_id
+  JOIN accounts creater_user ON orders.creater = creater_user.id
+
+##获取求助基本信息
+#info
+SELECT
+  orders.order_id,
+  college,
+  college_name,
+  title,
+  content,
+  gender_constraint,
+  reward_type,
+  reward,
+  creater,
+  creater_user.nickname AS creater_name,
+  creater_user.gender   AS creater_gender,
+  runner,
+  runner_user.nickname  AS runner_name,
+  runner_user.gender    AS runner_gender,
+  weixin,
+  phone_number,
+  address,
+  deadline,
+  status,
+  _c
+FROM orders
+  LEFT JOIN order_want_helps ON orders.order_id = order_want_helps.order_id
+  JOIN colleges ON orders.college = colleges.college_id
+  LEFT JOIN accounts AS runner_user ON order_want_helps.runner = runner_user.id
+  LEFT JOIN accounts AS creater_user ON orders.creater = creater_user.id
+WHERE orders.order_id = ?

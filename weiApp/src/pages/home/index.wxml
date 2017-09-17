@@ -1,0 +1,42 @@
+<!-- <view id="home">
+  <view class="top">
+    <view class="top-box">
+     
+      <view class="bulletin-box">
+        <view class="bulletin">欢迎加入yizo校园</view>
+      </view>
+    </view>
+  </view>
+  <view class="list">
+    <menu :menu="{{navs.nav[navs.current]}}"></menu>
+    <runOrdersPost />
+  </view>
+</view> -->
+
+
+<view id="home">
+  <view class="background">
+    <view class="top"></view>
+  </view>
+  <view class="main">
+    <view class="top">
+        <view class="college">
+            <image src="{{college.logo}}" class="logo" />
+            <view class="info">
+              <view class="name">{{college.college_name}}</view>
+              <view class="mes">
+                <text>人气:100</text>
+                <text>昨日新增:1000</text>
+              </view>
+            </view>
+          </view>
+          <view class="bulletin-box">
+            <view class="iconfont icon-setting bulletin">欢迎加入yizo校园</view>
+          </view>
+    </view>
+    <menu :menu="{{navs.nav[navs.current]}}"></menu>
+    <view class="list">
+        <runOrdersPost />
+    </view>
+  </view>
+</view>

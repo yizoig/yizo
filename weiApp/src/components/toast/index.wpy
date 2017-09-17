@@ -1,0 +1,40 @@
+
+<template src="./index.wxml" ></template>
+
+<script>
+import wepy from 'wepy'
+import Spin from '../spin/index'
+export default class Toast extends wepy.component {
+  data = {
+    title: '',
+    icon: '',
+    mask: false,
+    show: true,
+    time: 1000
+  }
+  components = {
+    spin: Spin
+  }
+  showToast(opt) {
+    for (let key in opt) {
+      if (this.hasOwnProperty(key)) {
+        this[key] = opt[key]
+      }
+    }
+    this['show'] = true
+    this.$apply()
+    if (this['icon'] !== 'loading') {
+      setTimeout(() => {
+        this.hiddenToast()
+        console.log('消失')
+      }, this.time)
+    }
+    console.log(opt)
+  }
+  hiddenToast() {
+    this['show'] = false
+    this.$apply()
+  }
+}
+</script>
+<style lang="less" src="./index.less" ></style>

@@ -1,0 +1,74 @@
+<view id="releaseList">
+  <view class="title">
+    <view>寻求帮助</view>
+  </view>
+  <view class="form">
+    <view class="form-row">
+      <label class="form-label">标题</label>
+      <input class="form-widget" placeholder="请填写标题" bindinput="formValueChange" data-name="title"/>
+    </view>
+    <view class="form-row">
+        <label class="form-label">目的地</label>
+        <input class="form-widget" placeholder="请填写标题" bindinput="formValueChange" data-name="address"/>
+      </view>
+    <view class="form-row">
+        <label class="form-label">性别限制</label>
+        <view class="form-widget radio">
+          <view class="radio-item {{form.gender_contrainer==0?'active':''}}" bindtap="selectGender" data-wepy-params-a="{{0}}">不限</view>
+          <view class="radio-item {{form.gender_contrainer==1?'active':''}}" bindtap="selectGender" data-wepy-params-a="{{1}}">女</view>
+          <view class="radio-item {{form.gender_contrainer==2?'active':''}}" bindtap="selectGender" data-wepy-params-a="{{2}}">男</view>
+        </view>
+      </view>
+    <view class="form-row">
+      <label class="form-label">截至日期</label>
+      <picker class="form-widget" mode="date" value="{{dueDate}}" start="{{startDate.date}}" end="{{endDate.date}}" bindchange="formValueChange" data-name="dueDate">
+        <view class="picker" style="{{form.dueDate?'':'color:#808080;'}}">
+          {{form.dueDate ||"请选择日期"}}
+        </view>
+      </picker>
+    </view>
+    <view class="form-row">
+      <label class="form-label">截至时间</label>
+      <picker class="form-widget" mode="time" value="{{dueTime}}" start="{{startDate.time}}" end="23:59" bindchange="formValueChange" data-name="dueTime">
+        <view class="picker" style="{{form.dueTime?'':'color:#808080;'}}">
+          {{form.dueTime ||"请选择时间"}}
+        </view>
+      </picker>
+    </view>
+    <view class="form-row">
+      <label class="form-label">酬劳类型</label>
+      <view class="form-widget radio">
+        <view class="radio-item {{form.rewardType==='other'?'active':''}}" bindtap="switchType" data-wepy-params-a="{{'other'}}">其他</view>
+        <view class="radio-item {{form.rewardType==='money'?'active':''}}" bindtap="switchType" data-wepy-params-a="{{'money'}}">现金</view>
+      </view>
+    </view>
+    <view class="form-row"  wx:if="{{form.rewardType==='money'}}">
+      <label class="form-label">酬劳</label>
+      <view class="form-widget">
+        <input placeholder="请输入酬劳" bindinput="formValueChange" data-name="reward" style="margin-right:5rpx;" type="number"/>元
+      </view>
+    </view>
+    <view wx:else>
+      <view class="radio" style="margin:10rpx 0;">
+        <block wx:for="{{otherReward}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+          <view class="radio-item {{item==form.otherReward?'active':''}}" bindtap="switchReward" data-wepy-params-a="{{item}}">{{item}}</view>
+        </block>
+      </view>
+      <view style="font-size:25rpx;color:#808080;padding:0 0 10rpx 20rpx;">"我的酬劳是{{form.otherReward}}"</view>
+    </view>
+    <view class="form-row">
+      <textarea placeholder="请填写具体信息(选填)" bindinput="formValueChange" data-name="content" style="width:100%;text-align:left;height:150rpx;padding:10rpx;line-height:37rpx;">
+        </textarea>
+    </view>
+    <view style="background:#f8f8f8;font-size:25rpx;line-height:50rpx;padding-left:20rpx;">联系方式</view>
+    <view class="form-row">
+      <label class="form-label">手机号</label>
+      <input class="form-widget" placeholder="请留下联系方式" bindinput="formValueChange" data-name="phoneNumber"/>
+    </view>
+    <view class="form-row">
+      <label class="form-label">微信号</label>
+      <input class="form-widget" placeholder="请填写微信号" bindinput="formValueChange" data-name="weixinNumber"/>
+    </view>
+  </view>
+  <view class="release">发起求助</view>
+</view>

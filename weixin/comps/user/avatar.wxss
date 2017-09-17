@@ -2,5 +2,4 @@
   border-radius: 50%;
   width: 130rpx;
   height: 130rpx;
-  border: 3rpx solid #ddd;
 }

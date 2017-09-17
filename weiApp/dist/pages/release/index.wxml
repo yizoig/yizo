@@ -1,0 +1,16 @@
+<view id="release">
+  <view class="item" bindtap="navigateTo" data-wepy-params-a="/pages/release/wantHelp/index">
+      <view class="icon"/>
+      <view class="mes">
+          <view class="name">需要求助</view>
+          <view class="desc">让全校的学生帮你解决问题</view>
+      </view>
+  </view>
+  <view class="item" bindtap="navigateTo" data-wepy-params-a="/pages/release/offerHelp/index">
+      <view class="icon"/>
+      <view class="mes">
+          <view class="name">提供帮助</view>
+          <view class="desc">为全校的学生解决问题</view>
+      </view>
+  </view>
+</view>

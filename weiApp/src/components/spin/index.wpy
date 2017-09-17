@@ -1,0 +1,10 @@
+
+<template src="./index.wxml" ></template>
+
+<script>
+import wepy from 'wepy'
+
+export default class Spin extends wepy.component {
+}
+</script>
+<style lang="less" src="./index.less" ></style>

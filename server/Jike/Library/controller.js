@@ -8,7 +8,7 @@ module.exports = class Controller {
     json(data) {
         this.res.json({
             code: 0,
-            ...data
+            data
         })
         console.log(`${this.req.method}`.green,`${this.req.url}`.yellow,`${200}`.green);
     }

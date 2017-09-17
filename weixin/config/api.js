@@ -4,22 +4,28 @@ export let host = "https://192.168.1.122:3000";
 
 export let apis = {
   
+    //学校列表
     "collegelist": ["GET", '/colleges'],
-    "signIn": ["POST", '/account/signIn'],
-    "updateUserInfo": ["PUT", '/account/:id'],
-    "changeCollege":["PUT",'/users/college/:id'],
-    "changePwd": ['PUT', '/account/pwd/:id'],
-    "changeTel": ['PUT', '/account/tel'],
-    "sendCode": ['GET', '/smsCode/:tel/:type'],
-    "signUp": ['POST', '/users/signUp'],
-    "resetPwd": ['PUT', '/account/pwd/tel/:tel'],
+    //跑单列表
+    "runOrderlist": ["GET", "/order/recruit"],
 
-
-
-    "runOrderlist": ["GET", "/order/run"],
-    "FindRunOrder": ['POST', '/runOrder/find'],
-    "giveRunOrder": ['POST', '/runOrder/give'],
-    "commentList": ['GET', '/runOrders/comment'],
-    "updateOrder": ['PUT', '/runOrders/:id'],
-    "addComment": ['post', '/runOrders/comment'],
+    //炮弹信息
+    "runOrderInfo":['GET','/order/recruit/info/:id']
+    // //创建跑跑订单
+    // "createFindOrder": ['POST', '/order/recruit'],
+    // //抢单
+    // "grabFindOrder": ['POST', '/order/recruit/grab'],
+    
+    // //放弃跑腿
+    // "quitFindOrder": ['delete', '/order/recruit/quit'],
+    // //取消订单
+    // "cancelOrders": ['delete', '/order/recruit/cancel'],
+    // "signIn": ["POST", '/account/signIn'],
+    // "updateUserInfo": ["PUT", '/account/:id'],
+    // "changeCollege":["PUT",'/users/college/:id'],
+    // "changePwd": ['PUT', '/account/pwd/:id'],
+    // "changeTel": ['PUT', '/account/tel'],
+    // "sendCode": ['GET', '/smsCode/:tel/:type'],
+    // "signUp": ['POST', '/users/signUp'],
+    // "resetPwd": ['PUT', '/account/pwd/tel/:tel'],
 };

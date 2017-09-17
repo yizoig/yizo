@@ -1,4 +1,4 @@
 {
-  "enablePullDownRefresh":true,
-  "backgroundTextStyle": "dark"
-}
+    "enablePullDownRefresh":true,
+    "backgroundColor":"#3385ff"
+}  

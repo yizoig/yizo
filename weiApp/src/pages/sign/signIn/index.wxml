@@ -1,0 +1,23 @@
+<view id="sign">
+  <toast/>
+  <view class="signBox">
+    <view class="item">
+      <image src="../../../public/image/male-avatar.png" class="logo" />
+    </view>
+    <view class="item">
+      <input placeholder="手机号" maxlength="11" type="number" bindinput="ontextChange" data-name="account" />
+    </view>
+    <view class="item">
+      <input type="password" placeholder="密码" bindinput="ontextChange" data-name="password" />
+    </view>
+  </view>
+  <view class="btn-controller">
+    <button class="btn blue" bindtap="onSignIn">登录</button>
+    <button class="btn" @tap="jumpTo" data-url="/pages/sign/signUp/index">
+            注册
+        </button>
+  </view>
+  <view bindtap="redirectTo" data-url="/pages/sign/forgotPwd/index" class="link" style="text-align: right">
+    忘记密码
+  </view>
+</view>

@@ -1,5 +1,5 @@
 {
-    "less.compile":{
-        "outExt":"wxss"
-    }
+    // "less.compile":{
+    //     "outExt":"wxss"
+    // }
 }

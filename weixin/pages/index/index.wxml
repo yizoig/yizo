@@ -1,0 +1,57 @@
+<import src="/comps/home/swiper.wxml"/>
+
+<import src="/comps/toast/index.wxml"/>
+<import src="/comps/spin/index.wxml"/>
+<import src="/comps/order/order_run.wxml"/>
+<view class="home">
+
+    <!--加载条-->
+    <template is="toast" data="{{...toast}}"></template>
+    <!--轮播-->
+    <template is="swiper" data="{{...swiper}}"></template>
+    <view class="nav-tab">
+        <view class="item {{currentTab=='all'?'active':''}}" bindtap="switab" data-type="all">
+            <view class="iconfont icon-near"></view>
+            附近任务
+        </view>
+        <view class="item {{currentTab=='creater'?'active':''}}" bindtap="switab" data-type="creater">
+            <view class="iconfont icon-edit"></view>
+            我的发布
+        </view>
+        <view class="item {{currentTab=='runner'?'active':''}}" bindtap="switab" data-type="runner">
+            <view class="iconfont icon-grab"></view>
+            我的抢单
+        </view>
+    </view>
+    <!--按钮-->
+    <view class="btn-controller">
+        <button
+                bindtap="onCreateBefore"
+                data-type="find"
+                class="btn blue"
+        >聘佣跑腿
+        </button>
+        <button
+                bindtap="onCreateBefore"
+                data-type="give"
+                class="btn green"
+        >代跑腿
+        </button>
+    </view>
+    <view class="run-order-list">
+        <block wx:for="{{list[currentTab]['items']}}" wx:key="{{*this}}" wx:for-index="index">
+            <template is="order_run" data="{{...item,userInfo:userInfo,index:index}}"></template>
+        </block>
+        <view class="load-more"
+              bindtap="{{(list[currentTab]['items'].length>=list[currentTab]['total'] || loading )?null:'loadMore'}}">
+            <block wx:if="{{loading}}">
+                <template is="spin"></template>
+            </block>
+            <view>{{loading?'玩命加载中':(list[currentTab]['count']<=list[currentTab]['total']?'已经到底了':'加载更多')}}
+            </view>
+        </view>
+    </view>
+    <view class="go-top iconfont icon-right-arrow" style="transform: rotate(-90deg)" hover-class="go-top-active"
+          catchtap="goTop"></view>
+
+</view>

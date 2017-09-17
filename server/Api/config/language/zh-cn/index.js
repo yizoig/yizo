@@ -23,5 +23,7 @@ module.exports = {
     genderConstraintTypeErr:"性别限制格式错误",
     runOrderMoneyTypeErr:"跑跑价格格式错误",
     demandTypeErr:"需求格式错误",
-    orderNotNull:"订单不能为空"
+    orderNotNull:"订单不能为空",
+
+    varTypeErr:"参数类型错误"
 }

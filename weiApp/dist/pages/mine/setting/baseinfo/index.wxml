@@ -1,0 +1,20 @@
+<view id="baseinfo">
+  <view class="avatar">
+    <image src="../../../../public/image/male-avatar.png" style="width:150rpx;height:150rpx;border-radius:100%;border:5px solid #ddd;"/>
+  </view>
+  <view class="form">
+    <view class="form-row">
+      <label>昵称</label>
+      <input class="form-widget" value="{{userinfo['nickname']}}"/>
+    </view>
+
+    <view class="form-row">
+      <label>姓名</label>
+      <view class="form-widget">
+        <radio value="0" checked="{{userinfo['gender']==0}}"/>女
+        <radio value="1" checked="{{userinfo['gender']==1}}"/>男
+      </view>
+    </view>
+  </view>
+  <view class="save-btn">提交保存</view>
+</view>

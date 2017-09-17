@@ -1,0 +1,84 @@
+<template lang="wxml" src="./index.wxml"></template>
+<script>
+import wepy from 'wepy'
+import { apis } from '../../../config/api'
+import { Validate, request } from '../../../utils/tools'
+import { saveUserInfo } from '../../../utils/user'
+import Toast from '../../../components/toast/index'
+export default class SignIn extends wepy.page {
+  data = {
+    account: '',
+    password: ''
+  }
+  components = {
+    toast: Toast
+  }
+  methods = {
+    jumpTo: function(e) {
+      let { url } = e.target.dataset
+      wepy.navigateTo({
+        url
+      })
+    },
+    redirectTo: function(e) {
+      let { url } = e.target.dataset
+      wepy.redirectTo({
+        url
+      })
+    },
+    ontextChange: function(e) {
+      this[e.target.dataset.name] = e.detail.value
+      this.$apply()
+    },
+    onSignIn: function() {
+      let { account, password } = this.data
+      try {
+        console.log({ account, password })
+        let params = Validate.check({ account, password }, [
+          ['account', 'tel', '手机号格式错误', Validate.MUST_VALIDATE],
+          ['password', 'require', '密码不能为空', Validate.MUST_VALIDATE]
+        ])
+        this.$invoke('toast', 'showToast', {
+          title: '登录中',
+          icon: 'loading',
+          mask: true
+        })
+        request(apis.account.signIn, params).then(({ data }) => {
+          wepy.setStorage({
+            key: 'remember',
+            data: {
+              account,
+              password
+            }
+          })
+          this.$invoke('toast', 'showToast', {
+            title: '登录成功',
+            icon: 'success',
+            mask: true
+          })
+          saveUserInfo(data)
+          setTimeout(() => {
+            wepy.switchTab({
+              url: '/pages/mine/index'
+            })
+          }, 1000)
+        },
+          reason => {
+            this.$invoke('toast', 'showToast', {
+              title: reason,
+              icon: 'error',
+              mask: true
+            })
+          })
+      } catch (e) {
+        this.$invoke('toast', 'showToast', {
+          title: e.message,
+          icon: 'error',
+          mask: true
+        })
+      }
+    }
+  }
+}
+</script>
+<style src="../index.less" lang="less"></style>

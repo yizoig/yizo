@@ -1,0 +1,32 @@
+<template lang="wxml" src="./index.wxml"></template>
+<script>
+import wepy from 'wepy'
+import 'wepy-async-function'
+import Avatar from '../../../../components/users/avatar/index'
+export default class BaseInfoSettting extends wepy.page {
+  data = {
+    id: '1',
+    userinfo: null
+  }
+  components = {
+    avatar: Avatar
+  }
+  methods = {
+    edit: function(e) {
+      let { editor } = this.data
+      editor[e.currentTarget.dataset.type] = true
+      this.setData({
+        editor
+      })
+    }
+  }
+  async onShow() {
+    let { data: userinfo } = await wepy.getStorage({
+      key: 'userinfo'
+    })
+    this.userinfo = userinfo
+    this.$apply()
+  }
+}
+</script>
+<style src="./index.less" lang="less"></style>

@@ -11,7 +11,7 @@ module.exports = class CollegeController extends jike.Controller {
         let {count,colleges} = await new CollegeModel().list({ current, pageSize, search });
         return this.json({
             count,
-            data:colleges
+            list:colleges
         })
     }
     /**
@@ -19,26 +19,20 @@ module.exports = class CollegeController extends jike.Controller {
      */
     async add({ name }) {
         let result = await new CollegeModel().add(name);
-        return this.json({
-            data:result
-        })
+        return this.json(result)
     }
     /**
      * 删除学校
      */
     async delete({ids}) {
         let result = await new CollegeModel().delete(ids);
-        return this.json({
-            data:result
-        })
+        return this.json(result)
     }
     /**
      * 修改学校
      */
     async update({id,name}){
         let result = await new CollegeModel().update({id,name});
-        return this.json({
-            data:result
-        })
+        return this.json(result)
     }
 }

@@ -1,0 +1,13 @@
+<view class="app-toast {{mask?'app-toast-mask':''}}" wx:if="{{show}}">
+  <view style="display: inline-block">
+    <view class="app-toast-box ">
+      <view class="toast-icon">
+        <spin wx:if="{{icon=='loading'}}"></spin>
+        <block wx:else>
+          <view class="iconfont icon-{{icon}}"></view>
+        </block>
+      </view>
+      <view class="toast-content">{{title}}</view>
+    </view>
+  </view>
+</view>

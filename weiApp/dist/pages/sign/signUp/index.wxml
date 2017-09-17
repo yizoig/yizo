@@ -1,0 +1,44 @@
+<view id="sign">
+    <view class="signBox">
+        <view class="item">
+            <image src="../../../image/male-avatar.png" class="logo"/>
+        </view>
+        <block  wx:if="{{step==1}}">
+
+            <view class="item">
+                <input placeholder="手机号" maxlength="11" type="number" bindinput="ontextChange" data-name="account" value="{{account}}"/>
+            </view>
+            <view class="item">
+                <input type="number" maxlength="6" placeholder="验证码" bindinput="ontextChange" data-name="code" value="{{code}}"/>
+                <button class="code {{signUp['nextReq']&&'active'}}" bindtap="{{signUp['nextReq']?null:'sendCode'}}">
+                    {{signUp['nextReq']?signUp['nextReq']+'s':'验证码'}}
+                </button>
+            </view>
+        </block>
+        <block wx:if="{{step==2}}">
+            <view class="item">
+                <input placeholder="设置密码" maxlength="11" type="password" bindinput="ontextChange" data-name="password" value="{{password}}"/>
+            </view>
+            <view class="item">
+                <input type="password" maxlength="6" placeholder="再次输入密码" bindinput="ontextChange" data-name="repeatPassword" value="{{repeatPassword}}"/>
+
+            </view>
+        </block>
+    </view>
+    <view class="btn-controller">
+        <block wx:if="{{step==1}}">
+            <button class="btn blue" bindtap="onNext">
+                下一步
+            </button>
+        </block>
+        <block wx:if="{{step==2}}">
+            <!--<button class="btn" bindtap="onBack">-->
+            <!--上一步-->
+            <!--</button>-->
+            <button class="btn blue" bindtap="onNext">注册</button>
+        </block>
+    </view>
+    <view bindtap="$bindRedirect" data-url="/pages/sign/signIn/index" class="link">
+        已经注册？直接登录
+    </view>
+</view>

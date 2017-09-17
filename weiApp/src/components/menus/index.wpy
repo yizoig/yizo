@@ -1,0 +1,55 @@
+
+<template src="./index.wxml" ></template>
+
+<script>
+import wepy from 'wepy'
+
+export default class Menus extends wepy.component {
+  data = {
+    current: 0,
+    menus: [
+      {
+        key: 'help',
+        name: '帮帮忙',
+        subMenus: [
+          { key: 'help', name: '求助' },
+          { key: 'supper', name: '帮忙' }
+        ],
+        current: 0
+      },
+      {
+        key: 'inactivity',
+        name: '闲置',
+        subMenus: [
+          { key: 'male', name: '男装' },
+          { key: 'female', name: '女装' }
+        ],
+        current: 0
+      }
+    ]
+  }
+
+  methods = {
+    onSwitch: function(e) {
+      let { index, type } = e.currentTarget.dataset
+      switch (type) {
+        case 'menu': {
+          this.current = index
+          break
+        }
+        case 'sub': {
+          this.menus[this.current]['current'] = index
+          break
+        }
+        default: {
+          return
+        }
+      }
+      this.$apply()
+    }
+  }
+  onLoad() {
+  }
+}
+</script>
+<style lang="less" src="./index.less" ></style>

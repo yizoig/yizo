@@ -1,0 +1,52 @@
+<template lang="wxml" src="./index.wxml"></template>
+<script>
+import wepy from 'wepy'
+// import request from '../../utils/api'
+// import { host } from '../../config/api'
+export default class Release extends wepy.page {
+  data = {
+    startDate: null,
+    endDate: null,
+    form: {
+      rewardType: 'money',
+      userLimit: 1
+    }
+  }
+  methods = {
+    formValueChange: function(e) {
+      this.form[e.currentTarget.dataset.name] = e.detail.value
+      this.$apply()
+    },
+    selectGender: function(value) {
+      this.form['gender_contrainer'] = value
+      this.$apply()
+    },
+    changuserLimit: function(value) {
+      console.log(value)
+      if (value > 0 && value <= 10) {
+        this.form['userLimit'] = value
+        this.$apply()
+      }
+    }
+  }
+  onShow() {
+    let date = new Date()
+    /**
+     * 开始时间
+     */
+    this.startDate = {
+      date: date.format('yyyy-MM-dd'),
+      time: date.format('hh:mm')
+    }
+    /**
+     * 结束时间
+     */
+    date.setYear(date.getFullYear() + 1)
+    this.endDate = {
+      date: date.format('yyyy-MM-dd')
+    }
+    this.$apply()
+  }
+}
+</script>
+<style src="./index.less" lang="less"></style>
