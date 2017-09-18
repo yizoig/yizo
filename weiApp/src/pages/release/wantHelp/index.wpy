@@ -1,8 +1,9 @@
 <template lang="wxml" src="./index.wxml"></template>
 <script>
 import wepy from 'wepy'
-// import request from '../../utils/api'
-// import { host } from '../../config/api'
+import { request, Validate } from '../../../utils/tools'
+import Toast from '../../../components/toast/index'
+import { apis } from '../../../config/api'
 export default class ReleaseWantHelp extends wepy.page {
   data = {
     startDate: null,
@@ -12,8 +13,10 @@ export default class ReleaseWantHelp extends wepy.page {
     ],
     form: {
       rewardType: 'money',
-      otherReward: '请你吃饭'
     }
+  }
+  components = {
+    toast: Toast
   }
   methods = {
     formValueChange: function(e) {
@@ -21,16 +24,62 @@ export default class ReleaseWantHelp extends wepy.page {
       this.$apply()
     },
     switchType: function(type) {
+      delete this.form.reward
       this.form.rewardType = type
       this.$apply()
     },
     selectGender: function(value) {
-      this.form['gender_contrainer'] = value
+      this.form['gender_constraint'] = value
       this.$apply()
     },
     switchReward: function(value) {
-      this.form['otherReward'] = value
+      this.form['reward'] = value
       this.$apply()
+    },
+    release: function() {
+      let params = this.form
+      try {
+        params = Validate.check(params, [
+          ['title', 'require', '请填写标题', Validate.MUST_VALIDATE],
+          ['address', 'require', '请填写地址', Validate.MUST_VALIDATE],
+          ['gender_constraint', 'require', '请设置性别约束', Validate.MUST_VALIDATE],
+          ['dueDate', 'require', '请选择截至日期', Validate.MUST_VALIDATE],
+          ['dueTime', 'require', '请选择截至时间', Validate.MUST_VALIDATE],
+          ['reward', 'require', '请填写酬劳', Validate.MUST_VALIDATE],
+          ['phoneNumber', 'tel', '联系电话格式不正确', Validate.MUST_VALIDATE],
+          ['weixin', 'require', '微信号不能为空', Validate.MUST_VALIDATE]
+        ])
+        let college = wepy.getStorageSync('college')
+        params['deadline'] = params['dueDate']+' '+params['dueTime']
+        params['college'] = college['college_id']
+        delete params['dueDate']
+        delete params['dueTime']
+        this.$invoke('toast', 'showToast', {
+          title: '创建中',
+          icon: 'loading'
+        })
+        request(apis.wantHelpOrder.add, params).then(data => {
+          this.$invoke('toast', 'showToast', {
+            title: '创建成功',
+            icon: 'success'
+          })
+          setTimeout(() => {
+            wepy.navigateBack({
+              delta: 1
+            })
+          }, 3000)
+        }, reson => {
+          this.$invoke('toast', 'showToast', {
+            title: reson,
+            icon: 'error'
+          })
+        })
+      } catch (e) {
+        this.$invoke('toast', 'showToast', {
+          title: e.message,
+          icon: 'error'
+        })
+      }
     }
   }
   onShow() {

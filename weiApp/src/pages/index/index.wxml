@@ -7,8 +7,8 @@
         <view class="info">
           <view class="name">{{item.college_name}}</view>
           <view class="mes">
-            <text>人气:{{100}}</text>
-            <text>昨日新增:{{1000}}</text>
+            <text>人气:{{item.count}}</text>
+            <text>昨日新增:{{item.oldcount}}</text>
           </view>
         </view>
       </view>

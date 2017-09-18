@@ -42,9 +42,7 @@ module.exports = class AccountController extends jike.Controller {
             avatar:avatar['path'],
             id
         })
-        return this.json({
-            data:result
-        })
+        return this.json(result)
     }
     /**
      * 修改手机号
@@ -60,9 +58,7 @@ module.exports = class AccountController extends jike.Controller {
             throw new BaseError(Code.NEW_TEL_CODE_ERR);
         }
         let result = await new AccountModel().changeTel(tel, newTel);
-        return this.json({
-            data:result
-        })
+        return this.json(result)
     }
     /**
      * 修改密码  旧换新
@@ -70,9 +66,7 @@ module.exports = class AccountController extends jike.Controller {
     async changePwd({ id, password, newPassword }) {
 
         let result = await new AccountModel().changePwd(id, password, newPassword);
-        return this.json({
-            data:result
-        })
+        return this.json(result)
     }
     /**
      * 手机号修改密码
@@ -85,9 +79,7 @@ module.exports = class AccountController extends jike.Controller {
         }
         let result = await new AccountModel().changePwdByTel(tel, password);
 
-        return this.json({
-            data:result
-        })
+        return this.json(result)
     }
     /**
      * 修改信息 
@@ -100,8 +92,6 @@ module.exports = class AccountController extends jike.Controller {
         }
         let result = await new AccountModel().changeInfo(id, data);
 
-        return this.json({
-            data:result
-        })
+        return this.json(result)
     }
 }

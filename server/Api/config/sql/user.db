@@ -12,8 +12,8 @@ SELECT
   `college`,
   `college_name`,
   `balance`,
-  `@create`,
-  `@live`,
+  `_c`,
+  `_d`,
   `signin_time`
 FROM accounts
   RIGHT JOIN users ON accounts.user_id = users.user_id
@@ -28,8 +28,8 @@ SELECT
   account,
   nickname,
   gender,
-  `@create`,
-  `@live`,
+  `_c`,
+  `_d`,
   college
 FROM accounts
   JOIN users ON accounts.user_id = users.user_id
@@ -45,7 +45,7 @@ SELECT
   gender,
   college,
   college_name,
-  `@create`,
+  `_c`,
   signin_time
 FROM accounts
   JOIN users ON users.`user_id` = accounts.`user_id`
@@ -76,7 +76,7 @@ WHERE id IN (?);
 ## 外建级联
 #disabledUser
 
-update users set `@live` = ? where user_id in (
+update users set `_d` = ? where user_id in (
   SELECT user_id
   FROM accounts WHERE id in (?)
 );

@@ -1,20 +1,38 @@
 <view id="baseinfo">
+  <view class="app-toast {{$toast$mask?'app-toast-mask':''}}"  wx:if="{{$toast$show}}">
+  <view style="display: inline-block">
+    <view class="app-toast-box ">
+      <view class="toast-icon">
+        <view class="loading" wx:if="{{$toast$icon=='loading'}}">
+  <view style="left: 0;top: 0;"/>
+  <view style="right: 0;top: 0;animation-delay: .4s;"/>
+  <view style=" right: 0;bottom: 0;animation-delay: .8s;"/>
+  <view style=" left: 0; bottom: 0;animation-delay: 1.2s;"/>
+</view>
+        <block wx:else>
+          <view class="iconfont icon-{{$toast$icon}}"/>
+        </block>
+      </view>
+      <view class="toast-content">{{$toast$title}}</view>
+    </view>
+  </view>
+</view>
   <view class="avatar">
     <image src="../../../../public/image/male-avatar.png" style="width:150rpx;height:150rpx;border-radius:100%;border:5px solid #ddd;"/>
   </view>
   <view class="form">
     <view class="form-row">
       <label>昵称</label>
-      <input class="form-widget" value="{{userinfo['nickname']}}"/>
+      <input class="form-widget" value="{{cache['nickname'] || userinfo['nickname']}}" bindinput="edit" data-name="nickname"/>
     </view>
 
-    <view class="form-row">
+    <radio-group class="form-row" bindchange="edit" data-name="gender">
       <label>姓名</label>
       <view class="form-widget">
-        <radio value="0" checked="{{userinfo['gender']==0}}"/>女
-        <radio value="1" checked="{{userinfo['gender']==1}}"/>男
+        <radio value="0" checked="{{cache['gender']==0 || userinfo['gender']==0}}"/>女
+        <radio value="1" checked="{{cache['gender']==1 ||userinfo['gender']==1}}"/>男
       </view>
-    </view>
+    </radio-group>
   </view>
-  <view class="save-btn">提交保存</view>
+  <view class="save-btn {{edit?'':'disabled'}}" bindtap="{{edit?'submit':null}}">提交保存</view>
 </view>

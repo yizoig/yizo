@@ -1,0 +1,187 @@
+<template lang="wxml" src="./index.wxml"></template>
+<script>
+import wepy from 'wepy'
+// import Avatar from '../../../../../components/users/avatar/index'
+import Toast from '../../../components/toast/index'
+import { Validate, request, md5 } from '../../../utils/tools'
+import { apis } from '../../../config/api'
+import { setUserInfo } from '../../../utils/user'
+export default class changeTel extends wepy.page {
+  data = {
+    step: 1,
+    form: {
+      newTel: '',
+      newCode: '',
+      tel: '',
+      code: ''
+    },
+    unbindTel: null,
+    bindTel: null
+  }
+  components = {
+    toast: Toast
+  }
+  methods = {
+    textChange: function(e) {
+      this.form[e.currentTarget.dataset.name] = e.detail.value
+      this.$apply()
+    },
+    sendCode: function(e) {
+      /**
+       * 获取验证码
+       */
+      let params = {}
+      let type = e.currentTarget.dataset.type
+      /**
+       * 获取不同的手机号
+       */
+      if (type === 'unbindTel') {
+        params['tel'] = this.form.tel
+      } else {
+        params['tel'] = this.form.newTel
+      }
+      try {
+        params = Validate.check({ type, ...params }, [
+          ['type', 'require', '短信类型错误', Validate.MUST_VALIDATE],
+          ['tel', 'tel', '手机号格式错误', Validate.MUST_VALIDATE]
+        ])
+        this.$invoke('toast', 'showToast', {
+          title: '发送中...',
+          icon: 'loading',
+          mask: true
+        })
+        request(apis.sms.sendCode, params).then(({ data }) => {
+          this[type] = data
+          let nextReq = data['nextReq']
+          let currentDate = new Date()
+          let seconds = parseInt((nextReq - currentDate.getTime()) / 1000)
+          this.$apply()
+          setTimeout(() => {
+            this.countDown(seconds, type)
+          }, 500)
+          this.$invoke('toast', 'showToast', {
+            title: '发送成功',
+            icon: 'success',
+            mask: true
+          })
+        }, reson => {
+          this.$invoke('toast', 'showToast', {
+            title: reson,
+            icon: 'error',
+            mask: true
+          })
+        })
+      } catch (e) {
+        this.$invoke('toast', 'showToast', {
+          title: e.message,
+          icon: 'error',
+          mask: true
+        })
+      }
+    },
+    onNext: function() {
+      let { step } = this.data
+      if (step === 1) {
+        try {
+          let { form: { tel, code }, unbindTel } = this
+          let params = Validate.check({ tel, code }, [
+            ['code', 'require', '短信验证码错误', Validate.MUST_VALIDATE],
+            ['tel', 'tel', '手机号格式错误', Validate.MUST_VALIDATE]
+          ])
+          console.log()
+          if (!unbindTel || (md5(params['code']) !== unbindTel['code'])) {
+            this.$invoke('toast', 'showToast', {
+              title: '短信验证码错误',
+              icon: 'error',
+              mask: true
+            })
+            return
+          }
+          this.step = 2
+          this.$apply()
+        } catch (e) {
+          this.$invoke('toast', 'showToast', {
+            title: e.message,
+            icon: 'error',
+            mask: true
+          })
+        }
+      } else if (step === 2) {
+        try {
+          let { form: { tel, code, newTel, newCode }, bindTel } = this
+          let params = Validate.check({ tel, code, newTel, newCode }, [
+            ['newCode', 'require', '短信验证码错误', Validate.MUST_VALIDATE],
+            ['newTel', 'tel', '新手机号格式错误', Validate.MUST_VALIDATE]
+          ])
+          if (!bindTel || (md5(params['newCode']) !== bindTel['code'])) {
+            this.$invoke('toast', 'showToast', {
+              title: '短信验证码错误',
+              icon: 'error',
+              mask: true
+            })
+            return
+          }
+          this.$invoke('toast', 'showToast', {
+            title: '修改中...',
+            icon: 'loading',
+            mask: true
+          })
+          /**
+           * 修改手机号
+           */
+          request(apis.account.changeTel, params).then(data => {
+            this.$invoke('toast', 'showToast', {
+              title: '修改成功',
+              icon: 'success',
+              mask: true
+            })
+            setUserInfo({
+              account: newTel
+            })
+            setTimeout(() => {
+              wepy.navigateBack({
+                delta: 1
+              })
+            },3000)
+          }, reson => {
+            this.$invoke('toast', 'showToast', {
+              title: reson,
+              icon: 'error',
+              mask: true
+            })
+          })
+        } catch (e) {
+          this.$invoke('toast', 'showToast', {
+            title: e.message,
+            icon: 'error',
+            mask: true
+          })
+        }
+      }
+    }
+  }
+  async onShow() {
+    let { data: userinfo = {} } = await wepy.getStorage({
+      key: 'userinfo'
+    })
+    if ('account' in userinfo) {
+      this.form['tel'] = userinfo['account']
+      this.$apply()
+    }
+  }
+  /**
+   * 倒计时
+   */
+  countDown(seconds, type) {
+    this[type]['nextReq'] = seconds
+    this.$apply()
+    if (seconds <= 0) {
+      return
+    }
+    setTimeout(() => {
+      this.countDown(seconds - 1, type)
+    }, 1000)
+  }
+}
+</script>
+<style src="../index.less" lang="less"></style>

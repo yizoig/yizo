@@ -7,7 +7,7 @@ SELECT
   `users`.`user_id`
 FROM accounts
   RIGHT JOIN users ON accounts.user_id = users.user_id
-WHERE id=? and users.`@live` =0;
+WHERE id=? and users.`_d` =0;
 
 ##是不是管理员
 ##id 用户id
@@ -18,7 +18,7 @@ SELECT
   `admins`.`admin_id`
 FROM accounts
   RIGHT JOIN admins on accounts.admin_id = admins.admin_id
-WHERE id=? and admins.`@live` =0
+WHERE id=? and admins.`_d` =0
 
 ##账号是否存在
 #existsAccount

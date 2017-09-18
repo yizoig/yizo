@@ -17,6 +17,32 @@ const apis = {
     signIn: {
       method: 'POST',
       url: '/signIn'
+    },
+    updateInfo:{
+      method: 'PUT',
+      url: '/:id'
+    },
+    changePwd:{
+      method:'PUT',
+      url:'/pwd/:id'
+    },
+    changeTel:{
+      method:'PUT',
+      url:'/tel'
+    }
+  },
+  college:{
+    path:'/colleges',
+    list:{
+      method: 'GET',
+      url: '/'
+    }
+  },
+  sms:{
+    path:'/smsCode',
+    sendCode:{
+      method:'GET',
+      url:'/:tel/:type'
     }
   },
   wantHelpOrder: {
@@ -29,12 +55,17 @@ const apis = {
     info:{
       method: 'GET',
       url: '/info/:id'
+    },
+    add:{
+      method:'POST',
+      url:'/'
     }
   }
 }
 module.exports = {
   env,
   version,
+  host:hosts[env],
   apis: disposeUrl(apis, hosts[env])
 }
 

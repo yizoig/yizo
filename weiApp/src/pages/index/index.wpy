@@ -2,7 +2,7 @@
 <script>
 import wepy from 'wepy'
 import request from '../../utils/api'
-import { host } from '../../config/api'
+import { apis,host } from '../../config/api'
 export default class Index extends wepy.page {
   data = {
     collegelogo: host + '/college/logo/',
@@ -33,7 +33,7 @@ export default class Index extends wepy.page {
     this.loadData()
   }
   loadData() {
-    request('collegelist', {}).then(({ data }) => {
+    request(apis.college.list, {}).then(({ data }) => {
       let { list: colleges } = data
       for (let i = 0; i < colleges.length; i++) {
         colleges[i]['logo'] = this.collegelogo + colleges[i]['college_id'] + '.png'

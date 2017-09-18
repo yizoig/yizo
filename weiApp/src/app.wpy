@@ -7,18 +7,20 @@ import './utils/date'
 export default class extends wepy.app {
   config = {
     pages: [
+      'pages/index/index',
+      'pages/release/wantHelp/index',
       'pages/mine/index',
       'pages/mine/setting/baseinfo/index',
       'pages/mine/setting/account/index',
-      'pages/sign/signIn/index',
+      'pages/account/changePwd/index',
+      'pages/account/changeTel/index',
+      'pages/account/signIn/index',
       'pages/home/index',
-      'pages/release/wantHelp/index',
       'pages/release/offerHelp/index',
       'pages/release/index',
-      'pages/index/index',
       'pages/order/details/wantHelp/index',
-      'pages/sign/forgotPwd/index',
-      'pages/sign/signUp/index'
+      'pages/account/forgotPwd/index',
+      'pages/account/signUp/index'
     ],
     window: {
       backgroundTextStyle: 'light',

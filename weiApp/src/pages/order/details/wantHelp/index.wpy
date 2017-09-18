@@ -3,9 +3,13 @@
 import wepy from 'wepy'
 import 'wepy-async-function'
 import request from '../../../../utils/api'
-import {apis} from '../../../../config/api'
+import { apis } from '../../../../config/api'
 import Avatar from '../../../../components/users/avatar/index'
 export default class WantHelp extends wepy.page {
+  config = {
+    'enablePullDownRefresh': true,
+    'backgroundColor': '#3385ff'
+  }
   data = {
     detail: {},
     uid: '1'
@@ -17,11 +21,18 @@ export default class WantHelp extends wepy.page {
     this.id = opt.id || null
     this.loadData()
   }
+  onPullDownRefresh() {
+    /**
+     * 与指定的组件通信
+     */
+    this.loadData()
+  }
   loadData() {
     try {
       request(apis.wantHelpOrder.info, { id: this.id }).then(({ data }) => {
         this.detail = data.info
         this.$apply()
+        wepy.stopPullDownRefresh()
       }, reson => {
         console.log(reson)
       })

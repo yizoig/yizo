@@ -25,8 +25,8 @@
             <view class="info">
               <view class="name">{{college.college_name}}</view>
               <view class="mes">
-                <text>人气:100</text>
-                <text>昨日新增:1000</text>
+                <text>人气:{{college.count}}</text>
+                <text>昨日新增:{{college.oldcount}}</text>
               </view>
             </view>
           </view>
@@ -53,34 +53,34 @@
     <view class="list">
         
 <view class="run-order-list">
-  <view class="app-toast {{$runOrdersPost$toast$mask?'app-toast-mask':''}}"  wx:if="{{$runOrdersPost$toast$show}}">
+  <view class="app-toast {{$wantHelpOrder$toast$mask?'app-toast-mask':''}}"  wx:if="{{$wantHelpOrder$toast$show}}">
   <view style="display: inline-block">
     <view class="app-toast-box ">
       <view class="toast-icon">
-        <view class="loading" wx:if="{{$runOrdersPost$toast$icon=='loading'}}">
+        <view class="loading" wx:if="{{$wantHelpOrder$toast$icon=='loading'}}">
   <view style="left: 0;top: 0;"/>
   <view style="right: 0;top: 0;animation-delay: .4s;"/>
   <view style=" right: 0;bottom: 0;animation-delay: .8s;"/>
   <view style=" left: 0; bottom: 0;animation-delay: 1.2s;"/>
 </view>
         <block wx:else>
-          <view class="iconfont icon-{{$runOrdersPost$toast$icon}}"/>
+          <view class="iconfont icon-{{$wantHelpOrder$toast$icon}}"/>
         </block>
       </view>
-      <view class="toast-content">{{$runOrdersPost$toast$title}}</view>
+      <view class="toast-content">{{$wantHelpOrder$toast$title}}</view>
     </view>
   </view>
 </view>
-  <block wx:for="{{$runOrdersPost$orderList}}" wx:for-index="$runOrdersPost$index" wx:for-item="$runOrdersPost$orderItem" wx:key="$runOrdersPost$index">
-    <view class="order-item" hover-class="order-item-active" bindtap="$runOrdersPost$onView" data-id="{{$runOrdersPost$orderItem.order_id}}">
-      <block wx:if="{{$runOrdersPost$orderItem.gender_constraint !== $runOrdersPost$null}}">
+  <block wx:for="{{$wantHelpOrder$orderList}}" wx:for-index="$wantHelpOrder$index" wx:for-item="$wantHelpOrder$orderItem" wx:key="$wantHelpOrder$index">
+    <view class="order-item" hover-class="order-item-active" bindtap="$wantHelpOrder$onView" data-id="{{$wantHelpOrder$orderItem.order_id}}">
+      <block wx:if="{{$wantHelpOrder$orderItem.gender_constraint !== $wantHelpOrder$null}}">
         <view class="gender-constraint">
-          <block wx:if="{{$runOrdersPost$orderItem.gender_constraint == 0}}">
+          <block wx:if="{{$wantHelpOrder$orderItem.gender_constraint == 0}}">
             <view class="ribbon-wrapper">
               <view class="ribbon" style="background-color: #FF0852;">限女生</view>
             </view>
           </block>
-          <block wx:elif="{{$runOrdersPost$orderItem.gender_constraint == 1}}">
+          <block wx:elif="{{$wantHelpOrder$orderItem.gender_constraint == 1}}">
             <view class="ribbon-wrapper">
               <view class="ribbon" style="background-color: #1C79FF;">限男生</view>
             </view>
@@ -89,31 +89,32 @@
       </block>
       <view class="item-top">
         
-  {{$runOrdersPost$orderItem.creater}}
-  <image src="{{$runOrdersPost$orderItem.creater?('https://localhost:3000/account/avatar/'+$runOrdersPost$orderItem.creater+'.png'):$runOrdersPost$avatar$url}}" class="avatar"/>
+  {{$wantHelpOrder$orderItem.creater}}
+  <image src="{{$wantHelpOrder$orderItem.creater?('https://localhost:3000/account/avatar/'+$wantHelpOrder$orderItem.creater+'.png'):$wantHelpOrder$avatar$url}}" class="avatar"/>
 
         <view class="info">
           <view>
-            <text class="username">{{$runOrdersPost$orderItem.creater_name}}</text>
-            <view class="iconfont icon-{{$runOrdersPost$orderItem.creater_gender==0?'female':'male'}}"/>
+            <text class="username">{{$wantHelpOrder$orderItem.creater_name}}</text>
+            <view class="iconfont icon-{{$wantHelpOrder$orderItem.creater_gender==0?'female':'male'}}"/>
           </view>
           <view>
-            <text class="time">{{$runOrdersPost$orderItem._c}}</text>
+            <text class="time">{{$wantHelpOrder$orderItem._c}}</text>
           </view>
         </view>
       </view>
       <view class="item-content">
         
-        <text class="reward" wx:if="{{$runOrdersPost$orderItem['reward_type']==0}}">{{$runOrdersPost$orderItem.reward}}</text>
-        <text class="reward reward-money" wx:else>￥{{$runOrdersPost$orderItem.reward}}</text>
-        <view class="title ">{{$runOrdersPost$orderItem.title}}</view>
+        <text class="reward" wx:if="{{$wantHelpOrder$orderItem['reward_type']==0}}">{{$wantHelpOrder$orderItem.reward}}</text>
+        <text class="reward reward-money" wx:else>￥{{$wantHelpOrder$orderItem.reward}}</text>
+        <view class="title ">{{$wantHelpOrder$orderItem.title}}</view>
         <view class="address">
           <view class="iconfont icon-point"/>
-          {{$runOrdersPost$orderItem.address}}
+          {{$wantHelpOrder$orderItem.address}}
         </view>
       </view>
     </view>
   </block>
+  <view class="load-more">{{$wantHelpOrder$limit.count > $wantHelpOrder$orderList.length?'努力加载中...':"没有更多了"}}</view>
 </view>
     </view>
   </view>

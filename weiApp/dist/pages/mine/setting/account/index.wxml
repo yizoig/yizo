@@ -1,12 +1,12 @@
 <view id="setting">
     <view class="item-group account-security">
-        <view class="item" bindtap="navigateTo" data-wepy-params-a="{{'/pages/mine/changePwd/index?id='+userinfo['id']}}">
+        <view class="item" bindtap="navigateTo" data-wepy-params-a="{{'/pages/account/changePwd/index?id='+userinfo['id']}}">
             修改密码
             <view class="text">
                 <view class="iconfont icon-right-arrow" style="color:#51C332"/>
             </view>
         </view>
-        <view class="item" bindtap="navigateTo" data-url="/pages/mine/changeTel/index" data-wepy-params-a="{{'/pages/mine/changeTel/index'}}">
+        <view class="item" bindtap="navigateTo" data-url="/pages/mine/changeTel/index" data-wepy-params-a="{{'/pages/account/changeTel/index'}}">
                 修改手机号
             <view class="text">
                 <view class="iconfont icon-right-arrow" style="color:#51C332"/>

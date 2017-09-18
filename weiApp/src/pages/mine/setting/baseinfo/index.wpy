@@ -1,29 +1,83 @@
 <template lang="wxml" src="./index.wxml"></template>
 <script>
 import wepy from 'wepy'
+import { request, Validate } from '../../../../utils/tools'
+import { apis } from '../../../../config/api'
+import { setUserInfo } from '../../../../utils/user'
 import 'wepy-async-function'
 import Avatar from '../../../../components/users/avatar/index'
+import Toast from '../../../../components/toast/index'
 export default class BaseInfoSettting extends wepy.page {
   data = {
-    id: '1',
-    userinfo: null
+    userinfo: null,
+    cache: {},
+    edit: false
   }
   components = {
-    avatar: Avatar
+    avatar: Avatar,
+    toast: Toast
   }
   methods = {
     edit: function(e) {
-      let { editor } = this.data
-      editor[e.currentTarget.dataset.type] = true
-      this.setData({
-        editor
-      })
+      /**
+       * 检查值是否修改
+       */
+      if (this.userinfo[e.currentTarget.dataset.name] != e.detail.value) {
+        this.cache[e.currentTarget.dataset.name] = e.detail.value
+      } else {
+        delete this.cache[e.currentTarget.dataset.name]
+      }
+      if (Object.keys(this.cache).length > 1) {
+        this.edit = true
+      } else {
+        this.edit = false
+      }
+      this.$apply()
+    },
+    submit: function() {
+      try {
+        let params = Validate.check(this.data.cache, [
+          ['nickname', 'require', '姓名不能为空', Validate.EXISTS_VALIDATE],
+          ['gender', ['0', '1'], '性别错误', Validate.EXISTS_VALIDATE, 'in']
+        ])
+        console.log(this.data.cache)
+        console.log(params)
+        this.$invoke('toast', 'showToast', {
+          title: '加载中',
+          icon: 'loading',
+          mask: true
+        })
+        request(apis.account.updateInfo, params).then(data => {
+          setUserInfo(this.data.cache)
+          this.$invoke('toast', 'showToast', {
+            title: '加载成功',
+            icon: 'success',
+            mask: true
+          })
+          setTimeout(function() {
+            this.$back()
+          }.bind(this), 1000)
+        }, reason => {
+          this.$invoke('toast', 'showToast', {
+            title: reason,
+            icon: 'error',
+            mask: true
+          })
+        })
+      } catch (e) {
+        this.$invoke('toast', 'showToast', {
+          title: e.message,
+          icon: 'error',
+          mask: true
+        })
+      }
     }
   }
   async onShow() {
     let { data: userinfo } = await wepy.getStorage({
       key: 'userinfo'
     })
+    this.cache['id'] = userinfo['id']
     this.userinfo = userinfo
     this.$apply()
   }

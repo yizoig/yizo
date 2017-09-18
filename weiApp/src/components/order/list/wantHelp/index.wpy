@@ -4,12 +4,16 @@
 <script>
 import wepy from 'wepy'
 import { apis } from '../../../../config/api'
-import { getDateDiff, request } from '../../../../utils/tools'
+import { request } from '../../../../utils/tools'
 import Avatar from '../../../users/avatar/index'
 import Toast from '../../../toast/index'
 export default class WantHelpOrder extends wepy.component {
   data = {
-    orderList: []
+    orderList: [],
+    limit: {
+      size: 5,
+      page: 1
+    }
   }
   methods = {
     onView: function(e) {
@@ -22,25 +26,52 @@ export default class WantHelpOrder extends wepy.component {
     avatar: Avatar,
     toast: Toast
   }
+  events = {
+    'request-refresh': (componentName, $event) => {
+      if (componentName === 'wantHelpOrder') {
+        this.loadMore({
+          refresh: true
+        })
+      }
+    },
+    'request-loadMre': (componentName, $event) => {
+      if (componentName === 'wantHelpOrder') {
+        if (this.limit.count > this.orderList.length) {
+          this.loadMore()
+        }
+      }
+    }
+  }
   onLoad() {
     this.loadMore()
   }
-  loadMore() {
+  loadMore({ refresh = false } = {}) {
     this.$invoke('toast', 'showToast', {
       title: '加载中',
       icon: 'loading',
       mask: true
     })
-    request(apis.wantHelpOrder.list, {}).then(({ data }) => {
+    let {college_id} = wepy.getStorageSync('college');
+    request(apis.wantHelpOrder.list, { needPage: true, ...this.limit,college:college_id }).then(({ data }) => {
       let { orders = [] } = data
       /**
        * 先进行数据处理
        */
+      let time
       for (let i = 0; i < orders.length; i++) {
-        orders[i]['_c'] = getDateDiff(new Date(orders[i]['_c']).getTime())
+        time = new Date(orders[i]['_c'])
+        orders[i]['_c'] = time.getDateDiff(time)
+      }
+      this.limit['count'] = data.count
+      if (refresh) {
+        this.orderList = orders
+        this.limit['page'] = 1
+        this.$emit('response-refresh', 'home')
+      } else {
+        this.limit['page']++
+        this.orderList.push.apply(this.orderList, orders)
       }
       this.$invoke('toast', 'hiddenToast')
-      this.orderList.push.apply(this.orderList, orders)
       this.$apply()
     }).catch(reson => {
       this.$invoke('toast', 'showToast', {

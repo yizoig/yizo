@@ -25,8 +25,8 @@
             <view class="info">
               <view class="name">{{college.college_name}}</view>
               <view class="mes">
-                <text>人气:100</text>
-                <text>昨日新增:1000</text>
+                <text>人气:{{college.count}}</text>
+                <text>昨日新增:{{college.oldcount}}</text>
               </view>
             </view>
           </view>
@@ -36,7 +36,7 @@
     </view>
     <menu :menu="{{navs.nav[navs.current]}}"></menu>
     <view class="list">
-        <runOrdersPost />
+        <wantHelpOrder />
     </view>
   </view>
 </view>

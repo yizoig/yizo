@@ -1,0 +1,17 @@
+<view id="sign">
+  <toast></toast>
+  <view class="signBox">
+    <view class="item">
+      <image src="../../../../../public/image/female-avatar.png" class="logo" />
+    </view>
+    <view class="item">
+      <input type="password" placeholder="原密码" maxlength="16" bindinput="textChange" data-name="password" />
+    </view>
+    <view class="item">
+      <input type="password" placeholder="新密码" maxlength="16" bindinput="textChange" data-name="newPassword" />
+    </view>
+  </view>
+  <view class="btn-controller">
+    <button class="btn blue" bindtap="submit">修改</button>
+  </view>
+</view>

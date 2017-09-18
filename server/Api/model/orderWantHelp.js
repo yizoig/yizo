@@ -11,14 +11,12 @@ let { BaseError, Code, crypto: { md5 } } = jike;
  * 4 结单
  */
 module.exports = class OrderWantHelpModel extends jike.Model {
-
-
   /**
    * 获取所有的订单
    */
   async list(page, data) {
 
-    let whereArr = [];
+    let whereArr = ['(status>=0)'];
     let limitStr;
     let result = {};
     //条件sql拼接
@@ -59,7 +57,7 @@ module.exports = class OrderWantHelpModel extends jike.Model {
       return result;
     }
     //获取跑跑的信息
-    let runOrders = await this.query(sqls.orderWantHelp.list + (whereArr.length == 0 ? '' : ' WHERE ' + whereArr.join(" AND ")) + limitStr);
+    let runOrders = await this.query(sqls.orderWantHelp.list + (whereArr.length == 0 ? '' : ' WHERE ' + whereArr.join(" AND ")) +' ORDER BY status ,_c desc '+limitStr);
     result['orders'] = runOrders;
     return result;
   }
@@ -79,19 +77,16 @@ module.exports = class OrderWantHelpModel extends jike.Model {
    * @param {*添加} param0 
    * @param {*} reqUser 
    */
-  async add({ id, content, college, address, gender_constraint, demands, contact, number, money, deadline = null, title }, reqUser) {
+  async add({ id,title, content, college, address, gender_constraint, reward_type, reward, deadline, phone_number, weixin }, reqUser) {
     //第一步  在订单表中创建数据
     await this.startTrans();
     let { affectedRow: affectedRow1 } = await this.query(sqls.order.addOrder, id, reqUser.id, college);
     //第二步 创建跑跑订单
-    let { affectedRow: affectedRow2 } = await this.query(sqls.orderRun.addOrderRun, {
+    let { affectedRow: affectedRow2 } = await this.query(sqls.orderWantHelp.add, {
       order_id: id,
       title,
       content,
-      gender_constraint,
-      money, contact,
-      contact_number: number,
-      address, demands, deadline
+      address,gender_constraint,reward_type,reward,deadline,phone_number,weixin
     })
     if (affectedRow2 <= 0 || affectedRow1 <= 0) {
       await this.rollback();

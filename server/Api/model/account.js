@@ -21,12 +21,12 @@ module.exports = class AccountModel extends jike.Model {
         if (user['password'] !== md5(password)) {
             throw new BaseError(Code.SIGNIN_ERR);
         }
-        if (user['@live'] == 1) {
+        if (user['_d'] == 1) {
             throw new BaseError(Code.ACCOUNT_DISABLE);
         }
         //刪除password字段和live字段
         delete user['password'];
-        delete user['@live'];
+        delete user['_d'];
         return user;
     }
     /**

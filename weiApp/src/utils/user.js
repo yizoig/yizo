@@ -13,7 +13,6 @@ export function setUserInfo(data) {
       data: userinfo
     });
   }
-
   if (remember) {
     remember = replace(remember, data);
     wx.setStorage({
@@ -41,6 +40,7 @@ export function signOut() {
 function replace(source, target) {
 
   for (let item in target) {
+
     if (item in source) {
       source[item] = target[item];
     }

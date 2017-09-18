@@ -9,8 +9,8 @@ SELECT
   `password`,
   `nickname`,
   `gender`,
-  `@create`,
-  `@live`,
+  `_c`,
+  `_d`,
   `signin_time`
 FROM accounts
   RIGHT JOIN admins ON accounts.admin_id = admins.admin_id

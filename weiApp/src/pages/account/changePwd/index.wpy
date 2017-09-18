@@ -1,0 +1,93 @@
+<template lang="wxml" src="./index.wxml"></template>
+<script>
+import wepy from 'wepy'
+// import Avatar from '../../../../../components/users/avatar/index'
+import Toast from '../../../components/toast/index'
+import { Validate, request } from '../../../utils/tools'
+import {apis} from '../../../config/api'
+import { setUserInfo } from '../../../utils/user'
+export default class changePwd extends wepy.page {
+  data = {
+    userinfo: null,
+    password: '',
+    newPassword: ''
+  }
+  components = {
+    toast: Toast
+  }
+  methods = {
+    textChange: function(e) {
+      this[e.currentTarget.dataset.name] = e.detail.value
+      this.$apply()
+    },
+    submit: function() {
+      let { userinfo, password, newPassword } = this.data
+      try {
+        let params = Validate.check({ id: userinfo['id'], password, newPassword }, [
+          ['password', 'require', '原密码不能为空', Validate.MUST_VALIDATE],
+          ['newPassword', 'require', '新密码不能为空', Validate.MUST_VALIDATE]
+        ])
+        if (userinfo && (userinfo['password'] !== params['password'])) {
+          this.$invoke('toast', 'showToast', {
+            title: '原密码不正确',
+            icon: 'error',
+            mask: true
+          })
+          return
+        }
+        this.$invoke('toast', 'showToast', {
+          title: '修改密码中...',
+          icon: 'loading',
+          mask: true
+        })
+        request(apis.account.changePwd, params).then(
+          data => {
+            this.$invoke('toast', 'showToast', {
+              title: '修改成功',
+              icon: 'success',
+              mask: true
+            })
+            setUserInfo({
+              password: newPassword
+            })
+            setTimeout(() => {
+              this.$back()
+            }, 1000)
+          },
+          reason => {
+            this.$invoke('toast', 'showToast', {
+              title: reason,
+              icon: 'error',
+              mask: true
+            })
+          }
+        )
+      } catch (e) {
+        this.$invoke('toast', 'showToast', {
+          title: e.message,
+          icon: 'error',
+          mask: true
+        })
+      }
+    }
+  }
+  async onLoad() {
+    try {
+      let { data: userinfo } = await wepy.getStorage({
+        key: 'userinfo'
+      })
+      let { data: remember } = await wepy.getStorage({
+        key: 'remember'
+      })
+      this.userinfo = {
+        id: userinfo['id'],
+        password: remember['password']
+      }
+      this.$apply()
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+</script>
+<style src="../index.less" lang="less"></style>

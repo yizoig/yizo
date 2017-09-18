@@ -14,6 +14,10 @@
         "password": "root",
         "database": "new_yizo"
     },
+    "sms":{
+      "nextReq":60,
+      "exp":300
+    },
     "redis":{
         "host":"127.0.0.1",
         "pssword":"coder123456",

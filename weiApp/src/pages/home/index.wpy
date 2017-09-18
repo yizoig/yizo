@@ -6,7 +6,7 @@ import wepy from 'wepy'
 import Menus from '../../components/menus/index'
 import WantHelpOrder from '../../components/order/list/wantHelp/index'
 export default class Home extends wepy.page {
-  config ={
+  config = {
     'enablePullDownRefresh': true,
     'backgroundColor': '#3385ff'
   }
@@ -15,11 +15,28 @@ export default class Home extends wepy.page {
   }
   components = {
     menu: Menus,
-    runOrdersPost: WantHelpOrder
-  };
+    wantHelpOrder: WantHelpOrder
+  }
+  events = {
+    'response-refresh': (componentName, $event) => {
+      wepy.stopPullDownRefresh()
+    }
+  }
+  onReachBottom() {
+     /**
+     * 与指定的组件通信
+     */
+    this.$broadcast('request-loadMre', 'wantHelpOrder')
+  }
   onLoad() {
     this.college = wepy.getStorageSync('college')
     this.$apply()
+  }
+  onPullDownRefresh() {
+    /**
+     * 与指定的组件通信
+     */
+    this.$broadcast('request-refresh', 'wantHelpOrder')
   }
 }
 </script>

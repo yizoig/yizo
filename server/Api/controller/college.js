@@ -8,7 +8,7 @@ module.exports = class CollegeController extends jike.Controller {
     */
     async list({ current = 1, pageSize = 10, search}) {
 
-        let {count,colleges} = await new CollegeModel().list({ current, pageSize, search });
+        let {count,colleges} = await new CollegeModel().list({ current:current-1, pageSize, search });
         return this.json({
             count,
             list:colleges

@@ -1,4 +1,22 @@
 <view id="releaseList">
+  <view class="app-toast {{$toast$mask?'app-toast-mask':''}}"  wx:if="{{$toast$show}}">
+  <view style="display: inline-block">
+    <view class="app-toast-box ">
+      <view class="toast-icon">
+        <view class="loading" wx:if="{{$toast$icon=='loading'}}">
+  <view style="left: 0;top: 0;"/>
+  <view style="right: 0;top: 0;animation-delay: .4s;"/>
+  <view style=" right: 0;bottom: 0;animation-delay: .8s;"/>
+  <view style=" left: 0; bottom: 0;animation-delay: 1.2s;"/>
+</view>
+        <block wx:else>
+          <view class="iconfont icon-{{$toast$icon}}"/>
+        </block>
+      </view>
+      <view class="toast-content">{{$toast$title}}</view>
+    </view>
+  </view>
+</view>
   <view class="title">
     <view>寻求帮助</view>
   </view>
@@ -8,17 +26,17 @@
       <input class="form-widget" placeholder="请填写标题" bindinput="formValueChange" data-name="title"/>
     </view>
     <view class="form-row">
-        <label class="form-label">目的地</label>
-        <input class="form-widget" placeholder="请填写标题" bindinput="formValueChange" data-name="address"/>
-      </view>
+      <label class="form-label">目的地</label>
+      <input class="form-widget" placeholder="请填写目的地" bindinput="formValueChange" data-name="address"/>
+    </view>
     <view class="form-row">
-        <label class="form-label">性别限制</label>
-        <view class="form-widget radio">
-          <view class="radio-item {{form.gender_contrainer==0?'active':''}}" bindtap="selectGender" data-wepy-params-a="{{0}}">不限</view>
-          <view class="radio-item {{form.gender_contrainer==1?'active':''}}" bindtap="selectGender" data-wepy-params-a="{{1}}">女</view>
-          <view class="radio-item {{form.gender_contrainer==2?'active':''}}" bindtap="selectGender" data-wepy-params-a="{{2}}">男</view>
-        </view>
+      <label class="form-label">性别限制</label>
+      <view class="form-widget radio">
+        <view class="radio-item {{form.gender_constraint==-1?'active':''}}" bindtap="selectGender" data-wepy-params-a="{{0}}">不限</view>
+        <view class="radio-item {{form.gender_constraint==0?'active':''}}" bindtap="selectGender" data-wepy-params-a="{{1}}">女</view>
+        <view class="radio-item {{form.gender_constraint==1?'active':''}}" bindtap="selectGender" data-wepy-params-a="{{2}}">男</view>
       </view>
+    </view>
     <view class="form-row">
       <label class="form-label">截至日期</label>
       <picker class="form-widget" mode="date" value="{{dueDate}}" start="{{startDate.date}}" end="{{endDate.date}}" bindchange="formValueChange" data-name="dueDate">
@@ -42,7 +60,7 @@
         <view class="radio-item {{form.rewardType==='money'?'active':''}}" bindtap="switchType" data-wepy-params-a="{{'money'}}">现金</view>
       </view>
     </view>
-    <view class="form-row"  wx:if="{{form.rewardType==='money'}}">
+    <view class="form-row" wx:if="{{form.rewardType==='money'}}">
       <label class="form-label">酬劳</label>
       <view class="form-widget">
         <input placeholder="请输入酬劳" bindinput="formValueChange" data-name="reward" style="margin-right:5rpx;" type="number"/>元
@@ -51,10 +69,10 @@
     <view wx:else>
       <view class="radio" style="margin:10rpx 0;">
         <block wx:for="{{otherReward}}" wx:for-index="index" wx:for-item="item" wx:key="key">
-          <view class="radio-item {{item==form.otherReward?'active':''}}" bindtap="switchReward" data-wepy-params-a="{{item}}">{{item}}</view>
+          <view class="radio-item {{item==form.reward?'active':''}}" bindtap="switchReward" data-wepy-params-a="{{item}}">{{item}}</view>
         </block>
       </view>
-      <view style="font-size:25rpx;color:#808080;padding:0 0 10rpx 20rpx;">"我的酬劳是{{form.otherReward}}"</view>
+      <view style="font-size:25rpx;color:#808080;padding:0 0 10rpx 20rpx;">"我的酬劳是{{form.reward}}"</view>
     </view>
     <view class="form-row">
       <textarea placeholder="请填写具体信息(选填)" bindinput="formValueChange" data-name="content" style="width:100%;text-align:left;height:150rpx;padding:10rpx;line-height:37rpx;">
@@ -67,8 +85,8 @@
     </view>
     <view class="form-row">
       <label class="form-label">微信号</label>
-      <input class="form-widget" placeholder="请填写微信号" bindinput="formValueChange" data-name="weixinNumber"/>
+      <input class="form-widget" placeholder="请填写微信号" bindinput="formValueChange" data-name="weixin"/>
     </view>
   </view>
-  <view class="release">发起求助</view>
+  <view class="release" bindtap="release">发起求助</view>
 </view>

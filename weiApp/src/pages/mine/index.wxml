@@ -6,11 +6,11 @@
           <avatar :id.sync="id"></avatar>
           <view class="right">
             <view class="info">
-              <text class="item name">李凌云</text>
-              <text class="item gender">男</text>
-              <text class="item time">一个月前</text>
+              <text class="item name">{{userinfo['nickname']}}</text>
+              <text class="item iconfont icon-{{userinfo['gender']==0?'female':'male'}}"></text>
+              <text class="item" style="font-size:25rpx;">一个月前</text>
             </view>
-            <view class="create_time">2017-08-12加入</view>
+            <view class="create_time">{{userinfo['_c']}}  加入</view>
           </view>
           <view @tap="navigateTo({{'/pages/mine/setting/baseinfo/index'}})" class="editor">编辑</view>
         </view>
@@ -20,7 +20,7 @@
       <view class="info-box">
         <view class="user-info">
           <avatar :id.sync="id"></avatar>
-          <view @tap="navigateTo({{'/pages/sign/signIn/index'}})" >登录/注册</view>
+          <view @tap="navigateTo({{'/pages/account/signIn/index'}})" >登录/注册</view>
         </view>
       </view>
     </block>

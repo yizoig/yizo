@@ -9,11 +9,11 @@
 
           <view class="right">
             <view class="info">
-              <text class="item name">李凌云</text>
-              <text class="item gender">男</text>
-              <text class="item time">一个月前</text>
+              <text class="item name">{{userinfo['nickname']}}</text>
+              <text class="item iconfont icon-{{userinfo['gender']==0?'female':'male'}}"/>
+              <text class="item" style="font-size:25rpx;">一个月前</text>
             </view>
-            <view class="create_time">2017-08-12加入</view>
+            <view class="create_time">{{userinfo['_c']}}  加入</view>
           </view>
           <view bindtap="navigateTo" class="editor" data-wepy-params-a="{{'/pages/mine/setting/baseinfo/index'}}">编辑</view>
         </view>
@@ -26,7 +26,7 @@
   {{$avatar$id}}
   <image src="{{$avatar$id?('https://localhost:3000/account/avatar/'+$avatar$id+'.png'):$avatar$url}}" class="avatar"/>
 
-          <view bindtap="navigateTo" data-wepy-params-a="{{'/pages/sign/signIn/index'}}">登录/注册</view>
+          <view bindtap="navigateTo" data-wepy-params-a="{{'/pages/account/signIn/index'}}">登录/注册</view>
         </view>
       </view>
     </block>

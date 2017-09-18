@@ -24,9 +24,7 @@ module.exports = class SmsController extends jike.Controller {
         }
         //发送验证码
         let result = await new SmsModel().makeCode(tel, type);
-        this.json({
-            data:result
-        })
+        this.json(result)
     }
 
     /**
@@ -35,8 +33,6 @@ module.exports = class SmsController extends jike.Controller {
     async verifyCode({ tel, type, code }) {
 
         let result = await new SmsModel().verifyCode(tel, type, code);
-        this.json({
-            data:result
-        })
+        this.json(result)
     }
 }

@@ -15,7 +15,7 @@ module.exports = class UserModel extends jike.Model {
          * 可以根据传入的参数进行筛选
          */
         let user = await this.table('accounts')
-            .field('accounts.id,users.user_id,account,nickname,gender,college,@create,@live,signin_time')
+            .field('accounts.id,users.user_id,account,nickname,gender,college,_c,_d,signin_time')
             .where([
                 {
                     account: where['search'] && ['like', `%${where['search']}%`],
@@ -24,7 +24,7 @@ module.exports = class UserModel extends jike.Model {
                 },
                 "and",
                 {
-                    '@live': where['live'] || 0,
+                    '_d': where['live'] || 0,
                     gender: where['gender'],
                     college: where['college']
                 }
@@ -33,7 +33,7 @@ module.exports = class UserModel extends jike.Model {
             .limit((current - 1) * pageSize, current * pageSize)
             .order({
                 id:order['id'],
-                '@create':order['create']
+                '_c':order['create']
             })
             .select();
         return user;

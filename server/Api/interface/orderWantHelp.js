@@ -7,7 +7,7 @@ let { Interface, Route, Validate } = jike;
  */
 Interface.create('/order', OrderWantHelpController, [
 
-  //获取所有订单
+  //获取所有求助订单
   Route('/help/want', 'get', 'list', {
     validate: {
       needPage:[
@@ -29,15 +29,15 @@ Interface.create('/order', OrderWantHelpController, [
     },
     needToken: false
   }),
-  //获取指定订单
+  //获取求助订单基本信息
   Route('/help/want/info/:id', 'get', 'getinfoById', {
     needToken: false
   }),
-  //创建聘跑跑的订单
+  //创建  求助订单
   Route('/help/want', 'post', 'add', {
     validate: {
       content: [
-        Validate.MUST_VALIDATE,
+        Validate.EXISTS_VALIDATE,
         ['require', 'ValueNotNullErr']
       ],
       title: [
@@ -56,23 +56,23 @@ Interface.create('/order', OrderWantHelpController, [
         Validate.MUST_VALIDATE,
         ['require', 'ValueNotNullErr']
       ],
-      money: [
+      rewardType: [
         Validate.MUST_VALIDATE,
-        ['require', 'runOrderMoneyTypeErr']
+        [['other','money'], 'runOrderMoneyTypeErr','in']
       ],
-      demands: [
+      reward: [
         Validate.MUST_VALIDATE,
-        ['require', 'demandTypeErr']
+        ['Number', 'demandTypeErr','varType']
       ],
-      contact: [
+      deadline: [
         Validate.MUST_VALIDATE,
         ['require', 'ValueNotNullErr']
       ],
-      number: [
+      phoneNumber: [
         Validate.MUST_VALIDATE,
         ['tel', 'telErr']
       ],
-      deadline: [
+      weixin: [
         Validate.EXISTS_VALIDATE,
         ['require', 'ValueNotNullErr']
       ],

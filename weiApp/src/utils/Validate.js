@@ -8,9 +8,6 @@ var Validate = (function () {
   Validate.EXISTS_VALIDATE = 0; //或者0 存在字段就验证（默认）
   Validate.MUST_VALIDATE = 1; //或者1 必须验证
   Validate.VALUE_VALIDATE = 2; //或者2 值不为空的时候验证验证时间：
-  Validate.MODEL_INSERT = 1; //或者1新增数据时候验证
-  Validate.MODEL_UPDATE = 2; //或者2编辑数据时候验证
-  Validate.MODEL_BOTH = 3; //或者3全部情况下验证（默认）
 
   Validate.check = function (data, validates) {
     this.error = null;

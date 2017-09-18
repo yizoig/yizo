@@ -7,6 +7,10 @@ import 'wepy-async-function'
 import Avatar from '../../components/users/avatar/index'
 import login from '../../components/mixins/login'
 export default class Mine extends wepy.page {
+  config = {
+    'enablePullDownRefresh': true,
+    'backgroundColor': '#3385ff'
+  }
   data = {
     id: 1,
     userinfo: null,
@@ -23,7 +27,7 @@ export default class Mine extends wepy.page {
       })
     }
   }
-  async onLoad() {
+  async onShow() {
     try {
       /**
        * 获取用户信息
@@ -34,6 +38,8 @@ export default class Mine extends wepy.page {
       let { data: userinfo } = await wepy.getStorage({
         key: 'userinfo'
       })
+      let time = new Date(userinfo['_c'])
+      userinfo['_c'] = time.getDateDiff(time)
       this.weiInfo = weiInfo
       this.userinfo = userinfo
       this.$apply()

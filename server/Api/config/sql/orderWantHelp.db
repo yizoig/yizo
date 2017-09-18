@@ -20,7 +20,8 @@ SELECT
   creater_user.gender   AS creater_gender,
   address,
   deadline,
-  status
+  status,
+  _c
 FROM orders
   LEFT JOIN order_want_helps ON orders.order_id = order_want_helps.order_id
   JOIN accounts creater_user ON orders.creater = creater_user.id
@@ -54,3 +55,7 @@ FROM orders
   LEFT JOIN accounts AS runner_user ON order_want_helps.runner = runner_user.id
   LEFT JOIN accounts AS creater_user ON orders.creater = creater_user.id
 WHERE orders.order_id = ?
+
+##创建求助订单
+#add
+insert into order_want_helps set ?;

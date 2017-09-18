@@ -5,9 +5,9 @@ module.exports = class OrderWantHelpController extends jike.Controller {
 
 
 
-  async list({ page = 1, size = 10, needPage = false, creater, runner, search,college }) {
+  async list({ page = 1, size = 10, needPage = false, creater, runner, search, college }) {
 
-    let orders = await new OrderWantHelpModel().list({page: page - 1, size, needPage}, {creater, runner, search,college});
+    let orders = await new OrderWantHelpModel().list({ page: page - 1, size, needPage }, { creater, runner, search, college });
 
     return this.json(orders)
   }
@@ -22,11 +22,11 @@ module.exports = class OrderWantHelpController extends jike.Controller {
   /**
    * 创建订单
    */
-  async add({ title, content, college, address, gender_constraint, demands, contact, number, money, deadline }) {
+  async add({ title, content, college, address, gender_constraint, rewardType, reward, deadline, phoneNumber, weixin }) {
 
     let model = new OrderWantHelpModel();
 
-    let insertId = await model.add({ id: OrderController.makeId("F"), title, content, college, address, gender_constraint, demands, contact, number, money, deadline }, this.reqUser);
+    let insertId = await model.add({ id: OrderController.makeId("F"), title, content, college, address, gender_constraint,reward_type:rewardType, reward, deadline, phone_number:phoneNumber, weixin }, this.reqUser);
 
     return this.json({
       data: insertId
