@@ -18,7 +18,7 @@
         </view>
       </block>
       <view class="item-top">
-        <avatar :id="orderItem.creater" />
+        <avatar :id="orderItem.creater"/>
         <view class="info">
           <view>
             <text class="username">{{orderItem.creater_name}}</text>

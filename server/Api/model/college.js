@@ -17,7 +17,7 @@ module.exports = class CollegeModel extends jike.Model {
    */
   async list({ current, pageSize, search }) {
     let whereStr = search?` WHERE college_name LIKE %${this.escape(search)}% `:'';
-    let limitStr = ` LIMIT ${current},${pageSize} `;
+    let limitStr = ` LIMIT ${current*pageSize},${pageSize} `;
     let count = await this.query(sqls.college.count+whereStr);
     let colleges = await this.query(sqls.college.list+whereStr+limitStr)
     return { colleges, count };

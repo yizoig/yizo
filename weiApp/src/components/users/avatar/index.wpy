@@ -1,14 +1,17 @@
 <template lang="wxml">
-  {{id}}
-  <image src="{{id?('https://localhost:3000/account/avatar/'+id+'.png'):url}}" class="avatar"></image>
+  <image src="{{url?url:(avatarPath+id+'.png')}}" class="avatar"></image>
 </template>
 <script>
 import wepy from 'wepy'
 import 'wepy-async-function'
+import UserApi from '../../../lib/apis/user'
 export default class Avatar extends wepy.component {
+  props = {
+    id: String,
+    url: String
+  }
   data = {
-    id: '',
-    url: ''
+    avatarPath: UserApi.avatar
   }
   onLoad() {
     console.log(this)

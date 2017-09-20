@@ -79,6 +79,7 @@ function request(api, data, type = 'normal', file = {}) {
 
               resolve(success(res))
             } catch (e) {
+              console.log(e)
               reject(e.message);
             }
           },
@@ -94,15 +95,15 @@ function request(api, data, type = 'normal', file = {}) {
 function success(res) {
 
   //不在登录界面
-  if ([1001, 1001, 1002, 1003].includes(parseInt(res.data.code)) && api != 'signIn') {
-    setTimeout(function () {
-      signOut();
-      wx.navigateTo({
-        url: '../../logins/login/login'
-      })
-    }, 2000);
-    throw new Error("用户登录失效,2秒后自动跳转登录界面!");
-  }
+  // if ([1001, 1001, 1002, 1003].includes(parseInt(res.data.code)) && api != 'signIn') {
+  //   setTimeout(function () {
+  //     signOut();
+  //     wx.navigateTo({
+  //       url: '../../logins/login/login'
+  //     })
+  //   }, 2000);
+  //   throw new Error("用户登录失效,2秒后自动跳转登录界面!");
+  // }
 
   if (res.data.code != 0) {
     throw new Error(code[res.data.code])

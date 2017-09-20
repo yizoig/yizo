@@ -51,6 +51,8 @@ class Interface {
                     let controller = new controllerClass(req, res, next);
                     console.log("控制器:", `${controller}`.green, "方法:", `${action}`.green);
                     controller.reqUser = {};
+                    controller.request = req;
+                    controller.response = res;
                     //needtoken默认为true
                     if (!("needToken" in args) || args.needToken) {
                         console.log("需要token");

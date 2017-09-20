@@ -1,19 +1,18 @@
 <view class="mine">
   <view class="header">
-    <block  wx:if="{{userinfo}}">
+    <block  wx:if="{{userInfo}}">
       <view class="info-box">
         <view class="user-info">
           
-  {{$avatar$id}}
-  <image src="{{$avatar$id?('https://localhost:3000/account/avatar/'+$avatar$id+'.png'):$avatar$url}}" class="avatar"/>
+  <image src="{{$avatar$url?$avatar$url:($avatar$avatarPath+$avatar$id+'.png')}}" class="avatar"/>
 
           <view class="right">
             <view class="info">
-              <text class="item name">{{userinfo['nickname']}}</text>
-              <text class="item iconfont icon-{{userinfo['gender']==0?'female':'male'}}"/>
+              <text class="item name">{{userInfo['nickname']}}</text>
+              <text class="item iconfont icon-{{userInfo['gender']==0?'female':'male'}}"/>
               <text class="item" style="font-size:25rpx;">一个月前</text>
             </view>
-            <view class="create_time">{{userinfo['_c']}}  加入</view>
+            <view class="create_time">{{userInfo['_c']}} 加入</view>
           </view>
           <view bindtap="navigateTo" class="editor" data-wepy-params-a="{{'/pages/mine/setting/baseinfo/index'}}">编辑</view>
         </view>
@@ -23,8 +22,7 @@
       <view class="info-box">
         <view class="user-info">
           
-  {{$avatar$id}}
-  <image src="{{$avatar$id?('https://localhost:3000/account/avatar/'+$avatar$id+'.png'):$avatar$url}}" class="avatar"/>
+  <image src="{{$avatar$url?$avatar$url:($avatar$avatarPath+$avatar$id+'.png')}}" class="avatar"/>
 
           <view bindtap="navigateTo" data-wepy-params-a="{{'/pages/account/signIn/index'}}">登录/注册</view>
         </view>

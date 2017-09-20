@@ -1,1 +1,1 @@
-/// <reference path="./typings/index.d.ts" />
+//测试文件

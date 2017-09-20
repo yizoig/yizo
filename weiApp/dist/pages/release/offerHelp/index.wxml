@@ -1,5 +1,6 @@
 <view id="releaseList">
   <view class="title">
+    <image src="../../../public/image/offerHelp.png" class="icon"/>
     <view>提供帮助</view>
   </view>
   <view class="form">

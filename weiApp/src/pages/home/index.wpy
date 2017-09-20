@@ -1,8 +1,6 @@
 <template lang="wxml" src="./index.wxml"></template>
 <script>
 import wepy from 'wepy'
-// import request from '../../utils/api'
-// import { host } from '../../config/api'
 import Menus from '../../components/menus/index'
 import WantHelpOrder from '../../components/order/list/wantHelp/index'
 export default class Home extends wepy.page {
@@ -29,8 +27,9 @@ export default class Home extends wepy.page {
     this.$broadcast('request-loadMre', 'wantHelpOrder')
   }
   onLoad() {
-    this.college = wepy.getStorageSync('college')
+    this.college = this.$parent.globalData.college
     this.$apply()
+    this.$broadcast('request-loadMre', 'wantHelpOrder')
   }
   onPullDownRefresh() {
     /**

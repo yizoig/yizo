@@ -19,6 +19,24 @@ FROM accounts
   RIGHT JOIN users ON accounts.user_id = users.user_id
   LEFT JOIN colleges on colleges.college_id = users.college
 WHERE account = ?
+##获取微信号的账号
+#wxSignIn
+SELECT
+  `accounts`.id,
+  `users`.`user_id`,
+  `account`,
+  `nickname`,
+  `gender`,
+  `college`,
+  `college_name`,
+  `balance`,
+  `_c`,
+  `_d`,
+  `signin_time`
+FROM accounts
+  JOIN users ON accounts.user_id = users.user_id
+  LEFT JOIN colleges on colleges.college_id = users.college
+WHERE users.wxOpenId = ?
 
 ##用户列表
 #userList
@@ -53,14 +71,9 @@ FROM accounts
 WHERE id = 1;
 
 ##添加用户 在User表添加上用户信息
-#addUser1
+#add
 
-insert into users(balance) value(0);
-
-##添加用户  在account添加用户登录信息
-#addUser2
-
-insert into accounts(account,password,nickname,user_id) values(?,?,?,?);
+insert into users set ?;
 
 
 ##删除用户 

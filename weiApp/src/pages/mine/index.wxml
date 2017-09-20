@@ -1,16 +1,16 @@
 <view class="mine">
   <view class="header">
-    <block wx:if="{{userinfo}}">
+    <block wx:if="{{userInfo}}">
       <view class="info-box">
         <view class="user-info">
-          <avatar :id.sync="id"></avatar>
+          <avatar :id="id"></avatar>
           <view class="right">
             <view class="info">
-              <text class="item name">{{userinfo['nickname']}}</text>
-              <text class="item iconfont icon-{{userinfo['gender']==0?'female':'male'}}"></text>
+              <text class="item name">{{userInfo['nickname']}}</text>
+              <text class="item iconfont icon-{{userInfo['gender']==0?'female':'male'}}"></text>
               <text class="item" style="font-size:25rpx;">一个月前</text>
             </view>
-            <view class="create_time">{{userinfo['_c']}}  加入</view>
+            <view class="create_time">{{userInfo['_c']}} 加入</view>
           </view>
           <view @tap="navigateTo({{'/pages/mine/setting/baseinfo/index'}})" class="editor">编辑</view>
         </view>
@@ -20,7 +20,7 @@
       <view class="info-box">
         <view class="user-info">
           <avatar :id.sync="id"></avatar>
-          <view @tap="navigateTo({{'/pages/account/signIn/index'}})" >登录/注册</view>
+          <view @tap="navigateTo({{'/pages/account/signIn/index'}})">登录/注册</view>
         </view>
       </view>
     </block>
@@ -69,7 +69,7 @@
     <view class="menu-group">
       <view class="menu-title">其他</view>
       <view class="menu-list">
-        <view class="menu-item"  @tap="navigateTo({{'/pages/mine/setting/account/index'}})" >
+        <view class="menu-item" @tap="navigateTo({{'/pages/mine/setting/account/index'}})">
           <view class="iconfont icon-feed-back" style="color:#4285F4;"></view>
           <text>帐号安全</text>
           <view class="iconfont icon-right-arrow" style="color:#51C332;"></view>

@@ -7,6 +7,7 @@ let {Interface,Route} = require('./interface');
 let { ValidationError, DataBaseError, BaseError }= require('./error');
 let Validate =require('./validate');
 let crypto = require('./crypto')
+let request = require('./request')
 global.jike = {
-    Controller,Model,Interface,Route,ValidationError, DataBaseError, BaseError ,Validate,crypto,Code
+    Controller,Model,Interface,Route,ValidationError, DataBaseError, BaseError ,Validate,crypto,Code,request
 }

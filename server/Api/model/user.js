@@ -72,7 +72,7 @@ module.exports = class UserModel extends jike.Model {
         //开启事务
         await this.startTrans();
         //在用户表中添加用户基本信息
-        let { insertId = null } = await this.query(sqls.user.addUser1);
+        let { insertId = null } = await this.query(sqls.user.add,{balance:0});
         if (!insertId) {
             throw new BaseError(Code.UN_KNOWN_ERROR);
         }

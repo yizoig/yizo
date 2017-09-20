@@ -1,16 +1,16 @@
 <view id="release">
-  <view class="item"  @tap="navigateTo('/pages/release/wantHelp/index')">
-      <view class="icon"></view>
-      <view class="mes">
-          <view class="name">需要求助</view>
-          <view class="desc">让全校的学生帮你解决问题</view>
-      </view>
+  <view class="item" @tap="navigateTo('/pages/release/wantHelp/index')">
+    <image src="../../public/image/wantHelp.png" class="icon"></image>
+    <view class="mes">
+      <view class="name">需要求助</view>
+      <view class="desc">让全校的学生帮你解决问题</view>
+    </view>
   </view>
   <view class="item" @tap="navigateTo('/pages/release/offerHelp/index')">
-      <view class="icon"></view>
-      <view class="mes">
-          <view class="name">提供帮助</view>
-          <view class="desc">为全校的学生解决问题</view>
-      </view>
+    <image src="../../public/image/offerHelp.png" class="icon"></image>
+    <view class="mes">
+      <view class="name">提供帮助</view>
+      <view class="desc">为全校的学生解决问题</view>
+    </view>
   </view>
 </view>

@@ -50,7 +50,7 @@ module.exports = class OrderWantHelpModel extends jike.Model {
       result['count'] = count;
     }
     //limit拼接
-    limitStr = ` LIMIT ${page['page']},${page['size']}`;
+    limitStr = ` LIMIT ${page['page']*page['size']},${page['size']}`;
     //没有数据  或者页码超出范围 就返回空
     if (count == 0 || Math.ceil(count / page['size']) < (page['page'] + 1)) {
       result['orders'] = [];
@@ -102,7 +102,7 @@ module.exports = class OrderWantHelpModel extends jike.Model {
    */
   async cancel(id, reqUser) {
 
-    let [data = null] = await this.query(sqls.orderRun.gerInfoToOrderRun, id);
+    let [data = null] = await this.query(sqls.orderWantHelp.getCreateAndUser, id);
     //如果为空  表示没有这个订单
     if (!data) {
       throw new BaseError(Code.ORDER_TYPE_ERR);
@@ -132,12 +132,11 @@ module.exports = class OrderWantHelpModel extends jike.Model {
    */
   async grab(id, reqUser) {
 
-    let [data = null] = await this.query(sqls.orderRun.gerInfoToOrderRun, id);
+    let [data = null] = await this.query(sqls.orderWantHelp.getCreateAndUser, id);
     //如果为空  表示没有这个订单
     if (!data) {
       throw new BaseError(Code.ORDER_TYPE_ERR);
     }
-
     console.log(data);
     //存在跑跑
     if (data['status'] != 0 || data['creater'] == reqUser['id']) {
@@ -146,7 +145,7 @@ module.exports = class OrderWantHelpModel extends jike.Model {
     //开启事务
     await this.startTrans();
     let { affectedRows: affectedRow1 = 0 } = await this.query(sqls.order.setStatus, 1, id)
-    let { affectedRows: affectedRow2 = 0 } = await this.query(sqls.orderRun.updateOrderRun, {
+    let { affectedRows: affectedRow2 = 0 } = await this.query(sqls.orderWantHelp.update, {
       runner: reqUser['id']
     }, id);
     if (affectedRow1 <= 0 || affectedRow2 <= 0) {
@@ -171,7 +170,7 @@ module.exports = class OrderWantHelpModel extends jike.Model {
     }
     //开启事务
     await this.startTrans();
-    let { affectedRow: affectedRow1 } = await this.query(sqls.order.setStatus, 0, id)
+    let { affectedRows: affectedRow1 } = await this.query(sqls.order.setStatus, 0, id)
     let { affectedRows: affectedRow2 } = await this.query(sqls.orderRun.updateOrderRun, {
       runner: null
     }, id);
@@ -186,7 +185,7 @@ module.exports = class OrderWantHelpModel extends jike.Model {
    * 配送中
    */
   async deliver(id, reqUser) {
-    let [data = null] = await this.query(sqls.orderRun.gerInfoToOrderRun, id);
+    let [data = null] = await this.query(sqls.orderWantHelp.getCreateAndUser, id);
     //如果为空  表示没有这个订单
     if (!data) {
       throw new BaseError(Code.ORDER_TYPE_ERR);
@@ -197,15 +196,15 @@ module.exports = class OrderWantHelpModel extends jike.Model {
     if (data['status'] != 1) {
       return false;
     }
-    let { affectedRow } = await this.query(sqls.order.setStatus, 2, id);
+    let { affectedRows} = await this.query(sqls.order.setStatus, 2, id);
 
-    return affectedRow > 0;
+    return affectedRows> 0;
   }
   /**
   * 完成
   */
   async finally(id, reqUser) {
-    let [data = null] = await this.query(sqls.orderRun.gerInfoToOrderRun, id);
+    let [data = null] = await this.query(sqls.orderWantHelp.getCreateAndUser, id);
     //如果为空  表示没有这个订单
     if (!data) {
       throw new BaseError(Code.ORDER_TYPE_ERR);
@@ -216,15 +215,15 @@ module.exports = class OrderWantHelpModel extends jike.Model {
     if (data['status'] != 2) {
       return false;
     }
-    let { affectedRow } = await this.query(sqls.order.setStatus, 3, id);
+    let { affectedRows} = await this.query(sqls.order.setStatus, 3, id);
 
-    return affectedRow > 0;
+    return affectedRows> 0;
   }
   /**
   * 结束
   */
   async end(id, reqUser) {
-    let [data = null] = await this.query(sqls.orderRun.gerInfoToOrderRun, id);
+    let [data = null] = await this.query(sqls.orderWantHelp.getCreateAndUser, id);
     //如果为空  表示没有这个订单
     if (!data) {
       throw new BaseError(Code.ORDER_TYPE_ERR);
@@ -235,8 +234,8 @@ module.exports = class OrderWantHelpModel extends jike.Model {
     if (data['status'] != 3) {
       return false;
     }
-    let { affectedRow } = await this.query(sqls.order.setStatus, 4, id);
+    let { affectedRows} = await this.query(sqls.order.setStatus, 4, id);
 
-    return affectedRow > 0;
+    return affectedRows> 0;
   }
 }

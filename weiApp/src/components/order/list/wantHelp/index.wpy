@@ -3,16 +3,15 @@
 
 <script>
 import wepy from 'wepy'
-import { apis } from '../../../../config/api'
-import { request } from '../../../../utils/tools'
 import Avatar from '../../../users/avatar/index'
 import Toast from '../../../toast/index'
+import WanHelpOrderApi from '../../../../lib/apis/wantHelpOrder'
 export default class WantHelpOrder extends wepy.component {
   data = {
     orderList: [],
     limit: {
       size: 5,
-      page: 1
+      page: 1,
     }
   }
   methods = {
@@ -36,23 +35,21 @@ export default class WantHelpOrder extends wepy.component {
     },
     'request-loadMre': (componentName, $event) => {
       if (componentName === 'wantHelpOrder') {
-        if (this.limit.count > this.orderList.length) {
+        if (!this.limit.count || (this.limit.count > this.orderList.length)) {
           this.loadMore()
         }
       }
     }
   }
-  onLoad() {
-    this.loadMore()
-  }
-  loadMore({ refresh = false } = {}) {
-    this.$invoke('toast', 'showToast', {
-      title: '加载中',
-      icon: 'loading',
-      mask: true
-    })
-    let {college_id} = wepy.getStorageSync('college');
-    request(apis.wantHelpOrder.list, { needPage: true, ...this.limit,college:college_id }).then(({ data }) => {
+  /**
+   * 获取求组信息
+   */
+  async loadMore({ refresh = false } = {}) {
+
+    try {
+      console.log(this.$parent.data.college)
+      let { college_id } = this.$parent.data.college
+      let { data } = await WanHelpOrderApi.list({ needPage: true, ...this.limit, college: college_id })
       let { orders = [] } = data
       /**
        * 先进行数据处理
@@ -73,13 +70,13 @@ export default class WantHelpOrder extends wepy.component {
       }
       this.$invoke('toast', 'hiddenToast')
       this.$apply()
-    }).catch(reson => {
+    } catch (e) {
       this.$invoke('toast', 'showToast', {
-        title: reson,
+        title: e.message,
         icon: 'error',
         mask: true
       })
-    })
+    }
   }
 }
 </script>

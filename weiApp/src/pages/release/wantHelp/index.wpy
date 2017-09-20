@@ -49,7 +49,7 @@ export default class ReleaseWantHelp extends wepy.page {
           ['phoneNumber', 'tel', '联系电话格式不正确', Validate.MUST_VALIDATE],
           ['weixin', 'require', '微信号不能为空', Validate.MUST_VALIDATE]
         ])
-        let college = wepy.getStorageSync('college')
+        let college = this.$parent.globalData.college;
         params['deadline'] = params['dueDate']+' '+params['dueTime']
         params['college'] = college['college_id']
         delete params['dueDate']

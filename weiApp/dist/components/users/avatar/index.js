@@ -13,6 +13,10 @@ var _wepy2 = _interopRequireDefault(_wepy);
 
 require('./../../../npm/wepy-async-function/index.js');
 
+var _user = require('./../../../lib/apis/user.js');
+
+var _user2 = _interopRequireDefault(_user);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -35,9 +39,11 @@ var Avatar = function (_wepy$component) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Avatar.__proto__ || Object.getPrototypeOf(Avatar)).call.apply(_ref, [this].concat(args))), _this), _this.data = {
-      id: '',
-      url: ''
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Avatar.__proto__ || Object.getPrototypeOf(Avatar)).call.apply(_ref, [this].concat(args))), _this), _this.props = {
+      id: String,
+      url: String
+    }, _this.data = {
+      avatarPath: _user2.default.avatar
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
@@ -52,4 +58,4 @@ var Avatar = function (_wepy$component) {
 }(_wepy2.default.component);
 
 exports.default = Avatar;
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImluZGV4LmpzIl0sIm5hbWVzIjpbIkF2YXRhciIsImRhdGEiLCJpZCIsInVybCIsImNvbnNvbGUiLCJsb2ciLCJjb21wb25lbnQiXSwibWFwcGluZ3MiOiI7Ozs7Ozs7OztBQUNBOzs7O0FBQ0E7Ozs7Ozs7Ozs7SUFDcUJBLE07Ozs7Ozs7Ozs7Ozs7O3NMQUNuQkMsSSxHQUFPO0FBQ0xDLFVBQUksRUFEQztBQUVMQyxXQUFLO0FBRkEsSzs7Ozs7NkJBSUU7QUFDUEMsY0FBUUMsR0FBUixDQUFZLElBQVo7QUFDRDs7OztFQVBpQyxlQUFLQyxTOztrQkFBcEJOLE0iLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VzQ29udGVudCI6WyJcclxuaW1wb3J0IHdlcHkgZnJvbSAnd2VweSdcclxuaW1wb3J0ICd3ZXB5LWFzeW5jLWZ1bmN0aW9uJ1xyXG5leHBvcnQgZGVmYXVsdCBjbGFzcyBBdmF0YXIgZXh0ZW5kcyB3ZXB5LmNvbXBvbmVudCB7XHJcbiAgZGF0YSA9IHtcclxuICAgIGlkOiAnJyxcclxuICAgIHVybDogJydcclxuICB9XHJcbiAgb25Mb2FkKCkge1xyXG4gICAgY29uc29sZS5sb2codGhpcylcclxuICB9XHJcbn1cclxuIl19
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImluZGV4LmpzIl0sIm5hbWVzIjpbIkF2YXRhciIsInByb3BzIiwiaWQiLCJTdHJpbmciLCJ1cmwiLCJkYXRhIiwiYXZhdGFyUGF0aCIsImF2YXRhciIsImNvbnNvbGUiLCJsb2ciLCJjb21wb25lbnQiXSwibWFwcGluZ3MiOiI7Ozs7Ozs7OztBQUNBOzs7O0FBQ0E7O0FBQ0E7Ozs7Ozs7Ozs7OztJQUNxQkEsTTs7Ozs7Ozs7Ozs7Ozs7c0xBQ25CQyxLLEdBQVE7QUFDTkMsVUFBSUMsTUFERTtBQUVOQyxXQUFLRDtBQUZDLEssUUFJUkUsSSxHQUFPO0FBQ0xDLGtCQUFZLGVBQVFDO0FBRGYsSzs7Ozs7NkJBR0U7QUFDUEMsY0FBUUMsR0FBUixDQUFZLElBQVo7QUFDRDs7OztFQVZpQyxlQUFLQyxTOztrQkFBcEJWLE0iLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VzQ29udGVudCI6WyJcclxuaW1wb3J0IHdlcHkgZnJvbSAnd2VweSdcclxuaW1wb3J0ICd3ZXB5LWFzeW5jLWZ1bmN0aW9uJ1xyXG5pbXBvcnQgVXNlckFwaSBmcm9tICcuLi8uLi8uLi9saWIvYXBpcy91c2VyJ1xyXG5leHBvcnQgZGVmYXVsdCBjbGFzcyBBdmF0YXIgZXh0ZW5kcyB3ZXB5LmNvbXBvbmVudCB7XHJcbiAgcHJvcHMgPSB7XHJcbiAgICBpZDogU3RyaW5nLFxyXG4gICAgdXJsOiBTdHJpbmdcclxuICB9XHJcbiAgZGF0YSA9IHtcclxuICAgIGF2YXRhclBhdGg6IFVzZXJBcGkuYXZhdGFyXHJcbiAgfVxyXG4gIG9uTG9hZCgpIHtcclxuICAgIGNvbnNvbGUubG9nKHRoaXMpXHJcbiAgfVxyXG59XHJcbiJdfQ==

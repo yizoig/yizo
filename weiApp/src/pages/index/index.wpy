@@ -1,21 +1,21 @@
 <template lang="wxml" src="./index.wxml"></template>
 <script>
 import wepy from 'wepy'
-import request from '../../utils/api'
-import { apis,host } from '../../config/api'
+import collegeApi from '../../lib/apis/college';
 export default class Index extends wepy.page {
+  config = {
+    'enablePullDownRefresh': true,
+    'backgroundColor': '#3385ff'
+  }
   data = {
-    collegelogo: host + '/college/logo/',
+    collegelogo: collegeApi.logo,
     colleges: []
   }
-
   methods = {
     onSelect: function(e) {
       let { id = null } = e.currentTarget.dataset
       let college = this.getCollege(id)
-
-      console.log(college)
-      wepy.setStorageSync('college', college)
+      this.$parent.globalData['college'] = college
       wepy.switchTab({
         url: `/pages/home/index`
       })
@@ -29,21 +29,26 @@ export default class Index extends wepy.page {
     }
     return null
   }
+  onPullDownRefresh() {
+    this.loadData()
+    wepy.stopPullDownRefresh()
+  }
   onLoad() {
     this.loadData()
   }
-  loadData() {
-    request(apis.college.list, {}).then(({ data }) => {
+  async loadData() {
+    try {
+      let { data } = await collegeApi.list()
       let { list: colleges } = data
+      console.log(data)
       for (let i = 0; i < colleges.length; i++) {
         colleges[i]['logo'] = this.collegelogo + colleges[i]['college_id'] + '.png'
       }
-      console.log(colleges)
       this.colleges = colleges || []
       this.$apply()
-    }, reason => {
-      console.log(reason)
-    })
+    } catch (e) {
+      console.log(e)
+    }
   }
 }
 </script>

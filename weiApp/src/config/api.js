@@ -6,7 +6,7 @@ const version = 2.0
 
 
 const hosts = {
-  development: 'https://192.168.1.122:3000',
+  development: 'https://192.168.1.108:3000',
   production: 'https://api.yizo.zhiyuan95.cn'
 }
 
@@ -14,6 +14,10 @@ const hosts = {
 const apis = {
   account: {
     path: '/account',
+    weixinSignin:{
+      method: 'POST',
+      url: '/signIn/weixin'
+    },
     signIn: {
       method: 'POST',
       url: '/signIn'
@@ -59,6 +63,30 @@ const apis = {
     add:{
       method:'POST',
       url:'/'
+    },
+    cancel:{
+      method:'DELETE',
+      url:'/cancel'
+    },
+    grab:{
+      method:'POST',
+      url:'/grab'
+    },
+    quit:{
+      method:'DELETE',
+      url:'/quit'
+    },
+    deliver:{
+      method:'PUT',
+      url:'/deliver'
+    },
+    finally:{
+      method:'PUT',
+      url:'/finally'
+    },
+    end:{
+      ethod:'PUT',
+      url:'/end'
     }
   }
 }

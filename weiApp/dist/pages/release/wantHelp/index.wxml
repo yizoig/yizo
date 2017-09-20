@@ -18,6 +18,7 @@
   </view>
 </view>
   <view class="title">
+      <image src="../../../public/image/wantHelp.png" class="icon"/>
     <view>寻求帮助</view>
   </view>
   <view class="form">
@@ -32,9 +33,9 @@
     <view class="form-row">
       <label class="form-label">性别限制</label>
       <view class="form-widget radio">
-        <view class="radio-item {{form.gender_constraint==-1?'active':''}}" bindtap="selectGender" data-wepy-params-a="{{0}}">不限</view>
-        <view class="radio-item {{form.gender_constraint==0?'active':''}}" bindtap="selectGender" data-wepy-params-a="{{1}}">女</view>
-        <view class="radio-item {{form.gender_constraint==1?'active':''}}" bindtap="selectGender" data-wepy-params-a="{{2}}">男</view>
+        <view class="radio-item {{form.gender_constraint==-1?'active':''}}" bindtap="selectGender" data-wepy-params-a="-1">不限</view>
+        <view class="radio-item {{form.gender_constraint==0?'active':''}}" bindtap="selectGender" data-wepy-params-a="0">女</view>
+        <view class="radio-item {{form.gender_constraint==1?'active':''}}" bindtap="selectGender" data-wepy-params-a="1">男</view>
       </view>
     </view>
     <view class="form-row">

@@ -1,46 +1,225 @@
 
-<script>
+  <script>
 import wepy from 'wepy'
 import 'wepy-async-function'
-import request from '../../../../utils/api'
-import { apis } from '../../../../config/api'
+import WanHelpOrderApi from '../../../../lib/apis/wantHelpOrder'
 import Avatar from '../../../../components/users/avatar/index'
+import Toast from '../../../../components/toast/index'
 export default class WantHelp extends wepy.page {
   config = {
     'enablePullDownRefresh': true,
     'backgroundColor': '#3385ff'
   }
   data = {
-    detail: {},
-    uid: '1'
+    userInfo: {},
+    creater: null,
+    runner: null,
+    detail: {}
+  }
+  methods = {
+    callphone: (phone) => {
+      wepy.makePhoneCall({
+        phoneNumber: phone + ''
+
+      })
+    },
+    gohome: () => {
+      wepy.switchTab({
+        url: '/pages/home/index'
+      })
+    },
+    /**
+     * 编辑订单
+     */
+    editOrder: (params) => {
+
+    },
+    /**
+     * 抢单
+     */
+    grabOrder: async function() {
+      try {
+        let { data } = await WanHelpOrderApi.grab({ id: this.detail['order_id'] })
+        if (data) {
+          wepy.navigateTo({
+            url: '/pages/order/result/index?type=grab'
+          })
+        } else {
+          this.$invoke('toast', 'showToast', {
+            title: '抢单失败',
+            icon: 'error',
+            mask: true
+          })
+        }
+      } catch (e) {
+        this.$invoke('toast', 'showToast', {
+          title: e.message,
+          icon: 'error',
+          mask: true
+        })
+      }
+    },
+    /**
+     * 放弃订单
+     */
+    quitOrder: async (params) => {
+      try {
+        let { data } = await WanHelpOrderApi.quit({ id: this.detail['order_id'] })
+        if (data) {
+          wepy.navigateTo({
+            url: '/pages/order/result/index?type=grab'
+          })
+        } else {
+          this.$invoke('toast', 'showToast', {
+            title: '操作失败',
+            icon: 'error',
+            mask: true
+          })
+        }
+      } catch (e) {
+        this.$invoke('toast', 'showToast', {
+          title: e.message,
+          icon: 'error',
+          mask: true
+        })
+      }
+    },
+    /**
+     * 取消订单
+     */
+    cancelOrder: async (params) => {
+      try {
+        let { data } = await WanHelpOrderApi.cancel({ id: this.detail['order_id'] })
+        if (data) {
+          wepy.navigateTo({
+            url: '/pages/order/result/index?type=grab'
+          })
+        } else {
+          this.$invoke('toast', 'showToast', {
+            title: '操作失败',
+            icon: 'error',
+            mask: true
+          })
+        }
+      } catch (e) {
+        this.$invoke('toast', 'showToast', {
+          title: e.message,
+          icon: 'error',
+          mask: true
+        })
+      }
+
+    },
+    /**
+     * 配送
+     */
+    deliverOrder: async (params) => {
+      try {
+        let { data } = await WanHelpOrderApi.deliver({ id: this.detail['order_id'] })
+        if (data) {
+          wepy.navigateTo({
+            url: '/pages/order/result/index?type=grab'
+          })
+        } else {
+          this.$invoke('toast', 'showToast', {
+            title: '抢单失败',
+            icon: 'error',
+            mask: true
+          })
+        }
+      } catch (e) {
+        this.$invoke('toast', 'showToast', {
+          title: e.message,
+          icon: 'error',
+          mask: true
+        })
+      }
+    },
+    /**
+     * 到货
+     */
+    finallyOrder: async (params) => {
+      try {
+        let { data } = await WanHelpOrderApi.finally({ id: this.detail['order_id'] })
+        if (data) {
+          wepy.navigateTo({
+            url: '/pages/order/result/index?type=grab'
+          })
+        } else {
+          this.$invoke('toast', 'showToast', {
+            title: '操作失败',
+            icon: 'error',
+            mask: true
+          })
+        }
+      } catch (e) {
+        this.$invoke('toast', 'showToast', {
+          title: e.message,
+          icon: 'error',
+          mask: true
+        })
+      }
+    },
+    /**
+     * 结单
+     */
+    endOrder: async (params) => {
+      try {
+        let { data } = await WanHelpOrderApi.end({ id: this.detail['order_id'] })
+        if (data) {
+          wepy.navigateTo({
+            url: '/pages/order/result/index?type=grab'
+          })
+        } else {
+          this.$invoke('toast', 'showToast', {
+            title: '操作失败',
+            icon: 'error',
+            mask: true
+          })
+        }
+      } catch (e) {
+        this.$invoke('toast', 'showToast', {
+          title: e.message,
+          icon: 'error',
+          mask: true
+        })
+      }
+    }
   }
   components = {
-    avatar: Avatar
+    avatar: Avatar,
+    toast: Toast
   }
   onLoad(opt) {
     this.id = opt.id || null
-    this.loadData()
+    this.userInfo = this.$parent.globalData['userInfo']
+    this.$apply()
+
   }
-  onPullDownRefresh() {
+  async onShow() {
+    await this.loadData()
+  }
+  async onPullDownRefresh() {
     /**
      * 与指定的组件通信
      */
-    this.loadData()
+    await this.loadData()
   }
-  loadData() {
+  async loadData() {
     try {
-      request(apis.wantHelpOrder.info, { id: this.id }).then(({ data }) => {
-        this.detail = data.info
-        this.$apply()
-        wepy.stopPullDownRefresh()
-      }, reson => {
-        console.log(reson)
-      })
+      let { data } = await WanHelpOrderApi.info({ id: this.id });
+      this.detail = data.info
+      let time = new Date(this.detail['_c'])
+      this.detail['_c'] = time.getDateDiff(time)
+      this.creater = data.info['creater']
+      this.runner = data.info['runner']
+      this.$apply()
+      wepy.stopPullDownRefresh()
     } catch (e) {
       console.log(e)
     }
   }
 }
 </script>
-<style src="./index.less" lang="less"></style>
-<template lang="wxml" src="./index.wxml"></template>
+  <style src="./index.less" lang="less"></style>
+  <template lang="wxml" src="./index.wxml"></template>

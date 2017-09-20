@@ -56,7 +56,7 @@ export default class SignIn extends wepy.page {
             icon: 'success',
             mask: true
           })
-          saveUserInfo(data)
+          saveUserInfo(data,this)
           setTimeout(() => {
             wepy.switchTab({
               url: '/pages/mine/index'

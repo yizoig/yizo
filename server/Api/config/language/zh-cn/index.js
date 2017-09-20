@@ -17,13 +17,12 @@ module.exports = {
     nicknameNotNullErr:"昵称不能为空",
     genderErr:"性别格式错误",
     avatarNotNullErr:"请上传头像",
-
     ObjectErr:"必须是对象",
-    ValueNotNullErr:"值不能为空",
     genderConstraintTypeErr:"性别限制格式错误",
     runOrderMoneyTypeErr:"跑跑价格格式错误",
     demandTypeErr:"需求格式错误",
     orderNotNull:"订单不能为空",
-
-    varTypeErr:"参数类型错误"
+    varTypeErr:"参数类型错误",
+    ValueNotNullErr:"值不能为空",
+    paramsNotNullErr:'参数不能为空'
 }

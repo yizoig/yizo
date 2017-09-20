@@ -1,16 +1,17 @@
+const app = getApp()
 export function getUserInfo() {
   return wx.getStorageSync("userinfo");
 }
 
 export function setUserInfo(data) {
 
-  let userinfo = wx.getStorageSync("userinfo");
+  let userInfo = wx.getStorageSync("userInfo");
   let remember = wx.getStorageSync("remember");
   if (userinfo) {
     userinfo = replace(userinfo, data);
     wx.setStorage({
-      key: "userinfo",
-      data: userinfo
+      key: "userInfo",
+      data: userInfo
     });
   }
   if (remember) {
@@ -20,15 +21,14 @@ export function setUserInfo(data) {
       data: remember
     });
   }
-
 }
-export function saveUserInfo(data) {
-  wx.removeStorageSync("userinfo")
+export function saveUserInfo(data,currentPage) {
   wx.setStorage({
-    key: "userinfo",
+    key: "userInfo",
     data
   });
-
+  console.log(currentPage.$parent)
+  currentPage.$parent.globalData['userInfo'] = data;
 }
 export function signOut() {
   //移除token

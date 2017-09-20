@@ -22,7 +22,7 @@ export default class BaseInfoSettting extends wepy.page {
       /**
        * 检查值是否修改
        */
-      if (this.userinfo[e.currentTarget.dataset.name] != e.detail.value) {
+      if (this.userinfo[e.currentTarget.dataset.name] !== e.detail.value) {
         this.cache[e.currentTarget.dataset.name] = e.detail.value
       } else {
         delete this.cache[e.currentTarget.dataset.name]

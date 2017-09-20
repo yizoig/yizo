@@ -1,23 +1,26 @@
 <style lang='less' src="./app.less">
+
 </style>
 <script>
 import wepy from 'wepy'
 import 'wepy-async-function'
-import './utils/date'
+import './lib/utils/date'
+import User from './lib/services/user'
 export default class extends wepy.app {
   config = {
     pages: [
       'pages/index/index',
-      'pages/release/wantHelp/index',
+      'pages/order/result/index',
+      'pages/release/index',
+      'pages/home/index',
       'pages/mine/index',
+      'pages/release/wantHelp/index',
       'pages/mine/setting/baseinfo/index',
       'pages/mine/setting/account/index',
       'pages/account/changePwd/index',
       'pages/account/changeTel/index',
       'pages/account/signIn/index',
-      'pages/home/index',
       'pages/release/offerHelp/index',
-      'pages/release/index',
       'pages/order/details/wantHelp/index',
       'pages/account/forgotPwd/index',
       'pages/account/signUp/index'
@@ -40,11 +43,12 @@ export default class extends wepy.app {
           iconPath: './public/image/index.png',
           selectedIconPath: './public/image/index-active.png'
         },
+
         {
           pagePath: 'pages/release/index',
           text: '发布',
-          iconPath: './public/image/near.png',
-          selectedIconPath: './public/image/near-active.png'
+          iconPath: './public/image/release.png',
+          selectedIconPath: './public/image/release-active.png'
         },
         {
           pagePath: 'pages/mine/index',
@@ -55,15 +59,18 @@ export default class extends wepy.app {
       ]
     }
   }
-
   globalData = {
-    userInfo: null
+    userInfo: null,
+    college: null
   }
-
   constructor() {
     super()
     this.use('promisify')
     this.use('requestfix')
+  }
+  async onLaunch() {
+    await User.autoSignIn();
+    this.globalData['userInfo'] = wepy.getStorageSync('userInfo')
   }
 }
 </script>

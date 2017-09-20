@@ -12,8 +12,8 @@ export default class Mine extends wepy.page {
     'backgroundColor': '#3385ff'
   }
   data = {
-    id: 1,
-    userinfo: null,
+    id: null,
+    userInfo: null,
     weiInfo: null
   }
   components = {
@@ -35,14 +35,10 @@ export default class Mine extends wepy.page {
       let { data: weiInfo } = await wepy.getStorage({
         key: 'weiInfo'
       })
-      let { data: userinfo } = await wepy.getStorage({
-        key: 'userinfo'
-      })
-      let time = new Date(userinfo['_c'])
-      userinfo['_c'] = time.getDateDiff(time)
       this.weiInfo = weiInfo
-      this.userinfo = userinfo
+      this.userInfo = this.$parent.globalData['userInfo']
       this.$apply()
+      console.log(this)
     } catch (e) {
       console.log(e)
     }
