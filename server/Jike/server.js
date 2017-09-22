@@ -65,8 +65,6 @@ module.exports = class Server {
 
         await Log("加载路由中...".yellow); 
         Interface.init(this.app); 
-
-
         this.app.use(express.static(APP_PATH+'/static/upload'));
         this.app.use((req, res, next) =>  {
             console.log(req.method.yellow, req.url.green, new Date().toLocaleString()); 

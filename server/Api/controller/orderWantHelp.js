@@ -1,5 +1,5 @@
 let { BaseError, Code } = jike;
-let OrderWantHelpModel = require("../model/OrderWantHelp");
+let OrderWantHelpModel = require("../model/orderWantHelp");
 let OrderController = require("./order");
 module.exports = class OrderWantHelpController extends jike.Controller {
 
