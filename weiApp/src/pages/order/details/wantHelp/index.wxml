@@ -63,14 +63,7 @@
       <view class="iconfont icon-warn error">订单已取消</view>
     </block>
   </view>
-  <view class="comment-list">
-    <view class="comment-top">
-      <view class="title">评论(2)</view>
-      <view class="add">
-        <text class="iconfont icon-edit">写评论</text>
-      </view>
-    </view>
-
+  <comment :detail.sync="detail"></comment>
   </view>
   <view class="fix-btn">
     <view class="btn" style="width:130rpx;" @tap="gohome">
@@ -149,5 +142,4 @@
         </block>
       </block>
     </block>
-  </view>
 </view>

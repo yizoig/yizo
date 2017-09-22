@@ -48,9 +48,11 @@
   <view class="menu">
     <view class="menu-group">
       <view class="menu-list">
-        <view class="menu-item">
-          <view class="iconfont icon-feed-back" style="color:#4285F4;"/>
-          <text>同步微信信息</text>
+        <view class="menu-item" bindtap="syncWxInfo">
+          <view>
+            <i class="iconfont icon-feed-back" style="color:#4285F4;"/>
+            <text>同步微信信息</text>
+          </view>
           <view class="iconfont icon-right-arrow" style="color:#51C332;"/>
         </view>
       </view>
@@ -59,28 +61,36 @@
       <view class="menu-title">寻求帮助</view>
       <view class="menu-list">
         <view class="menu-item">
-          <view class="iconfont icon-feed-back" style="color:#4285F4;"/>
-          <text>我的求助</text>
+          <view>
+            <i class="iconfont icon-feed-back" style="color:#4285F4;"/>
+            <text>我的求助</text>
+          </view>
           <view class="iconfont icon-right-arrow" style="color:#51C332;"/>
         </view>
-        <view class="menu-item">
-          <view class="iconfont icon-feed-back" style="color:#4285F4;"/>
-          <text>我提供的求助</text>
-          <view class="iconfont icon-right-arrow" style="color:#51C332"/>
-        </view>
+        <!-- <view class="menu-item">
+          <view>
+            <i class="iconfont icon-feed-back" style="color:#4285F4;"></i>
+            <text>我提供的求助</text>
+          </view>
+          <view class="iconfont icon-right-arrow" style="color:#51C332"></view>
+        </view> -->
       </view>
     </view>
     <view class="menu-group">
       <view class="menu-title">其他</view>
       <view class="menu-list">
         <view class="menu-item" bindtap="navigateTo" data-wepy-params-a="{{'/pages/mine/setting/account/index'}}">
-          <view class="iconfont icon-feed-back" style="color:#4285F4;"/>
-          <text>帐号安全</text>
+          <view>
+            <i class="iconfont icon-feed-back" style="color:#4285F4;"/>
+            <text>帐号安全</text>
+          </view>
           <view class="iconfont icon-right-arrow" style="color:#51C332;"/>
         </view>
         <view class="menu-item">
-          <view class="iconfont icon-feed-back" style="color:#4285F4;"/>
-          <text>设置</text>
+          <view>
+            <i class="iconfont icon-feed-back" style="color:#4285F4;"/>
+            <text>设置</text>
+          </view>
           <view class="iconfont icon-right-arrow" style="color:#51C332;"/>
         </view>
       </view>

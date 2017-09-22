@@ -1,9 +1,9 @@
 <template lang="wxml" src="./index.wxml"></template>
 <script>
 import wepy from 'wepy'
-import { request, Validate } from '../../../utils/tools'
 import Toast from '../../../components/toast/index'
-import { apis } from '../../../config/api'
+import { Validate } from '../../../lib/utils/index'
+import WanHelpOrderApi from '../../../lib/apis/wantHelpOrder'
 export default class ReleaseWantHelp extends wepy.page {
   data = {
     startDate: null,
@@ -12,7 +12,7 @@ export default class ReleaseWantHelp extends wepy.page {
       '请你吃饭', '你开价', '自定义1', '自定义2', '自定义3', '自定义4'
     ],
     form: {
-      rewardType: 'money',
+      rewardType: 'money'
     }
   }
   components = {
@@ -36,7 +36,7 @@ export default class ReleaseWantHelp extends wepy.page {
       this.form['reward'] = value
       this.$apply()
     },
-    release: function() {
+    release: async function() {
       let params = this.form
       try {
         params = Validate.check(params, [
@@ -49,8 +49,8 @@ export default class ReleaseWantHelp extends wepy.page {
           ['phoneNumber', 'tel', '联系电话格式不正确', Validate.MUST_VALIDATE],
           ['weixin', 'require', '微信号不能为空', Validate.MUST_VALIDATE]
         ])
-        let college = this.$parent.globalData.college;
-        params['deadline'] = params['dueDate']+' '+params['dueTime']
+        let college = this.$parent.globalData.college
+        params['deadline'] = params['dueDate'] + ' ' + params['dueTime']
         params['college'] = college['college_id']
         delete params['dueDate']
         delete params['dueTime']
@@ -58,22 +58,23 @@ export default class ReleaseWantHelp extends wepy.page {
           title: '创建中',
           icon: 'loading'
         })
-        request(apis.wantHelpOrder.add, params).then(data => {
+        let { data } = await WanHelpOrderApi.add(params)
+        if (data) {
           this.$invoke('toast', 'showToast', {
             title: '创建成功',
             icon: 'success'
           })
           setTimeout(() => {
-            wepy.navigateBack({
-              delta: 1
+            wepy.navigateTo({
+              url: '/pages/order/result/index?type=add'
             })
           }, 3000)
-        }, reson => {
+        } else {
           this.$invoke('toast', 'showToast', {
-            title: reson,
+            title: '创建失败',
             icon: 'error'
           })
-        })
+        }
       } catch (e) {
         this.$invoke('toast', 'showToast', {
           title: e.message,

@@ -3,12 +3,13 @@
 import wepy from 'wepy'
 // import Avatar from '../../../../../components/users/avatar/index'
 import Toast from '../../../components/toast/index'
-import { Validate, request } from '../../../utils/tools'
-import {apis} from '../../../config/api'
-import { setUserInfo } from '../../../utils/user'
+
+import User from '../../../lib/services/user'
+import { Validate } from '../../../lib/utils/index'
+import UserApi from '../../../lib/apis/user'
 export default class changePwd extends wepy.page {
   data = {
-    userinfo: null,
+    userInfo: null,
     password: '',
     newPassword: ''
   }
@@ -20,14 +21,14 @@ export default class changePwd extends wepy.page {
       this[e.currentTarget.dataset.name] = e.detail.value
       this.$apply()
     },
-    submit: function() {
-      let { userinfo, password, newPassword } = this.data
+    submit: async function() {
+      let { userInfo, password, newPassword } = this.data
       try {
-        let params = Validate.check({ id: userinfo['id'], password, newPassword }, [
+        let params = Validate.check({ id: userInfo['id'], password, newPassword }, [
           ['password', 'require', '原密码不能为空', Validate.MUST_VALIDATE],
           ['newPassword', 'require', '新密码不能为空', Validate.MUST_VALIDATE]
         ])
-        if (userinfo && (userinfo['password'] !== params['password'])) {
+        if (userInfo && (userInfo['password'] !== params['password'])) {
           this.$invoke('toast', 'showToast', {
             title: '原密码不正确',
             icon: 'error',
@@ -40,28 +41,27 @@ export default class changePwd extends wepy.page {
           icon: 'loading',
           mask: true
         })
-        request(apis.account.changePwd, params).then(
-          data => {
-            this.$invoke('toast', 'showToast', {
-              title: '修改成功',
-              icon: 'success',
-              mask: true
-            })
-            setUserInfo({
-              password: newPassword
-            })
-            setTimeout(() => {
-              this.$back()
-            }, 1000)
-          },
-          reason => {
-            this.$invoke('toast', 'showToast', {
-              title: reason,
-              icon: 'error',
-              mask: true
-            })
-          }
-        )
+
+        let { data } = await UserApi.changePwd(params)
+        if (data) {
+          this.$invoke('toast', 'showToast', {
+            title: '修改成功',
+            icon: 'success',
+            mask: true
+          })
+          User.setuserInfo({
+            password: newPassword
+          })
+          setTimeout(() => {
+            this.$back()
+          }, 1000)
+        } else {
+          this.$invoke('toast', 'showToast', {
+            title: '修改失败',
+            icon: 'error',
+            mask: true
+          })
+        }
       } catch (e) {
         this.$invoke('toast', 'showToast', {
           title: e.message,
@@ -73,14 +73,13 @@ export default class changePwd extends wepy.page {
   }
   async onLoad() {
     try {
-      let { data: userinfo } = await wepy.getStorage({
-        key: 'userinfo'
-      })
+      console.log(this.$parent.globalData.userInfo)
+      let { data: userInfo } = this.$parent.globalData.userInfo
       let { data: remember } = await wepy.getStorage({
         key: 'remember'
       })
-      this.userinfo = {
-        id: userinfo['id'],
+      this.userInfo = {
+        id: userInfo['id'],
         password: remember['password']
       }
       this.$apply()

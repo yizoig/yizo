@@ -6,14 +6,14 @@
   <view class="form">
     <view class="form-row">
       <label>昵称</label>
-      <input class="form-widget" value="{{cache['nickname'] || userinfo['nickname']}}" bindinput="edit" data-name="nickname"/>
+      <input class="form-widget" value="{{cache['nickname'] || userInfo['nickname']}}" bindinput="edit" data-name="nickname"/>
     </view>
 
     <radio-group class="form-row" bindchange="edit" data-name="gender">
       <label>姓名</label>
       <view class="form-widget">
-        <radio value="0" checked="{{cache['gender']==0 || userinfo['gender']==0}}" />女
-        <radio value="1" checked="{{cache['gender']==1 ||userinfo['gender']==1}}" />男
+        <radio value="0" checked="{{cache['gender']==0 || userInfo['gender']==0}}" />女
+        <radio value="1" checked="{{cache['gender']==1 ||userInfo['gender']==1}}" />男
       </view>
     </radio-group>
   </view>

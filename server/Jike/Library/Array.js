@@ -13,18 +13,21 @@ Array.prototype.unique = function () {
     }
     return result;
 };
-Array.prototype.remove = function (key) {
-
-    for (let i = 0; i < this.length; i++) {
-        if (this[i] == key) {
-            this.splice(i, 1);
-            break;
+Object.defineProperty(Array.prototype, 'remove', {
+    writable: false,
+    enumerable: false,
+    configurable: true,
+    value: function (key) {
+        for (let i = 0; i < this.length; i++) {
+            if (this[i] == key) {
+                this.splice(i, 1);
+                break;
+            }
         }
+        console.log(this)
     }
-    return this;
-};
-
-Date.prototype.format =function(fmt){
+});
+Date.prototype.format = function (fmt) {
     let o = {
         "M+": this.getMonth() + 1, //月份 
         "d+": this.getDate(), //日 
@@ -34,15 +37,15 @@ Date.prototype.format =function(fmt){
         "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
         "S": this.getMilliseconds() //毫秒 
     };
-    if (/(y+)/.test(fmt)){
+    if (/(y+)/.test(fmt)) {
         fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
     }
-    for (let k in o){
-        if (new RegExp("(" + k + ")").test(fmt)){
+    for (let k in o) {
+        if (new RegExp("(" + k + ")").test(fmt)) {
             fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
         }
     }
-    return fmt;    
+    return fmt;
 }
 
 

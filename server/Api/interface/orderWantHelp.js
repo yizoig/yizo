@@ -62,7 +62,7 @@ Interface.create('/order', OrderWantHelpController, [
       ],
       reward: [
         Validate.MUST_VALIDATE,
-        ['Number', 'demandTypeErr','varType']
+        ['require', 'ValueNotNullErr']
       ],
       deadline: [
         Validate.MUST_VALIDATE,

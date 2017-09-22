@@ -1,6 +1,6 @@
 
 <view class="run-order-list">
-  <toast />
+  <toast></toast>
   <repeat for="{{orderList}}" item="orderItem" key="index">
     <view class="order-item" hover-class="order-item-active" bindtap="onView" data-id="{{orderItem.order_id}}">
       <block wx:if="{{orderItem.gender_constraint !== null}}">

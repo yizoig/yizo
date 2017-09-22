@@ -80,9 +80,9 @@ module.exports = class OrderWantHelpModel extends jike.Model {
   async add({ id,title, content, college, address, gender_constraint, reward_type, reward, deadline, phone_number, weixin }, reqUser) {
     //第一步  在订单表中创建数据
     await this.startTrans();
-    let { affectedRow: affectedRow1 } = await this.query(sqls.order.addOrder, id, reqUser.id, college);
+    let { affectedRows: affectedRow1 } = await this.query(sqls.order.addOrder, id, reqUser.id, college);
     //第二步 创建跑跑订单
-    let { affectedRow: affectedRow2 } = await this.query(sqls.orderWantHelp.add, {
+    let { affectedRows: affectedRow2 } = await this.query(sqls.orderWantHelp.add, {
       order_id: id,
       title,
       content,
@@ -160,7 +160,7 @@ module.exports = class OrderWantHelpModel extends jike.Model {
    */
   async quit(id, reqUser) {
 
-    let [data = null] = await this.query(sqls.orderRun.gerInfoToOrderRun, id);
+    let [data = null] = await this.query(sqls.orderWantHelp.getCreateAndUser, id);
     //如果为空  表示没有这个订单
     if (!data) {
       throw new BaseError(Code.ORDER_TYPE_ERR);
@@ -171,7 +171,7 @@ module.exports = class OrderWantHelpModel extends jike.Model {
     //开启事务
     await this.startTrans();
     let { affectedRows: affectedRow1 } = await this.query(sqls.order.setStatus, 0, id)
-    let { affectedRows: affectedRow2 } = await this.query(sqls.orderRun.updateOrderRun, {
+    let { affectedRows: affectedRow2 } = await this.query(sqls.orderWantHelp.update, {
       runner: null
     }, id);
     if (affectedRow1 <= 0 || affectedRow2 <= 0) {

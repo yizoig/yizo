@@ -3,9 +3,10 @@
 import wepy from 'wepy'
 // import Avatar from '../../../../../components/users/avatar/index'
 import Toast from '../../../components/toast/index'
-import { Validate, request, md5 } from '../../../utils/tools'
-import { apis } from '../../../config/api'
-import { setUserInfo } from '../../../utils/user'
+import { Validate, md5 } from '../../../lib/utils/index'
+import UserApi from '../../../lib/apis/user'
+import SmsApi from '../../../lib/apis/sms'
+import User from '../../../lib/services/user'
 export default class changeTel extends wepy.page {
   data = {
     step: 1,
@@ -26,7 +27,7 @@ export default class changeTel extends wepy.page {
       this.form[e.currentTarget.dataset.name] = e.detail.value
       this.$apply()
     },
-    sendCode: function(e) {
+    sendCode: async function(e) {
       /**
        * 获取验证码
        */
@@ -50,7 +51,8 @@ export default class changeTel extends wepy.page {
           icon: 'loading',
           mask: true
         })
-        request(apis.sms.sendCode, params).then(({ data }) => {
+        let { data } = await SmsApi.sendCode(params)
+        if (data) {
           this[type] = data
           let nextReq = data['nextReq']
           let currentDate = new Date()
@@ -64,13 +66,7 @@ export default class changeTel extends wepy.page {
             icon: 'success',
             mask: true
           })
-        }, reson => {
-          this.$invoke('toast', 'showToast', {
-            title: reson,
-            icon: 'error',
-            mask: true
-          })
-        })
+        }
       } catch (e) {
         this.$invoke('toast', 'showToast', {
           title: e.message,
@@ -129,27 +125,22 @@ export default class changeTel extends wepy.page {
           /**
            * 修改手机号
            */
-          request(apis.account.changeTel, params).then(data => {
+          let { data } = UserApi.changeTel(params)
+          if (data) {
             this.$invoke('toast', 'showToast', {
               title: '修改成功',
               icon: 'success',
               mask: true
             })
-            setUserInfo({
+            User.setUserInfo({
               account: newTel
             })
             setTimeout(() => {
               wepy.navigateBack({
                 delta: 1
               })
-            },3000)
-          }, reson => {
-            this.$invoke('toast', 'showToast', {
-              title: reson,
-              icon: 'error',
-              mask: true
-            })
-          })
+            }, 3000)
+          }
         } catch (e) {
           this.$invoke('toast', 'showToast', {
             title: e.message,

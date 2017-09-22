@@ -1,15 +1,15 @@
 <template lang="wxml" src="./index.wxml"></template>
 <script>
 import wepy from 'wepy'
-import { request, Validate } from '../../../../utils/tools'
-import { apis } from '../../../../config/api'
-import { setUserInfo } from '../../../../utils/user'
 import 'wepy-async-function'
+import UserApi from '../../../../lib/apis/user'
 import Avatar from '../../../../components/users/avatar/index'
 import Toast from '../../../../components/toast/index'
+import User from '../../../../lib/services/user'
+import { Validate } from '../../../../lib/utils/index'
 export default class BaseInfoSettting extends wepy.page {
   data = {
-    userinfo: null,
+    userInfo: null,
     cache: {},
     edit: false
   }
@@ -22,7 +22,7 @@ export default class BaseInfoSettting extends wepy.page {
       /**
        * 检查值是否修改
        */
-      if (this.userinfo[e.currentTarget.dataset.name] !== e.detail.value) {
+      if (this.userInfo[e.currentTarget.dataset.name] != e.detail.value) {
         this.cache[e.currentTarget.dataset.name] = e.detail.value
       } else {
         delete this.cache[e.currentTarget.dataset.name]
@@ -34,7 +34,7 @@ export default class BaseInfoSettting extends wepy.page {
       }
       this.$apply()
     },
-    submit: function() {
+    submit: async function() {
       try {
         let params = Validate.check(this.data.cache, [
           ['nickname', 'require', '姓名不能为空', Validate.EXISTS_VALIDATE],
@@ -47,23 +47,24 @@ export default class BaseInfoSettting extends wepy.page {
           icon: 'loading',
           mask: true
         })
-        request(apis.account.updateInfo, params).then(data => {
-          setUserInfo(this.data.cache)
+        let { data } = await UserApi.updateInfo(params)
+        if (data) {
+          User.setuserInfo(this.data.cache)
           this.$invoke('toast', 'showToast', {
-            title: '加载成功',
+            title: '修改成功',
             icon: 'success',
             mask: true
           })
           setTimeout(function() {
             this.$back()
           }.bind(this), 1000)
-        }, reason => {
+        } else {
           this.$invoke('toast', 'showToast', {
-            title: reason,
+            title: '修改失败',
             icon: 'error',
             mask: true
           })
-        })
+        }
       } catch (e) {
         this.$invoke('toast', 'showToast', {
           title: e.message,
@@ -74,11 +75,9 @@ export default class BaseInfoSettting extends wepy.page {
     }
   }
   async onShow() {
-    let { data: userinfo } = await wepy.getStorage({
-      key: 'userinfo'
-    })
-    this.cache['id'] = userinfo['id']
-    this.userinfo = userinfo
+    let userInfo = await this.$parent.globalData.userInfo
+    this.cache['id'] = userInfo['id']
+    this.userInfo = userInfo
     this.$apply()
   }
 }

@@ -1,0 +1,42 @@
+<view class="comment-list">
+  <view class="comment-top">
+    <view class="title">评论(2)</view>
+    <view class="add">
+      <text class="iconfont icon-edit">写评论</text>
+    </view>
+  </view>
+  <view class="comment-content">
+    <repeat for="{{list}}" item="commentItem">
+      <view class="comment-item">
+        <avatar :id="commentItem.creater"></avatar>
+        <view class="content">
+            <view class="item">
+                <view class="info">
+                    <view>
+                      <text>{{commentItem.creater_name}}</text>
+                      <block wx:if="{{detail['creater']==commentItem.creater}}">
+                        <text style="color:#f00;">(主人)</text>
+                      </block>
+                    </view>
+                    <view>{{commentItem._c}}</view>
+                  </view>
+                  <view class="comment-text">
+                      {{commentItem.content}}
+                  </view>
+            </view>
+            <repeat for="{{commentItem.child}}" item="childItem">
+                <view class="item">
+                    <view class="info">
+                        <view style="color:#f00">主儿回复:</view>
+                        <view>{{commentItem._c}}</view>
+                      </view>
+                      <view class="comment-text">
+                          {{commentItem.content}}
+                      </view>
+                </view>
+            </repeat>
+        </view>
+      </view>
+    </repeat>
+  </view>
+</view>

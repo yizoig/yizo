@@ -57,7 +57,7 @@ async function  verifyToken(token = '') {
     let model = new Model();
     let [user=null] = await model.query(sqls.account[`is_${payload.type}`], payload['sub']);
     if(!user){
-        throw new jike.BaseError(Code.UAUTH);
+        throw new jike.BaseError(Code.UNAUTH);
     }
     return {...user,type:payload.type};
 }

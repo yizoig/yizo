@@ -10,18 +10,18 @@ export default class extends wepy.app {
   config = {
     pages: [
       'pages/index/index',
-      'pages/order/result/index',
-      'pages/release/index',
+      'pages/order/details/wantHelp/index',
       'pages/home/index',
       'pages/mine/index',
       'pages/release/wantHelp/index',
+      'pages/order/result/index',
+      'pages/release/index',
       'pages/mine/setting/baseinfo/index',
       'pages/mine/setting/account/index',
       'pages/account/changePwd/index',
       'pages/account/changeTel/index',
-      'pages/account/signIn/index',
       'pages/release/offerHelp/index',
-      'pages/order/details/wantHelp/index',
+      'pages/account/signIn/index',
       'pages/account/forgotPwd/index',
       'pages/account/signUp/index'
     ],
@@ -69,7 +69,7 @@ export default class extends wepy.app {
     this.use('requestfix')
   }
   async onLaunch() {
-    await User.autoSignIn();
+    await User.autoSignIn()
     this.globalData['userInfo'] = wepy.getStorageSync('userInfo')
   }
 }

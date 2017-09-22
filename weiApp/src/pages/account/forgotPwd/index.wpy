@@ -1,8 +1,6 @@
 <template lang="wxml" src="./index.wxml"></template>
 <script>
 import wepy from 'wepy'
-// import request from '../../utils/api'
-// import { host } from '../../config/api'
 export default class forgotPwd extends wepy.page {
   methods = {
     jumpTo: function(e) {

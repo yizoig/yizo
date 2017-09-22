@@ -11,7 +11,7 @@ export default class WantHelpOrder extends wepy.component {
     orderList: [],
     limit: {
       size: 5,
-      page: 1,
+      page: 1
     }
   }
   methods = {
@@ -45,9 +45,7 @@ export default class WantHelpOrder extends wepy.component {
    * 获取求组信息
    */
   async loadMore({ refresh = false } = {}) {
-
     try {
-      console.log(this.$parent.data.college)
       let { college_id } = this.$parent.data.college
       let { data } = await WanHelpOrderApi.list({ needPage: true, ...this.limit, college: college_id })
       let { orders = [] } = data

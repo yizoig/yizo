@@ -12,6 +12,8 @@ const UserApi = {
   //修改密码
   changePwd:Apis.put(host+'/account/pwd/:id'),
   //修改手机号
-  changeTel:Apis.put(host+'/account/tel')
+  changeTel:Apis.put(host+'/account/tel'),
+  //同步微信信息
+  syncWxInfo:null
 }
 export default UserApi;

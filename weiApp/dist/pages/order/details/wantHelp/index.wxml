@@ -85,20 +85,56 @@
     </block>
   </view>
   <view class="comment-list">
-    <view class="comment-top">
-      <view class="title">评论(2)</view>
-      <view class="add">
-        <text class="iconfont icon-edit">写评论</text>
-      </view>
+  <view class="comment-top">
+    <view class="title">评论(2)</view>
+    <view class="add">
+      <text class="iconfont icon-edit">写评论</text>
     </view>
+  </view>
+  <view class="comment-content">
+    <block wx:for="{{$comment$list}}" wx:for-index="$comment$index" wx:for-item="$comment$commentItem" wx:key="$comment$key">
+      <view class="comment-item">
+        
+  <image src="{{$comment$avatar$url?$comment$avatar$url:($comment$avatar$avatarPath+$comment$commentItem.creater+'.png')}}" class="avatar"/>
 
+        <view class="content">
+            <view class="item">
+                <view class="info">
+                    <view>
+                      <text>{{$comment$commentItem.creater_name}}</text>
+                      <block wx:if="{{$comment$detail['creater']==$comment$commentItem.creater}}">
+                        <text style="color:#f00;">(主人)</text>
+                      </block>
+                    </view>
+                    <view>{{$comment$commentItem._c}}</view>
+                  </view>
+                  <view class="comment-text">
+                      {{$comment$commentItem.content}}
+                  </view>
+            </view>
+            <block wx:for="{{$comment$commentItem.child}}" wx:for-index="$comment$index" wx:for-item="$comment$childItem" wx:key="$comment$key">
+                <view class="item">
+                    <view class="info">
+                        <view style="color:#f00">主儿回复:</view>
+                        <view>{{$comment$commentItem._c}}</view>
+                      </view>
+                      <view class="comment-text">
+                          {{$comment$commentItem.content}}
+                      </view>
+                </view>
+            </block>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>
   </view>
   <view class="fix-btn">
     <view class="btn" style="width:130rpx;" bindtap="gohome">
       <text class="iconfont icon-setting"/>
       <view class="title">主页</view>
     </view>
-    <block wx:if="{{detail['status']>0 && (detail['creater']==userInfo['id'] || detail['runner']==userInfo['id'])}}">
+    <block  wx:if="{{detail['status']>0 && (detail['creater']==userInfo['id'] || detail['runner']==userInfo['id'])}}">
       <view class="btn" style="width:130rpx;" bindtap="callphone" data-wepy-params-a="{{detail['creater']==userInfo['id']?detail['runner']:detail['phone_number']}}">
         <text class="iconfont icon-setting"/>
         <view class="title">联系</view>
@@ -170,5 +206,4 @@
         </block>
       </block>
     </block>
-  </view>
 </view>

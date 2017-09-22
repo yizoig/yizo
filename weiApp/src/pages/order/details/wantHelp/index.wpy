@@ -5,12 +5,14 @@ import 'wepy-async-function'
 import WanHelpOrderApi from '../../../../lib/apis/wantHelpOrder'
 import Avatar from '../../../../components/users/avatar/index'
 import Toast from '../../../../components/toast/index'
+import Comment from '../../../../components/order/comment/index'
 export default class WantHelp extends wepy.page {
   config = {
     'enablePullDownRefresh': true,
     'backgroundColor': '#3385ff'
   }
   data = {
+    orderId: null,
     userInfo: {},
     creater: null,
     runner: null,
@@ -108,7 +110,6 @@ export default class WantHelp extends wepy.page {
           mask: true
         })
       }
-
     },
     /**
      * 配送
@@ -188,13 +189,13 @@ export default class WantHelp extends wepy.page {
   }
   components = {
     avatar: Avatar,
-    toast: Toast
+    toast: Toast,
+    comment: Comment
   }
   onLoad(opt) {
     this.id = opt.id || null
     this.userInfo = this.$parent.globalData['userInfo']
     this.$apply()
-
   }
   async onShow() {
     await this.loadData()
@@ -207,9 +208,10 @@ export default class WantHelp extends wepy.page {
   }
   async loadData() {
     try {
-      let { data } = await WanHelpOrderApi.info({ id: this.id });
+      let { data } = await WanHelpOrderApi.info({ id: this.id })
       this.detail = data.info
       let time = new Date(this.detail['_c'])
+      this.orderId = this.detail['order_id']
       this.detail['_c'] = time.getDateDiff(time)
       this.creater = data.info['creater']
       this.runner = data.info['runner']
@@ -221,5 +223,5 @@ export default class WantHelp extends wepy.page {
   }
 }
 </script>
-  <style src="./index.less" lang="less"></style>
-  <template lang="wxml" src="./index.wxml"></template>
+<style src="./index.less" lang="less"></style>
+<template lang="wxml" src="./index.wxml"></template>

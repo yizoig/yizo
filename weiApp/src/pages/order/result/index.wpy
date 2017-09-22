@@ -3,7 +3,6 @@
 import wepy from 'wepy'
 import 'wepy-async-function'
 export default class Result extends wepy.page {
-
   data = {
     type: 'other',
     mes: {
@@ -16,7 +15,7 @@ export default class Result extends wepy.page {
   }
   methods = {
     goBack: () => {
-      wx.navigateBack()
+      wepy.navigateBack()
     },
     goHome: () => {
       wepy.switchTab({
@@ -25,8 +24,8 @@ export default class Result extends wepy.page {
     }
   }
   onLoad({ type }) {
-    this.type = (type in this.mess) ? type : 'other';
-    this.$apply();
+    this.type = (type in this.mess) ? type : 'other'
+    this.$apply()
   }
 }
 </script>

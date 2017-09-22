@@ -11,19 +11,19 @@ export default class Menus extends wepy.component {
       {
         key: 'help',
         name: '帮帮忙',
-        subMenus: [
-          { key: 'help', name: '求助' },
-          { key: 'supper', name: '帮忙' }
-        ],
+        // subMenus: [
+        //   { key: 'help', name: '求助' },
+        //   { key: 'supper', name: '帮忙' }
+        // ],
         current: 0
       },
       {
         key: 'inactivity',
         name: '闲置',
-        subMenus: [
-          { key: 'male', name: '男装' },
-          { key: 'female', name: '女装' }
-        ],
+        // subMenus: [
+        //   { key: 'male', name: '男装' },
+        //   { key: 'female', name: '女装' }
+        // ],
         current: 0
       }
     ]

@@ -1,0 +1,29 @@
+
+<template src="./index.wxml" ></template>
+<script>
+import wepy from 'wepy'
+import Avatar from '../../users/avatar/index'
+import OrderCommentApi from '../../../lib/apis/orderComment'
+export default class Comment extends wepy.component {
+  data = {
+    detail: null,
+    list: []
+  }
+  components = {
+    avatar: Avatar
+  }
+  async onLoad() {
+    await this.loadData()
+  }
+  async loadData() {
+    let { data } = await OrderCommentApi.list({ order_id: 'F20170921234252410', want: 'tree' })
+    let time = new Date();
+    for(let k in data.list){
+      data.list[k]['_c'] = time.getDateDiff(data.list[k]['_c'])
+    }
+    this.list = data.list
+    this.$apply()
+  }
+}
+</script>
+<style lang="less" src="./index.less" ></style>

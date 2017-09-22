@@ -30,11 +30,6 @@ module.exports = {
     NOT_OWN_ERR:"只有本人才能操作",
 
 
-
-
-
-
-
     //参数错误
     PARAMS_ERR: "参数错误",
     //API不存在

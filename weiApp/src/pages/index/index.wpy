@@ -1,7 +1,7 @@
 <template lang="wxml" src="./index.wxml"></template>
 <script>
 import wepy from 'wepy'
-import collegeApi from '../../lib/apis/college';
+import collegeApi from '../../lib/apis/college'
 export default class Index extends wepy.page {
   config = {
     'enablePullDownRefresh': true,
@@ -16,6 +16,8 @@ export default class Index extends wepy.page {
       let { id = null } = e.currentTarget.dataset
       let college = this.getCollege(id)
       this.$parent.globalData['college'] = college
+
+      console.log(college,'index');
       wepy.switchTab({
         url: `/pages/home/index`
       })

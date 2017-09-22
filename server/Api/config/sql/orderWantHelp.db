@@ -2,7 +2,7 @@
 #count
 SELECT count(*) AS count
 FROM orders
-  LEFT JOIN order_want_helps ON orders.order_id = order_want_helps.order_id
+  JOIN order_want_helps ON orders.order_id = order_want_helps.order_id
   LEFT JOIN accounts runner_user ON order_want_helps.runner = runner_user.id
   JOIN accounts creater_user ON orders.creater = creater_user.id
 

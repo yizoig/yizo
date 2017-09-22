@@ -9,7 +9,7 @@ export default class Toast extends wepy.component {
     title: '',
     icon: '',
     mask: false,
-    show: true,
+    show: false,
     time: 1000
   }
   components = {

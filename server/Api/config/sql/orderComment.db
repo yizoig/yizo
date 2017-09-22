@@ -1,0 +1,67 @@
+##创建评论
+#add
+insert into order_comments set = ?;
+
+
+##更具订单获取评论
+#listCount
+SELECT count(*) AS count
+FROM order_comments
+  LEFT JOIN accounts ON order_comments.user = accounts.id
+WHERE order_id = ?
+##更具订单获取评论
+#list
+select
+  order_comments.id,
+  order_comments.user as creater,
+  accounts.nickname as creater_name,
+  accounts.gender as creater_gender,
+  order_comments.content,
+  order_comments.parent_id,
+  order_comments.`_c`
+from order_comments
+left join accounts on order_comments.user = accounts.id where order_id=?
+
+##获取指定人的条数
+#getCreaterCommentCount
+SELECT
+  count(*) as count
+FROM order_comments
+  join orders on order_comments.order_id=orders.order_id
+  left join order_comments comments on order_comments.parent_id = comments.id
+where ((order_comments.parent_id IS NOT NULL ) and (orders.creater=?) ) OR  (order_comments.user=? and order_comments.parent_id IS NULL)
+
+##获取指定人的评论
+#getCreaterComment
+SELECT
+  order_comments.id,
+  comments.user,
+  order_comments.content,
+  order_comments.parent_id,
+  order_comments.`_c`
+FROM order_comments
+  join orders on order_comments.order_id=orders.order_id
+  left join order_comments comments on order_comments.parent_id = comments.id
+where ((order_comments.parent_id IS NOT NULL ) and (orders.creater=?) ) OR  (order_comments.user=? and order_comments.parent_id IS NULL)
+
+
+##获取指定人的被回复条数
+#getReplyCount
+SELECT
+  count(*) as count
+FROM order_comments
+  join orders on order_comments.order_id=orders.order_id
+  join order_comments comments on order_comments.parent_id = comments.id
+where (order_comments.parent_id IS NOT NULL ) and (comments.user= ?)
+##获取指定人的被回复
+#getReply
+SELECT
+  order_comments.id,
+  orders.creater as user,
+  order_comments.content,
+  order_comments.parent_id,
+  order_comments.`_c`
+FROM order_comments
+  join orders on order_comments.order_id=orders.order_id
+  join order_comments comments on order_comments.parent_id = comments.id
+where (order_comments.parent_id IS NOT NULL ) and (comments.user= ?)

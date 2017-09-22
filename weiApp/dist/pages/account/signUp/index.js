@@ -17,8 +17,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-// import request from '../../utils/api'
-// import { host } from '../../config/api'
 var SignUp = function (_wepy$page) {
   _inherits(SignUp, _wepy$page);
 
@@ -50,4 +48,4 @@ var SignUp = function (_wepy$page) {
 
 Page(require('./../../../npm/wepy/lib/wepy.js').default.$createPage(SignUp , 'pages/account/signUp/index'));
 
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImluZGV4LmpzIl0sIm5hbWVzIjpbIlNpZ25VcCIsIm1ldGhvZHMiLCJqdW1wVG8iLCJlIiwidXJsIiwidGFyZ2V0IiwiZGF0YXNldCIsIm5hdmlnYXRlVG8iLCJwYWdlIl0sIm1hcHBpbmdzIjoiOzs7Ozs7O0FBQ0E7Ozs7Ozs7Ozs7OztBQUNBO0FBQ0E7SUFDcUJBLE07Ozs7Ozs7Ozs7Ozs7O3NMQUNuQkMsTyxHQUFVO0FBQ1JDLGNBQVEsZ0JBQVNDLENBQVQsRUFBWTtBQUFBLFlBQ1pDLEdBRFksR0FDSkQsRUFBRUUsTUFBRixDQUFTQyxPQURMLENBQ1pGLEdBRFk7O0FBRWxCLHVCQUFLRyxVQUFMLENBQWdCO0FBQ2RIO0FBRGMsU0FBaEI7QUFHRDtBQU5PLEs7Ozs7RUFEd0IsZUFBS0ksSTs7a0JBQXBCUixNIiwiZmlsZSI6ImluZGV4LmpzIiwic291cmNlc0NvbnRlbnQiOlsiXHJcbmltcG9ydCB3ZXB5IGZyb20gJ3dlcHknXHJcbi8vIGltcG9ydCByZXF1ZXN0IGZyb20gJy4uLy4uL3V0aWxzL2FwaSdcclxuLy8gaW1wb3J0IHsgaG9zdCB9IGZyb20gJy4uLy4uL2NvbmZpZy9hcGknXHJcbmV4cG9ydCBkZWZhdWx0IGNsYXNzIFNpZ25VcCBleHRlbmRzIHdlcHkucGFnZSB7XHJcbiAgbWV0aG9kcyA9IHtcclxuICAgIGp1bXBUbzogZnVuY3Rpb24oZSkge1xyXG4gICAgICBsZXQgeyB1cmwgfSA9IGUudGFyZ2V0LmRhdGFzZXRcclxuICAgICAgd2VweS5uYXZpZ2F0ZVRvKHtcclxuICAgICAgICB1cmxcclxuICAgICAgfSlcclxuICAgIH1cclxuICB9XHJcbn1cclxuIl19
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImluZGV4LmpzIl0sIm5hbWVzIjpbIlNpZ25VcCIsIm1ldGhvZHMiLCJqdW1wVG8iLCJlIiwidXJsIiwidGFyZ2V0IiwiZGF0YXNldCIsIm5hdmlnYXRlVG8iLCJwYWdlIl0sIm1hcHBpbmdzIjoiOzs7Ozs7O0FBQ0E7Ozs7Ozs7Ozs7OztJQUNxQkEsTTs7Ozs7Ozs7Ozs7Ozs7c0xBQ25CQyxPLEdBQVU7QUFDUkMsY0FBUSxnQkFBU0MsQ0FBVCxFQUFZO0FBQUEsWUFDWkMsR0FEWSxHQUNKRCxFQUFFRSxNQUFGLENBQVNDLE9BREwsQ0FDWkYsR0FEWTs7QUFFbEIsdUJBQUtHLFVBQUwsQ0FBZ0I7QUFDZEg7QUFEYyxTQUFoQjtBQUdEO0FBTk8sSzs7OztFQUR3QixlQUFLSSxJOztrQkFBcEJSLE0iLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VzQ29udGVudCI6WyJcclxuaW1wb3J0IHdlcHkgZnJvbSAnd2VweSdcclxuZXhwb3J0IGRlZmF1bHQgY2xhc3MgU2lnblVwIGV4dGVuZHMgd2VweS5wYWdlIHtcclxuICBtZXRob2RzID0ge1xyXG4gICAganVtcFRvOiBmdW5jdGlvbihlKSB7XHJcbiAgICAgIGxldCB7IHVybCB9ID0gZS50YXJnZXQuZGF0YXNldFxyXG4gICAgICB3ZXB5Lm5hdmlnYXRlVG8oe1xyXG4gICAgICAgIHVybFxyXG4gICAgICB9KVxyXG4gICAgfVxyXG4gIH1cclxufVxyXG4iXX0=

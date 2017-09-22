@@ -26,11 +26,9 @@ module.exports = class OrderWantHelpController extends jike.Controller {
 
     let model = new OrderWantHelpModel();
 
-    let insertId = await model.add({ id: OrderController.makeId("F"), title, content, college, address, gender_constraint,reward_type:rewardType, reward, deadline, phone_number:phoneNumber, weixin }, this.reqUser);
+    let insertId = await model.add({ id: OrderController.makeId("F"), title, content, college, address, gender_constraint, reward_type: rewardType, reward, deadline, phone_number: phoneNumber, weixin }, this.reqUser);
 
-    return this.json({
-      data: insertId
-    })
+    return this.json(insertId)
   }
   /**
    * 取消订单
@@ -40,9 +38,7 @@ module.exports = class OrderWantHelpController extends jike.Controller {
 
     let result = await model.cancel(id, this.reqUser);
 
-    return this.json({
-      data: result
-    })
+    return this.json(result)
   }
   /**
    * 抢单
@@ -54,9 +50,7 @@ module.exports = class OrderWantHelpController extends jike.Controller {
     let result = await model.grab(id, this.reqUser);
 
 
-    return this.json({
-      data: result
-    })
+    return this.json(result)
   }
   /**
    * 放弃跑跑
@@ -65,9 +59,7 @@ module.exports = class OrderWantHelpController extends jike.Controller {
 
     let model = new OrderWantHelpModel();
     let result = await model.quit(id, this.reqUser);
-    return this.json({
-      data: result
-    })
+    return this.json(result)
   }
   /**
    * deliver 配送中
@@ -75,9 +67,7 @@ module.exports = class OrderWantHelpController extends jike.Controller {
   async deliver({ id }) {
     let model = new OrderWantHelpModel();
     let result = await model.deliver(id, this.reqUser);
-    return this.json({
-      data: result
-    })
+    return this.json(result)
   }
   /**
    * 配送验证  等待确认
@@ -86,9 +76,7 @@ module.exports = class OrderWantHelpController extends jike.Controller {
   async finally({ id }) {
     let model = new OrderWantHelpModel();
     let result = await model.finally(id, this.reqUser);
-    return this.json({
-      data: result
-    })
+    return this.json(result)
   }
   /**
    * 订单结束
@@ -97,8 +85,6 @@ module.exports = class OrderWantHelpController extends jike.Controller {
   async end({ id }) {
     let model = new OrderWantHelpModel();
     let result = await model.end(id, this.reqUser);
-    return this.json({
-      data: result
-    })
+    return this.json(result)
   }
 }

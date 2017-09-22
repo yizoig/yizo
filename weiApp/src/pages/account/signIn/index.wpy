@@ -1,9 +1,9 @@
 <template lang="wxml" src="./index.wxml"></template>
 <script>
 import wepy from 'wepy'
-import { apis } from '../../../config/api'
-import { Validate, request } from '../../../utils/tools'
-import { saveUserInfo } from '../../../utils/user'
+import { Validate } from '../../../lib/utils/index'
+import UserApi from '../../../lib/apis/user'
+import User from '../../../lib/services/user'
 import Toast from '../../../components/toast/index'
 export default class SignIn extends wepy.page {
   data = {
@@ -30,7 +30,7 @@ export default class SignIn extends wepy.page {
       this[e.target.dataset.name] = e.detail.value
       this.$apply()
     },
-    onSignIn: function() {
+    onSignIn: async function() {
       let { account, password } = this.data
       try {
         console.log({ account, password })
@@ -43,7 +43,9 @@ export default class SignIn extends wepy.page {
           icon: 'loading',
           mask: true
         })
-        request(apis.account.signIn, params).then(({ data }) => {
+
+        let { data } = await UserApi.SignIn(params)
+        if (data) {
           wepy.setStorage({
             key: 'remember',
             data: {
@@ -56,20 +58,13 @@ export default class SignIn extends wepy.page {
             icon: 'success',
             mask: true
           })
-          saveUserInfo(data,this)
+          User.saveUserInfo(data, this)
           setTimeout(() => {
             wepy.switchTab({
               url: '/pages/mine/index'
             })
           }, 1000)
-        },
-          reason => {
-            this.$invoke('toast', 'showToast', {
-              title: reason,
-              icon: 'error',
-              mask: true
-            })
-          })
+        }
       } catch (e) {
         this.$invoke('toast', 'showToast', {
           title: e.message,

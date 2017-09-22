@@ -2,8 +2,6 @@
 <script>
 import wepy from 'wepy'
 import 'wepy-async-function'
-// import request from '../../utils/api'
-// import { host } from '../../config/api'
 import Avatar from '../../components/users/avatar/index'
 import login from '../../components/mixins/login'
 export default class Mine extends wepy.page {
@@ -21,6 +19,9 @@ export default class Mine extends wepy.page {
   }
   mixins = [login]
   methods = {
+    syncWxInfo: function() {
+
+    },
     navigateTo: function(url) {
       wepy.navigateTo({
         url
@@ -37,6 +38,7 @@ export default class Mine extends wepy.page {
       })
       this.weiInfo = weiInfo
       this.userInfo = this.$parent.globalData['userInfo']
+      this.id = this.userInfo['id']
       this.$apply()
       console.log(this)
     } catch (e) {
