@@ -46,7 +46,7 @@ export default class WantHelpOrder extends wepy.component {
    */
   async loadMore({ refresh = false } = {}) {
     try {
-      let { college_id } = this.$parent.data.college
+      let { college_id } = wepy.getStorageSync('college') || {}
       let { data } = await WanHelpOrderApi.list({ needPage: true, ...this.limit, college: college_id })
       let { orders = [] } = data
       /**

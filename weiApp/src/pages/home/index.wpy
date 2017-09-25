@@ -21,14 +21,16 @@ export default class Home extends wepy.page {
     }
   }
   onReachBottom() {
-     /**
-     * 与指定的组件通信
-     */
+    /**
+    * 与指定的组件通信
+    */
     this.$broadcast('request-loadMre', 'wantHelpOrder')
   }
-  onLoad() {
-    this.college = this.$parent.globalData.college
+  onShow() {
+    this.college = wepy.getStorageSync('college')
     this.$apply()
+  }
+  onLoad() {
     this.$broadcast('request-loadMre', 'wantHelpOrder')
   }
   onPullDownRefresh() {

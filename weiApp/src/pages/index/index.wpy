@@ -15,9 +15,7 @@ export default class Index extends wepy.page {
     onSelect: function(e) {
       let { id = null } = e.currentTarget.dataset
       let college = this.getCollege(id)
-      this.$parent.globalData['college'] = college
-
-      console.log(college,'index');
+      wepy.setStorageSync('college', college)
       wepy.switchTab({
         url: `/pages/home/index`
       })

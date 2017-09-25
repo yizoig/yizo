@@ -209,6 +209,7 @@ export default class WantHelp extends wepy.page {
   async loadData() {
     try {
       let { data } = await WanHelpOrderApi.info({ id: this.id })
+      console.log(data);
       this.detail = data.info
       let time = new Date(this.detail['_c'])
       this.orderId = this.detail['order_id']

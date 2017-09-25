@@ -75,7 +75,7 @@ export default class BaseInfoSettting extends wepy.page {
     }
   }
   async onShow() {
-    let userInfo = await this.$parent.globalData.userInfo
+    let userInfo = wepy.getStorageSync('userInfo')
     this.cache['id'] = userInfo['id']
     this.userInfo = userInfo
     this.$apply()

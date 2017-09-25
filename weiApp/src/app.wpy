@@ -13,17 +13,17 @@ export default class extends wepy.app {
       'pages/order/details/wantHelp/index',
       'pages/home/index',
       'pages/mine/index',
-      'pages/release/wantHelp/index',
-      'pages/order/result/index',
       'pages/release/index',
-      'pages/mine/setting/baseinfo/index',
-      'pages/mine/setting/account/index',
-      'pages/account/changePwd/index',
-      'pages/account/changeTel/index',
-      'pages/release/offerHelp/index',
-      'pages/account/signIn/index',
-      'pages/account/forgotPwd/index',
-      'pages/account/signUp/index'
+      'pages/release/wantHelp/index'
+      // 'pages/order/result/index',
+      // 'pages/mine/setting/baseinfo/index',
+      // 'pages/mine/setting/account/index',
+      // 'pages/account/changePwd/index',
+      // 'pages/account/changeTel/index',
+      // 'pages/release/offerHelp/index',
+      // 'pages/account/signIn/index',
+      // 'pages/account/forgotPwd/index',
+      // 'pages/account/signUp/index'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -70,7 +70,7 @@ export default class extends wepy.app {
   }
   async onLaunch() {
     await User.autoSignIn()
-    this.globalData['userInfo'] = wepy.getStorageSync('userInfo')
+
   }
 }
 </script>

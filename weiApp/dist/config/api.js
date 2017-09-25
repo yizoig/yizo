@@ -1,7 +1,7 @@
 'use strict';
 
 //环境
-var env = 'production'; //'development' or 'production'
+var env = 'development'; //'development' or 'production'
 var version = 2.0;
 
 var hosts = {

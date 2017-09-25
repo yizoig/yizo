@@ -8,7 +8,6 @@ for (let key in Code) {
 }
 async function doFetch(url, method = 'GET', data = {}, header = {}) {
 
-
   let token = wepy.getStorageSync("access-token")
   header['content-type'] = 'application/json'
   if (token) {
@@ -17,10 +16,10 @@ async function doFetch(url, method = 'GET', data = {}, header = {}) {
   //替换url参数
   let arr = url.match(/\/:[a-zA-Z][0-9a-zA-Z]+/g);
   if (data && arr != null) {
-    for (let value of arr) {
-      if (value.substring(2) in data) {
-        url = url.replace(value, '/' + data[value.substring(2)]);
-        delete data[value.substring(2)];
+    for (let k in arr) {
+      if (arr[k].substring(2) in data) {
+        url = url.replace(arr[k], '/' + data[value.substring(2)]);
+        delete data[arr[k].substring(2)];
       }
     }
   }

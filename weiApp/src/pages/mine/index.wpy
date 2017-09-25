@@ -37,7 +37,7 @@ export default class Mine extends wepy.page {
         key: 'weiInfo'
       })
       this.weiInfo = weiInfo
-      this.userInfo = this.$parent.globalData['userInfo']
+      this.userInfo = wepy.getStorageSync('userInfo')
       this.id = this.userInfo['id']
       this.$apply()
       console.log(this)

@@ -29,6 +29,8 @@ async function requestHttp(option) {
   })
 }
 async function requestHttps(option) {
+
+  console.log(2)
   return new Promise((resolve, reject) => {
 
     let {body={},method='GET'} = option
