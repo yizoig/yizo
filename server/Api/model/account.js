@@ -5,24 +5,22 @@ module.exports = class AccountModel extends jike.Model {
   constructor() {
     super();
   }
-  async weixinSignIn(openid, { nickName, gender }) {
-    //判断时候存在用户
-    let [user = null] = await this.query(sqls.user.wxSignIn, openid);
-    if (user) {
-      return user;
-    }
+  async getWeixin(openid, { nickName, gender }) {
+     //判断时候存在用户
+     let [user = null] = await this.query(sqls.user.wxSignIn, openid);
+     return user;
     //不存在就注册
     //开启事务
     await this.startTrans();
     //在用户表中添加用户基本信息
-    let { insertId = null } = await this.query(sqls.user.add,{balance:0,wxOpenId:openid});
+    let { insertId = null } = await this.query(sqls.user.add, { balance: 0, wxOpenId: openid });
     if (!insertId) {
       throw new BaseError(Code.UN_KNOWN_ERROR);
     }
     let { insertId: insertAccountId } = await this.query(sqls.account.addAccount, { user_id: insertId, nickname: nickName, gender });
     if (insertAccountId) {
       this.commit();
-    }else{
+    } else {
       this.rollback();
       throw new BaseError(Code.SIGNIN_ERR);
     }

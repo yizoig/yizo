@@ -2,6 +2,7 @@
 <script>
 import wepy from 'wepy'
 import Toast from '../../../components/toast/index'
+import Alert from '../../../components/alert/index'
 import { Validate } from '../../../lib/utils/index'
 import WanHelpOrderApi from '../../../lib/apis/wantHelpOrder'
 export default class ReleaseWantHelp extends wepy.page {
@@ -9,15 +10,16 @@ export default class ReleaseWantHelp extends wepy.page {
     startDate: null,
     endDate: null,
     otherReward: [
-      '请你吃饭', '你开价', '自定义1', '自定义2', '自定义3', '自定义4'
+      '请你吃饭', '你开价'
     ],
     form: {
       rewardType: 'money'
     }
   }
   components = {
-    toast: Toast
-  }
+    toast: Toast,
+    alert: Alert
+  } 
   methods = {
     formValueChange: function(e) {
       this.form[e.currentTarget.dataset.name] = e.detail.value
@@ -36,6 +38,17 @@ export default class ReleaseWantHelp extends wepy.page {
       this.form['reward'] = value
       this.$apply()
     },
+    addReward: function() {
+      this.$invoke('alert', 'showAlert', {
+        title: '添加酬劳',
+        okText: "编辑完成",
+        placeholder: "请输入酬劳方式(最多6个字)",
+        onOK: (value) => {
+          this.otherReward.push(value)
+          this.$apply()
+        }
+      })
+    },
     release: async function() {
       let params = this.form
       try {
@@ -49,9 +62,9 @@ export default class ReleaseWantHelp extends wepy.page {
           ['phoneNumber', 'tel', '联系电话格式不正确', Validate.MUST_VALIDATE],
           ['weixin', 'require', '微信号不能为空', Validate.MUST_VALIDATE]
         ])
-        let college = this.$parent.globalData.college
+        let { college_id: collegeId } = wepy.getStorageSync('college') || {}
         params['deadline'] = params['dueDate'] + ' ' + params['dueTime']
-        params['college'] = college['college_id']
+        params['college'] = collegeId
         delete params['dueDate']
         delete params['dueTime']
         this.$invoke('toast', 'showToast', {

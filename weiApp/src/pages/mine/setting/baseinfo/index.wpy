@@ -49,7 +49,8 @@ export default class BaseInfoSettting extends wepy.page {
         })
         let { data } = await UserApi.updateInfo(params)
         if (data) {
-          User.setuserInfo(this.data.cache)
+          console.log(User)
+          User.setUserInfo(this.data.cache)
           this.$invoke('toast', 'showToast', {
             title: '修改成功',
             icon: 'success',

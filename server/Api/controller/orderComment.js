@@ -9,10 +9,10 @@ module.exports = class OrderCommentController extends jike.Controller {
     if (order_id) {
       data = await new OrderCommentModel().list({ page, size, needPage }, { order_id, want });
       return this.json(data);
-    }else if (creater) {
-      data = await new OrderCommentModel().ListBycreater({ page, size, needPage },{creater});
+    } else if (creater) {
+      data = await new OrderCommentModel().ListBycreater({ page, size, needPage }, { creater });
     } else if (user) {
-      data = await new OrderCommentModel().ListReplyByUser({ page, size, needPage },{user});
+      data = await new OrderCommentModel().ListReplyByUser({ page, size, needPage }, { user });
     } else {
       throw new BaseError(Code.PARAMS_ERR);
     }
@@ -22,9 +22,9 @@ module.exports = class OrderCommentController extends jike.Controller {
    * 评论
    * @param {*} param0 
    */
-  async add({ user, content, order_id, parent }) {
+  async add({ user_id, content, order_id, parent }) {
 
-    let data = await new OrderCommentModel().add({ user, content, order_id, parent });
+    let data = await new OrderCommentModel().add({ user_id, content, order_id, parent });
 
     this.json(data);
   }

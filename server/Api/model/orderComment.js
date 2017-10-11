@@ -49,12 +49,12 @@ module.exports = class OrderOrderCommentModelModel extends jike.Model {
    * 添加评论
    * @param {*} param0 
    */
-  async add({ user, content, order_id, parent = null }) {
-    let { affectedRow } = await this.query(sqls.orderComment.add, {
+  async add({ user_id, content, order_id, parent = null }) {
+    let { affectedRows } = await this.query(sqls.orderComment.add, {
       order_id,
       content,
-      user,
-      parent
+      user:user_id,
+      parent_id:parent
     });
     return affectedRows > 0;
   }

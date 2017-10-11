@@ -3,6 +3,7 @@
 <script>
 import wepy from 'wepy'
 import Avatar from '../../users/avatar/index'
+import Alert from '../../alert/index'
 import OrderCommentApi from '../../../lib/apis/orderComment'
 export default class Comment extends wepy.component {
   data = {
@@ -10,15 +11,39 @@ export default class Comment extends wepy.component {
     list: []
   }
   components = {
-    avatar: Avatar
+    avatar: Avatar,
+    alert: Alert
   }
-  async onLoad() {
-    await this.loadData()
+  watch = {
+    async detail(newValue, oldValue) {
+      if (newValue) {
+        this.detail = newValue
+        this.$apply()
+        await this.loadData()
+      }
+    }
+  }
+  methods = {
+    addComment:async function(parent) {
+      let { data: userInfo } = await wepy.getStorage({
+        key: 'userInfo'
+      })
+      this.$invoke('alert', 'showAlert', {
+        title: '写评论',
+        placeholder: '请输入你想说的话',
+        okText: '评论',
+        onOK: async (content) => {
+          console.log(parent)
+          let result = await OrderCommentApi.add({ order_id: this.detail['order_id'], content,user_id:userInfo['id'],parent});
+        }
+      })
+    }
   }
   async loadData() {
-    let { data } = await OrderCommentApi.list({ order_id: 'F20170921234252410', want: 'tree' })
-    let time = new Date();
-    for(let k in data.list){
+    let { detail } = this
+    let { data } = await OrderCommentApi.list({ order_id: detail['order_id'], want: 'tree' })
+    let time = new Date()
+    for (let k in data.list) {
       data.list[k]['_c'] = time.getDateDiff(data.list[k]['_c'])
     }
     this.list = data.list

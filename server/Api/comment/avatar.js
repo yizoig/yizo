@@ -32,8 +32,6 @@ function getAvatar(id){
 //设置头像
 function setAvatar({avatar,id}){
    
-
-    console.log(avatar);
     checkImage(avatar)
     try{
         //移动文件到头像目录

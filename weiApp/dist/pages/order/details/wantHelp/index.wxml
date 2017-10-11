@@ -17,6 +17,7 @@
     </view>
   </view>
 </view>
+  
   <view class="detail-top">
     <view class="creater">
       
@@ -85,10 +86,26 @@
     </block>
   </view>
   <view class="comment-list">
+  <view class="alert {{$comment$alert$focus?'focus':''}}" wx:if="{{$comment$alert$show}}" bindtap="$comment$alert$close">
+ <view class="alert-box" catchtap="$comment$alert$boxtap">
+     <view class="alert-header">
+         <view class="alert-title">{{$comment$alert$title}}</view>
+         <view class="close iconfont icon-power" bindtap="$comment$alert$close"/>
+     </view>
+     <view class="alert-content">
+        <textarea placeholder="{{$comment$alert$placeholder}}" bindinput="$comment$alert$textChange" bindfocus="$comment$alert$focus" bindblur="$comment$alert$blur">
+            {{$comment$alert$message}}
+        </textarea>
+     </view>
+     <view class="alert-footer">
+         <view class="submit" bindtap="$comment$alert$submit">{{$comment$alert$okText}}</view>
+     </view>
+ </view>
+</view>
   <view class="comment-top">
     <view class="title">评论(2)</view>
     <view class="add">
-      <text class="iconfont icon-edit">写评论</text>
+      <text class="iconfont icon-edit" bindtap="$comment$addComment" data-wepy-params-a="">写评论</text>
     </view>
   </view>
   <view class="comment-content">
@@ -116,10 +133,10 @@
                 <view class="item">
                     <view class="info">
                         <view style="color:#f00">主儿回复:</view>
-                        <view>{{$comment$commentItem._c}}</view>
+                        <view>{{$comment$childItem._c}}</view>
                       </view>
                       <view class="comment-text">
-                          {{$comment$commentItem.content}}
+                          {{$comment$childItem.content}}
                       </view>
                 </view>
             </block>

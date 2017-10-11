@@ -1,57 +1,52 @@
 let AccountModel = require("../model/account");
 let fs = require('fs');
+let path = require('path');
 let { getAvatar, setAvatar } = require("../comment/avatar");
 let SmsModel = require("../model/sms");
 let jwt = require("../comment/jwt");
+let { weixinVerifry, saveWeixinAvatar } = require("../comment/weixin")
 let { BaseError, Code, request, crypto: { sha1 } } = jike;
-let WXBizDataCrypt = require("../comment/WXBizDataCrypt")
+
 module.exports = class AccountController extends jike.Controller {
   /**
    * 微信登录
    */
-  async weixinSignin({ code, rawData, signature, encryptedData,iv }) {
-
+  async weixinSignin({ code, rawData, signature, encryptedData, iv }) {
     try {
-      //获取微信openid, session_key
-      let resultData = await request.https({
-        hostname: `api.weixin.qq.com`,
-        path: '/sns/jscode2session',
-        body: {
-          appid: 'wx5460044ed4be3f57',
-          secret: 'a1c0ad02b8d77887d56177a2fc71318a',
-          js_code: code,
-          grant_type: 'authorization_code',
-        }
-      });
-      let { session_key, expires_in, openid } = JSON.parse(resultData);
-      //计算signature, 并与小程序传入的signature比较, 校验signature的合法性, 不匹配则返回signature不匹配的错误.
-      let newSignature = sha1(JSON.stringify(rawData) + session_key);
-      if(newSignature!=signature){
+      let openid = await weixinVerifry({ code, rawData, signature, encryptedData, iv });
+      if (!openid) {
         throw new BaseError(Code.SIGNIN_ERR);
       }
-      //使用第4步返回的session_key解密encryptData, 将解得的信息与rawData中信息进行比较, 需要完全匹配, 解得的信息中也包括openid
-      let pc = new WXBizDataCrypt('wx5460044ed4be3f57', session_key)
-      let data = pc.decryptData(encryptedData , iv)
-      if(openid!=data.openId){
-        throw new BaseError(Code.SIGNIN_ERR);
+      let user = await new AccountModel().getWeixin(openid, rawData);
+      if (!fs.existsSync(path.join(__dirname, `../static/uploda/avatars/${user['id']}.png`))) {
+        saveWeixinAvatar(user['id'], rawData['avatarUrl']);
       }
-      let {nickName,gender,language,city,province,country,avatarUrl} = data;
-      if(JSON.stringify({nickName,gender,language,city,province,country,avatarUrl})!=JSON.stringify(rawData)){
-        throw new BaseError(Code.SIGNIN_ERR);
-      }
-      let user = await new AccountModel().weixinSignIn(openid,rawData);
+      //判断头像是否存在
       this.header('access-token', jwt.makeToken({
         sub: user['id'],
-        type:'user',
+        type: 'user',
         id: user['user_id']
       }));
-      this.header('user-info',true);
+      this.header('user-info', true);
       return this.json({
-        info:user
+        info: user
       });
 
     } catch (e) {
       console.log(e)
+    }
+  }
+  /**
+   * 微信信息同步
+   */
+  async weixinSync({ rawData }) {
+    try {
+      let { nickName:nickname, gender, avatarUrl } = rawData;
+      let result = await new AccountModel().changeInfo(this.reqUser['id'], { nickname, gender });
+      saveWeixinAvatar(this.reqUser['id'], rawData['avatarUrl']);
+      return this.json(result);
+    } catch (e) {
+      return this.json(false);
     }
   }
   /**

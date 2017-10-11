@@ -24,7 +24,7 @@ export default class Result extends wepy.page {
     }
   }
   onLoad({ type }) {
-    this.type = (type in this.mess) ? type : 'other'
+    this.type = (type in this.data.mess) ? type : 'other'
     this.$apply()
   }
 }

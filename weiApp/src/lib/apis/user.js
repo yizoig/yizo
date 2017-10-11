@@ -14,6 +14,6 @@ const UserApi = {
   //修改手机号
   changeTel:Apis.put(host+'/account/tel'),
   //同步微信信息
-  syncWxInfo:null
+  syncWxInfo:Apis.post(host+'/account/weixin/syncinfo/:id'),
 }
 export default UserApi;

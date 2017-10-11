@@ -44,7 +44,7 @@ export default class SignIn extends wepy.page {
           mask: true
         })
 
-        let { data } = await UserApi.SignIn(params)
+        let { data } = await UserApi.signIn(params)
         if (data) {
           wepy.setStorage({
             key: 'remember',
@@ -58,7 +58,7 @@ export default class SignIn extends wepy.page {
             icon: 'success',
             mask: true
           })
-          User.saveUserInfo(data, this)
+          User.setUserInfo(data, this)
           setTimeout(() => {
             wepy.switchTab({
               url: '/pages/mine/index'

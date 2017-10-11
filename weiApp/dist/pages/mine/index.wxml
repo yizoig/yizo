@@ -1,6 +1,24 @@
 <view class="mine">
+  <view class="app-toast {{$toast$mask?'app-toast-mask':''}}"  wx:if="{{$toast$show}}">
+  <view style="display: inline-block">
+    <view class="app-toast-box ">
+      <view class="toast-icon">
+        <view class="loading" wx:if="{{$toast$icon=='loading'}}">
+  <view style="left: 0;top: 0;"/>
+  <view style="right: 0;top: 0;animation-delay: .4s;"/>
+  <view style=" right: 0;bottom: 0;animation-delay: .8s;"/>
+  <view style=" left: 0; bottom: 0;animation-delay: 1.2s;"/>
+</view>
+        <block wx:else>
+          <view class="iconfont icon-{{$toast$icon}}"/>
+        </block>
+      </view>
+      <view class="toast-content">{{$toast$title}}</view>
+    </view>
+  </view>
+</view>
   <view class="header">
-    <block  wx:if="{{userInfo}}">
+    <block wx:if="{{userInfo}}">
       <view class="info-box">
         <view class="user-info">
           
@@ -79,13 +97,13 @@
     <view class="menu-group">
       <view class="menu-title">其他</view>
       <view class="menu-list">
-        <view class="menu-item" bindtap="navigateTo" data-wepy-params-a="{{'/pages/mine/setting/account/index'}}">
+        <!-- <view class="menu-item" bindtap="navigateTo({{'/pages/mine/setting/account/index'}})">
           <view>
-            <i class="iconfont icon-feed-back" style="color:#4285F4;"/>
+            <i class="iconfont icon-feed-back" style="color:#4285F4;"></i>
             <text>帐号安全</text>
           </view>
-          <view class="iconfont icon-right-arrow" style="color:#51C332;"/>
-        </view>
+          <view class="iconfont icon-right-arrow" style="color:#51C332;"></view>
+        </view> -->
         <view class="menu-item">
           <view>
             <i class="iconfont icon-feed-back" style="color:#4285F4;"/>

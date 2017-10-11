@@ -1,6 +1,6 @@
 ##创建评论
 #add
-insert into order_comments set = ?;
+insert into order_comments set ?;
 
 
 ##更具订单获取评论

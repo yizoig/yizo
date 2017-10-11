@@ -1,5 +1,6 @@
 <view class="run-order-detail">
   <toast></toast>
+  
   <view class="detail-top">
     <view class="creater">
       <avatar :id.sync="creater"></avatar>

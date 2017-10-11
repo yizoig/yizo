@@ -21,11 +21,11 @@ const User = {
       console.log(e)
     }
   },
-  setUserinfo: () => {
+  setUserInfo: (data) => {
     let userInfo = wepy.getStorageSync("userInfo");
     let remember = wepy.getStorageSync("remember");
-    if (userinfo) {
-      userinfo = replace(userinfo, data);
+    if (userInfo) {
+      userInfo = replace(userInfo, data);
       wepy.setStorage({
         key: "userInfo",
         data: userInfo

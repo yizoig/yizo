@@ -5,6 +5,18 @@ let { Interface, Route, Validate } = jike;
  * 默认需要token
  */
 Interface.create('/account', AccountController, [
+
+  /**
+   * 同步微信信息
+   */
+  Route('/weixin/syncinfo/:id', 'post','weixinSync',{
+    validate: {
+      rawData: [
+        Validate.MUST_VALIDATE,
+        ['require', 'paramsNotNullErr']
+      ]
+    }
+  }),
   Route('/signIn/weixin', 'post', 'weixinSignin', {
     validate: {
       code: [

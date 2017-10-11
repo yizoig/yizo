@@ -17,6 +17,22 @@
     </view>
   </view>
 </view>
+  <view class="alert {{$alert$focus?'focus':''}}" wx:if="{{$alert$show}}" bindtap="$alert$close">
+ <view class="alert-box" catchtap="$alert$boxtap">
+     <view class="alert-header">
+         <view class="alert-title">{{$alert$title}}</view>
+         <view class="close iconfont icon-power" bindtap="$alert$close"/>
+     </view>
+     <view class="alert-content">
+        <textarea placeholder="{{$alert$placeholder}}" bindinput="$alert$textChange" bindfocus="$alert$focus" bindblur="$alert$blur">
+            {{$alert$message}}
+        </textarea>
+     </view>
+     <view class="alert-footer">
+         <view class="submit" bindtap="$alert$submit">{{$alert$okText}}</view>
+     </view>
+ </view>
+</view>
   <view class="title">
     <image src="../../../public/image/wantHelp.png" class="icon"/>
     <view>寻求帮助</view>
@@ -72,6 +88,7 @@
         <block wx:for="{{otherReward}}" wx:for-index="index" wx:for-item="item" wx:key="key">
           <view class="radio-item {{item==form.reward?'active':''}}" bindtap="switchReward" data-wepy-params-a="{{item}}">{{item}}</view>
         </block>
+        <view class="radio-item " bindtap="addReward">自定义</view>
       </view>
       <view style="font-size:25rpx;color:#808080;padding:0 0 10rpx 20rpx;">"我的酬劳是{{form.reward}}"</view>
     </view>

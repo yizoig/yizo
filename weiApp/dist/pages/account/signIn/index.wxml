@@ -30,9 +30,6 @@
   </view>
   <view class="btn-controller">
     <button class="btn blue" bindtap="onSignIn">登录</button>
-    <button class="btn" bindtap="jumpTo" data-url="/pages/sign/signUp/index">
-            注册
-        </button>
   </view>
   <view bindtap="redirectTo" data-url="/pages/sign/forgotPwd/index" class="link" style="text-align: right">
     忘记密码

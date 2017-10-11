@@ -81,7 +81,7 @@ class Interface {
                         //将公用的参数验证和不同身份的参数验证合并
                         let validate = Object.assign(args.validate['base'] || {}, args.validate[type || 'user'] || {});
                         for (let key in args.validate) {
-
+                            
                             if (Object.prototype.toString.call(args.validate[key]) === '[object Array]') {
                                 validate[key] = args.validate[key];
                             }

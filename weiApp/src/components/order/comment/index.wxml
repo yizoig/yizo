@@ -1,8 +1,9 @@
 <view class="comment-list">
+  <alert></alert>
   <view class="comment-top">
     <view class="title">评论(2)</view>
     <view class="add">
-      <text class="iconfont icon-edit">写评论</text>
+      <text class="iconfont icon-edit" @tap="addComment()">写评论</text>
     </view>
   </view>
   <view class="comment-content">
@@ -28,10 +29,10 @@
                 <view class="item">
                     <view class="info">
                         <view style="color:#f00">主儿回复:</view>
-                        <view>{{commentItem._c}}</view>
+                        <view>{{childItem._c}}</view>
                       </view>
                       <view class="comment-text">
-                          {{commentItem.content}}
+                          {{childItem.content}}
                       </view>
                 </view>
             </repeat>

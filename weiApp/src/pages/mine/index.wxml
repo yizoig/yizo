@@ -1,4 +1,5 @@
 <view class="mine">
+  <toast />
   <view class="header">
     <block wx:if="{{userInfo}}">
       <view class="info-box">
@@ -75,13 +76,13 @@
     <view class="menu-group">
       <view class="menu-title">其他</view>
       <view class="menu-list">
-        <view class="menu-item" @tap="navigateTo({{'/pages/mine/setting/account/index'}})">
+        <!-- <view class="menu-item" @tap="navigateTo({{'/pages/mine/setting/account/index'}})">
           <view>
             <i class="iconfont icon-feed-back" style="color:#4285F4;"></i>
             <text>帐号安全</text>
           </view>
           <view class="iconfont icon-right-arrow" style="color:#51C332;"></view>
-        </view>
+        </view> -->
         <view class="menu-item">
           <view>
             <i class="iconfont icon-feed-back" style="color:#4285F4;"></i>

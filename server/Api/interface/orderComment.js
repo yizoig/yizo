@@ -25,10 +25,10 @@ Interface.create('/order/comment', OrderCommentController, [
     },
     needToken: false
   }),
-  //创建聘跑跑的订单
+  //评论
   Route('/', 'post', 'add', {
     validate: {
-      user: [
+      user_id: [
         Validate.MUST_VALIDATE,
         ['require', "ValueNotNullErr"]
       ],
@@ -40,6 +40,10 @@ Interface.create('/order/comment', OrderCommentController, [
         Validate.MUST_VALIDATE,
         ['require', "ValueNotNullErr"]
       ],
+      parent:[
+        Validate.EXISTS_VALIDATE,
+        ['require', "ValueNotNullErr"]
+      ]
     },
     needToken: true
   })

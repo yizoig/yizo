@@ -4,6 +4,8 @@ import wepy from 'wepy'
 import 'wepy-async-function'
 import Avatar from '../../components/users/avatar/index'
 import login from '../../components/mixins/login'
+import userApi from '../../lib/apis/user'
+import Toast from '../../components/toast/index'
 export default class Mine extends wepy.page {
   config = {
     'enablePullDownRefresh': true,
@@ -15,12 +17,33 @@ export default class Mine extends wepy.page {
     weiInfo: null
   }
   components = {
-    avatar: Avatar
+    avatar: Avatar,
+    toast: Toast
   }
   mixins = [login]
   methods = {
-    syncWxInfo: function() {
-
+    syncWxInfo: async function() {
+      try {
+        let { id } = this.data
+        let { rawData } = await wepy.getUserInfo()
+        this.$invoke('toast', 'showToast', {
+          title: '同步中...',
+          icon: 'loading',
+          mask: true
+        })
+        let result = await userApi.syncWxInfo({
+          id, rawData
+        })
+        this.$invoke('toast', 'showToast', {
+          title: result ? '同步成功' : '同步失败',
+          icon: result ? 'success' : 'error'
+        })
+      } catch (e) {
+        this.$invoke('toast', 'showToast', {
+          title: e.message,
+          icon: 'error'
+        })
+      }
     },
     navigateTo: function(url) {
       wepy.navigateTo({

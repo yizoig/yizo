@@ -1,0 +1,54 @@
+
+<template src="./index.wxml" ></template>
+
+<script>
+import wepy from 'wepy'
+export default class Alert extends wepy.component {
+  data = {
+    title: null,
+    show: false,
+    message: null,
+    okText: null,
+    placeholder: null,
+    onOK:null,
+    focus: false
+  }
+  methods = {
+    close: function() {
+      this.show = false
+      this.$apply()
+    },
+    boxtap: function() {
+    },
+    textChange: function(e) {
+      this.message = e.detail.value
+      this.$apply()
+    },
+    focus: function() {
+      this.focus = true
+      this.$apply()
+    },
+    blur: function() {
+      this.focus = false
+      this.$apply()
+    },
+    submit: function() {
+      this.onOK(this.message);
+      this.show = false
+      this.$apply()
+    }
+  }
+  showAlert({ message = '', okText = '提交', title = '弹窗', placeholder = '',onOK=()=>{} }) {
+    this.message = message
+    this.okText = okText
+    this.placeholder = placeholder
+    this.title = title
+    this.show = true
+    this.onOK = onOK
+    this.$apply()
+  }
+  onLoad() {
+  }
+}
+</script>
+<style lang="less" src="./index.less"></style>

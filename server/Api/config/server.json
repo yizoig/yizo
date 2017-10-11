@@ -22,5 +22,9 @@
         "host":"127.0.0.1",
         "pssword":"coder123456",
         "post":6379
+    },
+    "weixin":{
+        "appid": "wx5460044ed4be3f57",
+        "secret": "a1c0ad02b8d77887d56177a2fc71318a"
     }
 }

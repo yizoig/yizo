@@ -1,0 +1,16 @@
+<view class="alert {{focus?'focus':''}}" wx:if="{{show}}" @tap="close">
+ <view class="alert-box" catchtap="boxtap">
+     <view class="alert-header">
+         <view class="alert-title">{{title}}</view>
+         <view class="close iconfont icon-power" @tap="close"></view>
+     </view>
+     <view class="alert-content">
+        <textarea placeholder="{{placeholder}}" bindinput="textChange" bindfocus="focus" bindblur="blur">
+            {{message}}
+        </textarea>
+     </view>
+     <view class="alert-footer">
+         <view class="submit" @tap="submit">{{okText}}</view>
+     </view>
+ </view>
+</view>

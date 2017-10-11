@@ -18,7 +18,7 @@ async function doFetch(url, method = 'GET', data = {}, header = {}) {
   if (data && arr != null) {
     for (let k in arr) {
       if (arr[k].substring(2) in data) {
-        url = url.replace(arr[k], '/' + data[value.substring(2)]);
+        url = url.replace(arr[k], '/' + data[arr[k].substring(2)]);
         delete data[arr[k].substring(2)];
       }
     }

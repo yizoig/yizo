@@ -1,5 +1,6 @@
 <view id="releaseList">
   <toast></toast>
+  <alert></alert>
   <view class="title">
     <image src="../../../public/image/wantHelp.png" class="icon"></image>
     <view>寻求帮助</view>
@@ -57,6 +58,7 @@
         <repeat for="{{otherReward}}">
           <view class="radio-item {{item==form.reward?'active':''}}" @tap="switchReward({{item}})">{{item}}</view>
         </repeat>
+        <view class="radio-item " @tap="addReward">自定义</view>
       </view>
       <view style="font-size:25rpx;color:#808080;padding:0 0 10rpx 20rpx;">"我的酬劳是{{form.reward}}"</view>
     </view>
