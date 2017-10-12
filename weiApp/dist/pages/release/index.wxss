@@ -1,1 +1,0 @@
-#release .item{margin-top:8rpx;background:#fff;display:flex;flex-direction:row;align-items:center;padding:10rpx;height:100prx;line-height:100rpx}#release .item .icon{width:90rpx;height:90rpx;margin:0 20rpx}#release .item .mes .name{font-size:33rpx}#release .item .mes .desc{font-size:25rpx;color:#c4c4c4;line-height:40rpx}page{background:#f8f8f8}

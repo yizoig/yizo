@@ -10,7 +10,7 @@ export default class Alert extends wepy.component {
     message: null,
     okText: null,
     placeholder: null,
-    onOK:null,
+    onOK: null,
     focus: false
   }
   methods = {

@@ -1,6 +1,6 @@
 
 //环境
-const env = 'development';//'development' or 'production'
+const env = 'production';//'development' or 'production'
 const version = 2.0
 
 const hosts = {
