@@ -33,7 +33,7 @@ module.exports = class UserModel extends jike.Model {
             .limit((current - 1) * pageSize, current * pageSize)
             .order({
                 id:order['id'],
-                '_c':order['create']
+                '_c':order['create']||'desc'
             })
             .select();
         return user;

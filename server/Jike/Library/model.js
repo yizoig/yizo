@@ -8,7 +8,7 @@ module.exports = class Model extends Mysql {
         super();
         this._data = {};
         if (table && Object.prototype.toString.call(table) === "[object String]") {
-            this._table = table;
+            this._data['table'] = table;
         }
     }
     /**
@@ -74,7 +74,6 @@ module.exports = class Model extends Mysql {
         if (Object.prototype.toString.call(_table) === "[object String]") {
 
             _table = _table.split(',').join('`,`')
-
             if (!this._data['table']) {
                 this._data['table'] = `\`${_table}\``;
             } else {
@@ -83,8 +82,6 @@ module.exports = class Model extends Mysql {
         } else {
             throw new Error("table:参数无效");
         }
-
-        console.log(this._data['table']);
         return this;
     }
 
@@ -390,7 +387,7 @@ module.exports = class Model extends Mysql {
 
         let sql;
         let { field, limit, where, order, table, data, join: tjoin = [''], group, having } = this._data;
-        if (!this._table) {
+        if (!table) {
             throw new Error("请选择操作的表");
         }
         if (order) {
@@ -405,7 +402,7 @@ module.exports = class Model extends Mysql {
                 {
                     sql = `SELECT 
                             ${field ? field.join(',') : '*'} 
-                            FROM ${this._table ? (`\`${this._table}\` ` + (this._data.alias || '') + '') : ''}${table?','+table:''}
+                            FROM ${table}
                             ${tjoin.join(" ")} 
                             ${!where ? '' : ('WHERE ' + where)}
                             ${!order ? '' : (' ORDER BY ' + order.join(','))}
@@ -424,7 +421,7 @@ module.exports = class Model extends Mysql {
                         newData.push(data[key]);
                     }
                     sql = `INSERT INTO 
-                        ${this._table}(${newField.join(',')}) 
+                        ${table}(${newField.join(',')}) 
                         VALUES(${newData.join(',')}) 
                         ${where && 'WHERE ' + where};`
                     break;
@@ -435,7 +432,7 @@ module.exports = class Model extends Mysql {
                     for (let key in data) {
                         newData.push(`${key}=${data[key]}`);
                     }
-                    sql = `UPDATE ${this._table} SET ${newData.join()} ${where && 'WHERE ' + where};`
+                    sql = `UPDATE ${table} SET ${newData.join()} ${where && 'WHERE ' + where};`
                     break;
                 }
             default:
