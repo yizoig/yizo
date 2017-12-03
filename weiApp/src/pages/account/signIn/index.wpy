@@ -58,7 +58,14 @@ export default class SignIn extends wepy.page {
             icon: 'success',
             mask: true
           })
-          User.setUserInfo(data, this)
+          wepy.setStorage({
+            key: "userInfo",
+            data: data
+          });
+          wepy.setStorage({
+            key: "remember",
+            data: { account, password }
+          });
           setTimeout(() => {
             wepy.switchTab({
               url: '/pages/mine/index'

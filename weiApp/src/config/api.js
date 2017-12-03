@@ -5,7 +5,7 @@ const version = 2.0
 
 const hosts = {
   development: 'https://192.168.1.128:3000',
-  production: 'https://api.yizo.zhiyuan95.cn'
+  production: 'https://api.yizo.exvu.vip'
 }
 
 const weixin = {
