@@ -15,7 +15,7 @@ export default class Toast extends wepy.component {
   components = {
     spin: Spin
   }
-  showToast(opt) {
+  showToast({hiddenAfter=async ()=>{},...opt}) {
     for (let key in opt) {
       if (this.hasOwnProperty(key)) {
         this[key] = opt[key]
@@ -24,12 +24,12 @@ export default class Toast extends wepy.component {
     this['show'] = true
     this.$apply()
     if (this['icon'] !== 'loading') {
-      setTimeout(() => {
+      setTimeout(async () => {
         this.hiddenToast()
+        await hiddenAfter();
         console.log('消失')
       }, this.time)
     }
-    console.log(opt)
   }
   hiddenToast() {
     this['show'] = false

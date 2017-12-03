@@ -83,10 +83,10 @@
           </view>
           <view class="iconfont icon-right-arrow" style="color:#51C332;"></view>
         </view> -->
-        <view class="menu-item">
+        <view class="menu-item"  @tap="signOut()">
           <view>
             <i class="iconfont icon-feed-back" style="color:#4285F4;"></i>
-            <text>设置</text>
+            <text>退出账号</text>
           </view>
           <view class="iconfont icon-right-arrow" style="color:#51C332;"></view>
         </view>

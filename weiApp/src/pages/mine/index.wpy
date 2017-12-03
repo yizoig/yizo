@@ -6,6 +6,7 @@ import Avatar from '../../components/users/avatar/index'
 import login from '../../components/mixins/login'
 import userApi from '../../lib/apis/user'
 import Toast from '../../components/toast/index'
+import User from '../../lib/services/user'
 export default class Mine extends wepy.page {
   config = {
     'enablePullDownRefresh': true,
@@ -49,6 +50,18 @@ export default class Mine extends wepy.page {
       wepy.navigateTo({
         url
       })
+    },
+    signOut:async function() {
+      await User.signOut()
+       this.$invoke('toast', 'showToast', {
+          title: '注销成功',
+          icon: 'success',
+          hiddenAfter: ()=>{
+            wepy.reLaunch({
+              url:'../index/index'
+            })
+          }
+        })
     }
   }
   async onShow() {
