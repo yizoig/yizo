@@ -4,3 +4,4 @@ runtime
 dist
 .DS_Store
 .wepycache
+package-lock.json
