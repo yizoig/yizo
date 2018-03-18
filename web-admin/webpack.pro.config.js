@@ -4,18 +4,16 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const { title, version } = require("./package.json");
 const path = require("path");
 module.exports = {
-    entry: './index',
-    mode: 'development',
+    entry: {
+        index: [
+            './index.js'
+        ],
+    },
+    mode: 'production',
     output: {
         path: __dirname + '/src/',
         filename: 'bundle.js'
     },
-    devServer: {
-        inline: true,
-        port: 3333,
-        host: '0.0.0.0'
-    },
-    devtool: "cheap-module-source-map",
     module: {
         rules: [
             {
@@ -49,10 +47,13 @@ module.exports = {
             }
         ]
     },
-    plugins: [new HtmlWebpackPlugin({
-        title: title + '-' + version,
-        template: path.join(__dirname, './source/template.html')
-    })],
+    plugins: [
+        new HtmlWebpackPlugin({
+            title: title + '-' + version,
+            template: path.join(__dirname, './index.html')
+        }),
+        // new webpack.HotModuleReplacementPlugin()
+    ],
     resolve: {
         extensions: [
             '.js',

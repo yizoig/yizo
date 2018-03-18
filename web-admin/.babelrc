@@ -13,5 +13,12 @@
                 "style": "css"
             }
         ]
-    ]
+    ],
+    "env": {
+        "development": {
+            "presets": [
+                "react-hmre"
+            ]
+        }
+    }
 }

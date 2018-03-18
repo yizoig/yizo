@@ -1,40 +1,48 @@
 #login-view {
+    width: 100%;
     .login-header {
         width: 100%;
         height: 60px;
         line-height: 60px;
-        padding:0  100px;
-        .title{
+        padding: 0 100px;
+        .title {
             color: #f98a05;
             font-weight: bold;
-
+            font-size: 20px;
         }
     }
-    .login-main{
+    .login-main {
         background-image: url('./back.png');
         background-repeat: no-repeat;
-            background-position: center;
-            background-size: cover; 
-        height: 780px;
-        line-height: 580px;
-        padding: 0 200px;
+        background-position: center;
+        background-size: cover;
+        display: flex;
+    }
+    .main-inner{
+        width: 1000px;
+        margin: 0 auto;
         display: flex;
         align-items: center;
-        .left{
+        .left {
             background-image: url('./left.png');
             background-repeat: no-repeat;
             background-position: center;
-            background-size: 100%; 
-            width: 500px;
+            background-size: 100%;
+            width: 450px;
             height: 580px;
         }
     }
     .login-box {
-        margin-left: 50px;
-        width: 400px;
+        margin-left: 100px;
+        width: 350px;
         height: 400px;
-        background: rgba(255,255,255,.9);
-        box-shadow: 0 0 3px rgba(0,0,0,0.1);
+        background: rgba(255, 255, 255, .9);
+        box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
         border-radius: 5px;
+        padding: 20px;
+    }
+    .login-footer{
+        line-height: 60px;
+        padding: 0 50px;
     }
 }

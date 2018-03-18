@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './base.less';
-import { BrowserRouter,Switch, Route, browserHistory } from 'react-router-dom';
+import { BrowserRouter,Switch, Route, browserHistory } from './common/Route/index.js';
 import LoginView from './view/login/index.js';
 import HomeView from './view/home/index.js';
 export default class App extends React.Component {
