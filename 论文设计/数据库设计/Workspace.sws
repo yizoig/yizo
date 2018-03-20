@@ -4,7 +4,7 @@
 
 <Workspace>
 	<Local Expanded="Yes">
-		<Model Expanded="Yes" ID="{8C5EFBE2-BFFA-49C0-A1CD-6C6CDCFBA300}" Name="yizo" Type="{CDE44E21-9669-11D1-9914-006097355D9B}" URL="yizo.pdm"/>
+		<Model Expanded="Yes" ID="{8C5EFBE2-BFFA-49C0-A1CD-6C6CDCFBA300}" Name="yizo" Selected="Yes" Type="{CDE44E21-9669-11D1-9914-006097355D9B}" URL="yizo.pdm"/>
 	</Local>
 	<BrowserModule Name="Repository"/>
 </Workspace>
