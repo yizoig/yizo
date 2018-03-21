@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
-import loginReducers from './login';
+import signReducers from './signIn';
 import { routerReducer } from 'react-router-redux'
 export default combineReducers({
-    loginReducers,
+    sign:signReducers,
     routing: routerReducer
 })

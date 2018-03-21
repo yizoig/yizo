@@ -1,23 +1,43 @@
+
+import { createDevTools } from 'redux-devtools'
+import LogMonitor from 'redux-devtools-log-monitor'
+import DockMonitor from 'redux-devtools-dock-monitor'
+
 import React from "react";
 import ReactDom from "react-dom";
 import { Provider, connect } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import reducers from './redux/reducers';
-import Login from './views/login/index.js';
-import Home from './views/home/index.js';
-import { BrowserRouter, Switch, Route, browserHistory } from './common/Route/index.js';
-
-const store = createStore(reducers);
+import SignIn from './containers/signIn/index.js';
+import Home from './containers/home/index.js';
+import { Router, Switch, Route } from './common/Route/index.js';
+import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
+import { createBrowserHistory } from 'history';
+import thunkMiddleware from 'redux-thunk';
+const browserHistory = createBrowserHistory();
+const DevTools = createDevTools(
+    <DockMonitor toggleVisibilityKey="ctrl-h" changePositionKey="ctrl-q">
+        <LogMonitor theme="tomorrow" preserveScrollTop={false} />
+    </DockMonitor>
+)
+const store = createStore(reducers,
+    compose(
+        applyMiddleware(routerMiddleware(browserHistory)),
+        applyMiddleware(thunkMiddleware),
+        DevTools.instrument()
+    )
+);
+const history = syncHistoryWithStore(browserHistory, store)
 const render = () => ReactDom.render(
     <Provider store={store}>
-        <BrowserRouter history={browserHistory}>
+        <Router history={history}>
             <Switch>
-                <Route path="/login" component={Login}/>
+                <Route path="/signIn" component={SignIn} />
                 <Route exact component={Home} />
             </Switch>
-        </BrowserRouter>
+        </Router>
     </Provider>,
     document.querySelector("#app"));
 
 render();
-// store.subscribe(render);
+store.subscribe(render);
