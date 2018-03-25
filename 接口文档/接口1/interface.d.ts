@@ -25,5 +25,6 @@ export class String<T1 extends number=any,T2 extends number=any>{ }
 
 export class Number<T extends number=any>{}
 
+export class Date{}
 
 export function md5(){}

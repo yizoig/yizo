@@ -1,77 +1,110 @@
-import { Api, method as m, String, Number } from './interface';
+import { Api, method as m, String, Number, md5, Date } from './interface';
 
 /**
- * 获取所有的用户
+ * 获取所有用户
  */
-interface UserList extends Api {
 
+interface UserList extends Api {
     name: "/users",
     method: m.GET,
     params: {
-        current: Number,
-        pageSize: Number
+        search?: String,//nickname，tel,collegename
+        college?: String,
+        sex?: 0 | 1,
+        _d?: 0 | 1,
+        pageable?: 0 | 1 = 0,//是否需要分页
+        page?: Number = 1,//当前页   当pageable为true时page生效并返回page
+        pageSize?: Number = 5,
     },
-    needToken: false
+    return: Array<{
+        id: String,
+        tel: String,
+        sex: 0 | 1,
+        college: String,
+        nickname: String,
+        _c: Date,
+        _d?: 0 | 1
+    }>
 }
 /**
  * 添加用户
  */
 interface UserAdd extends Api {
-
     name: "/users",
     method: m.POST,
     params: {
-        account: Number<11>,//手机号
-        password: String<6, 12>,//密码
-    }
-    needToken: true
+        tel: String,
+        // password: String,
+        sex?: 0 | 1,
+        nickname?: String,
+    },
+    return: String
 }
-
-
-
 /**
- * 用户注册
+ * 修改用户基本信息
  */
-interface UserSignUp extends Api {
-
-    name: "/users/signUp",
-    method: m.POST,
+interface UserUpdate extends Api {
+    name: "/users",
+    method: m.PUT,
     params: {
-        tel: Number<11>,//手机号
-        password: String<6, 12>,//密码
-        code: Number<6>
+        nickname?: String,
+        sex?: String
+    },
+    return: Boolean
+}
+/**
+ * 获取用户基本信息
+ */
+interface UserInfo extends Api {
+    name: "/users/:id(\\d+)",
+    method: m.GET,
+    return: {
+        id: String,
+        tel: String,
+        sex: 0 | 1,
+        college: String,
+        nickname: String,
+        _c: Date,
+        _d?: 0 | 1
     }
-    needToken: false
 }
 /**
  * 删除用户
  */
-
-interface UserDEL extends Api {
-
+interface UserDel extends Api {
     name: "/users",
     method: m.DELETE,
-    params: {
-        ids: any,
-        mode: -1 | 0 | 1//-1彻底删除 0 恢复 1禁用
-    }
-    needToken: true
+    parmas: {
+        ids: Array<String>,
+        real: 0 | 1
+    },
+    return: Boolean
 }
 /**
- * 获取用户信息
+ * 用户微信登录 （不存在就自动注册）
  */
-interface UserInfo extends Api {
+interface UserWeiSignIn extends Api {
+    name: "/users/wxSignIn",
+    method: m.POST,
+    params: {
+        code: String,
+        rawData: Object<{
 
-    name: "/users/info/:id",
-    method: m.GET,
-    needToken: false
-}
-
-interface changeCollege extends Api{
-    name: "/users/college/:id",
-    method: m.PUT,
-    params:{
-        college:any
+        }>,
+        signature: String,
+        encryptedData: String,
+        iv: String,
+    },
+    return: {
+        id: String,
+        tel: String,
+        sex: 0 | 1,
+        college: String,
+        nickname: String,
+        _c: Date,
+        _d?: 0 | 1
+    },
+    returnHeader: {
+        token: String
     }
-    needToken: true
 }

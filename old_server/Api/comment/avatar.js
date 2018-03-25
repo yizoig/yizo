@@ -1,4 +1,4 @@
-let imagesUtils = require("images");
+// let imagesUtils = require("images");
 let headdir = APP_PATH + '/static/upload/avatars/';
 let imageinfo = require('imageinfo');
 let fs = require('fs');

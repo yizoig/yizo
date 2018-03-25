@@ -14,7 +14,9 @@ class SignIn extends React.Component {
     static propTypes = {
         form: PropTypes.object,
         dispatch: PropTypes.func,
-        isSignIn: PropTypes.bool
+        memory: PropTypes.shape({
+            loading:PropTypes.bool
+        })
     }
     constructor(props, context) {
         super(props);
@@ -44,7 +46,7 @@ class SignIn extends React.Component {
     }
     render() {
         const { getFieldDecorator, getFieldProps } = this.props.form;
-        const { mainHeight,loading } = this.props;
+        const { mainHeight, loading } = this.props.memory;
         return (
             <div id="signIn-view">
                 <div className="signIn-header">
@@ -100,8 +102,8 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps)(createForm({
     mapPropsToFields(props) {
         return {
-            user: createFormField(props.formState.user),
-            password: createFormField(props.formState.password),
+            user: createFormField(props.memory.formState.user),
+            password: createFormField(props.memory.formState.password),
         };
     },
     onFieldsChange(props, fields) {

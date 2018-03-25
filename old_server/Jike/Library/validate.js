@@ -126,6 +126,9 @@ module.exports = (function () {
           case 'Number': {
             return Object.prototype.toString.call(value) == '[object Number]';
           }
+          case 'String': {
+            return Object.prototype.toString.call(value) == '[object String]';
+          }
           case 'Boolean': {
             return Object.prototype.toString.call(value) == '[object Boolean]';
           }

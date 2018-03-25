@@ -1,15 +1,22 @@
-import { SIGNING, RESIZE,SIGNINED } from "../actions/signIn";
+import { SIGNING, RESIZE, SIGNINED } from "../actions/signIn";
 
 
 /**
  * 初始化login state
  */
 const initialState = {
-    loading: false,
-    mainHeight: window.innerHeight - 120,
-    formState: {
-        user: null,
-        password: null
+    //会缓存的数据
+    cache: {
+
+    },
+    //不会缓存的数据
+    memory: {
+        loading: false,
+        mainHeight: window.innerHeight - 120,
+        formState: {
+            user: null,
+            password: null
+        }
     }
 };
 export default (state = initialState, action) => {
@@ -17,26 +24,39 @@ export default (state = initialState, action) => {
         case SIGNING: {
             return {
                 ...state,
-                loading:true
+                memory: {
+                    ...state.memory,
+                    loading: true
+                }
             };
         }
-        case SIGNINED:{
+        case SIGNINED: {
             return {
                 ...state,
-                loading:false
+                memory: {
+                    ...state.memory,
+                    loading: false
+                }
             };
         }
         case "save_fields": {
             return {
                 ...state,
-                formState: Object.assign(state.formState, action.payload)
+                memory: {
+                    ...state.memory,
+                    formState: Object.assign(state.memory.formState, action.payload)
+                }
+
             }
         }
         case RESIZE: {
             let height = window.innerHeight - 120;
             return {
                 ...initialState,
-                mainHeight: height > 800 ? height : 800
+                memory: {
+                    ...state.memory,
+                    mainHeight: height > 800 ? height : 800
+                }
             }
         }
         default: return state

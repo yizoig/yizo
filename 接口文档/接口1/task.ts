@@ -1,11 +1,11 @@
 import { Api, method as m, String, Number, md5 } from './interface';
 
 /**
- * 寻找跑腿
+ * 获取所有任务
  */
-interface findRunOrder extends Api {
-    name: "/runOrder/find",
-    method: m.POST,
+interface taskList extends Api {
+    name: "/tasks",
+    method: m.GET,
     params: {
         content:String,
         title:String,

@@ -29,17 +29,18 @@ export function doSignIn({ user, password }) {
                 type: SIGNINED
             })
         }
-        // setTimeout(() => {
-            notification.open({
-                message: "登录成功",
-                description: '3秒后跳转管理页面',
-                icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
-            })
+        notification.open({
+            message: "登录成功",
+            description: '3秒后跳转管理页面',
+            icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
+        })
+        setTimeout(() => {
+            
             dispatch(push("/"));
             dispatch({
                 type: SIGNINED
             });
-        // }, 1000)
+        }, 3000)
        
     }
 }

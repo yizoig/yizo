@@ -1,45 +1,45 @@
 import React, { Component } from 'react';
 import ReactDom from 'react-dom';
 import { Menu, Breadcrumb, Icon } from 'antd';
+import { connect } from 'react-redux'
 import './index.less';
-import moment from 'moment';
+import { start_time, end_time,switch_nav,switch_module } from '../../redux/actions/home';
 import { Switch, Route, } from '../../common/Route/index';
-import UserListView from './main/user/index'
+import {  menus} from '../../redux/reducers/home';
+import User from './main/user/index'
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
-export default class HomeView extends React.Component {
-
-    state = {
-        time: null,
-        subMenu: [],
-        menu: "home"
+class Home extends React.Component {
+    constructor(props){
+        super(props);
     }
     componentDidMount() {
-        this.interval = setInterval(() => {
-            this.setState({
-                time: moment(Date.now()).utcOffset(8).format("YYYY年-MM月-DD日 hh:mm:ss")
-            });
-        }, 1000)
+        console.log("开始")
+        this.props.dispatch(start_time());
     }
     componentWillUnmount() {
-        clearInterval(this.interval);
+        console.log("结束")
+        this.props.dispatch(end_time());
     }
     /**
      * 渲染菜单
      */
     renderSideMenu() {
-
+        let {currentModule='home',currentNav=''} = this.props.cache;
+        let {[currentModule]:currentMenu=[]} = menus;
+        currentNav = currentNav ||"";
+        let [group='',nav=''] = currentNav.split('/');
         return (
             <div className="side-menu">
                 <div className="user-info">
                     <div><img src="https://avatars0.githubusercontent.com/u/25115931?s=460&v=4" /></div>
                     <div>超级管理员</div>
                 </div>
-                <Menu mode="inline">
-                    {menu[this.state.menu].map(({ key, icon, name, children }) => {
+                <Menu mode="inline" onClick={this.switchNav.bind(this)} defaultOpenKeys={[group]} defaultSelectedKeys={[currentNav]} >
+                    {currentMenu.map(({ key, icon, name, children }) => {
                         return (
                             <SubMenu key={key} title={<span><Icon type={icon} /><span>{name}</span></span>}>
-                                {children.map(({ key: ckey, name: cname }) => (<Menu.Item key={key + ckey}>{cname}</Menu.Item>))}
+                                {children.map(({ key: ckey, name: cname }) => (<Menu.Item key={key+'/'+ckey}>{cname}</Menu.Item>))}
                             </SubMenu>
                         );
                     })}
@@ -48,11 +48,10 @@ export default class HomeView extends React.Component {
         )
     }
     switchMenu({ key }) {
-        if (this.state.menu != key) {
-            this.setState({
-                menu: key
-            })
-        }
+        this.props.dispatch(switch_module(key))
+    }
+    switchNav({ key }) {
+        this.props.dispatch(switch_nav(key))
     }
     /**
      * 渲染header
@@ -79,12 +78,12 @@ export default class HomeView extends React.Component {
                 </div>
                 <div className="right">
                     <div className="time">
-                        {this.state.time}
+                        {this.props.time}
                     </div>
-                    <Menu mode="horizontal" onClick={this.switchMenu.bind(this)} defaultKey={"home"}>
+                    <Menu mode="horizontal" onClick={this.switchMenu.bind(this)} selectedKeys={[this.props.currentModule]}>
                         <Menu.Item key="home" ><Icon type="mail" />前台管理</Menu.Item>
-                        <Menu.Item key="back" ><Icon type="mail" />后台管理</Menu.Item>
-                        <Menu.Item key="setting" ><Icon type="mail" />系统设置</Menu.Item>
+                        <Menu.Item key="back" ><Icon type="appstore-o" />后台管理</Menu.Item>
+                        <Menu.Item key="setting" ><Icon type="setting" />系统设置</Menu.Item>
                     </Menu>
                 </div>
 
@@ -92,6 +91,7 @@ export default class HomeView extends React.Component {
         );
     }
     render() {
+        
         return (
             <div id="home" style={{ height: window.innerHeight }}>
                 {this.renderSideMenu()}
@@ -99,7 +99,7 @@ export default class HomeView extends React.Component {
                     {this.renderHeader.call(this)}
                     <div>
                         <Switch>
-                            <Route path="/user" component={UserListView} />
+                            <Route path="/home/user/list" component={User} />
                         </Switch>
                     </div>
                 </div>
@@ -108,77 +108,7 @@ export default class HomeView extends React.Component {
     }
 }
 
-let menu = {
-    "home": [
-        {
-            key: 'user',
-            name: "用户管理",
-            icon: "user",
-            children: [
-                {
-                    name: "用户列表",
-                    key: 'list',
-                    path:'/user',
-                }
-            ]
-        },
-        {
-            key: 'task',
-            name: "任务管理",
-            icon: "solution",
-            children: [
-                {
-                    name: "任务类型",
-                    key: 'type',
-                    path:'/tasktype',
-                },
-                {
-                    name: "任务列表",
-                    key: 'list',
-                    path:'/task',
-                }
-            ]
-        },
-        {
-            key: 'shop',
-            name: "商品管理",
-            icon: "shop",
-            children: [
-                {
-                    name: "商品类型",
-                    key: 'type'
-                },
-                {
-                    name: "商品列表",
-                    key: 'list'
-                }
-            ]
-        }
-    ],
-    "back": [
-        {
-            key: "admin",
-            name: "管理员管理",
-            icon: "team",
-            children: [
-                {
-                    key: 'list',
-                    name: "管理员列表"
-                }
-            ]
-        }
-    ],
-    "setting": [
-        {
-            key: "test",
-            name: "设置1",
-            icon: "setting",
-            children: [
-                {
-                    key: 'list',
-                    name: "设置1"
-                }
-            ]
-        }
-    ]
+function mapStateToProps(state) {
+    return state.home
 }
+export default connect(mapStateToProps)(Home);
