@@ -88,4 +88,18 @@ module.exports = class Admin extends JikeJs.Model {
         let { affectedRows = 0 } = await this.data(data).update();
         return affectedRows > 0;
     }
+    /**
+     * 删除管理员
+     */
+    async del(ids) {
+        let { affectedRows = 0 } = await this.where({ ids: ['in', ids] }).delete();
+        return affectedRows > 0;
+    }
+    /**
+     * 禁用管理员
+     */
+    async disabled(ids) {
+        let { affectedRows = 0 } = await this.where({ ids: ['in', ids] }).delete();
+        return affectedRows > 0;
+    }
 }

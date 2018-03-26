@@ -7,13 +7,18 @@ interface CollegeList extends Api {
     name: '/colleges',
     method: m.GET,
     params: {
-
-    },
+        search?: String,
+        _d?: 0 | 1,
+        pageable?: 0 | 1,
+        page?: Number = 1,
+        pageSize?: Number = 5,
+    }
     return: {
         id: String,
         name: String,
         joinTime: Date,
-        _d: 0 | 1
+        _d: 0 | 1,
+        _c: Date
     }
 }
 

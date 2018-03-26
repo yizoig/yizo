@@ -62,4 +62,22 @@ module.exports = class AdminGroup extends JikeJs.Model {
         let { affectedRows = 0 } = await this.data(data).update();
         return affectedRows > 0;
     }
+    /**
+     * 删除用户组
+     */
+    async groupDel(ids) {
+        let { affectedRows = 0 } = await this.where({
+            ids: ['in', ids]
+        }).del();
+        return affectedRows > 0;
+    }
+    /**
+     * 禁用用户组
+     */
+    async groupDisable(ids) {
+        let { affectedRows = 0 } = await this.where({
+            ids: ['in', ids]
+        }).data({_d:1}).save();
+        return affectedRows > 0;
+    }
 }
