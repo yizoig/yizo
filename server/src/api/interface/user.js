@@ -15,7 +15,7 @@ module.exports = {
             rules: {
                 search: Dvm.string(),
                 college: Dvm.string(),
-                sex: Dvm.number().in([0,1]),
+                gender: Dvm.number().in([0,1]),
                 pageable: Dvm.number().in([0, 1], "参数必须是0或1").default(0),
                 page: Dvm.number().min(1).default(1),
                 pageSize: Dvm.number().default(5),
@@ -29,7 +29,7 @@ module.exports = {
         //     action: "add",
         //     rules: {
         //         tel: Dvm.string().require(),
-        //         sex: Dvm.string(),
+        //         gender: Dvm.string(),
         //         nickname: Dvm.string()
         //     }
         // },
@@ -39,7 +39,7 @@ module.exports = {
             method: "put",
             action: "updateInfo",
             rules: {
-                sex: Dvm.string(),
+                gender: Dvm.string(),
                 nickname: Dvm.string()
             }
         },

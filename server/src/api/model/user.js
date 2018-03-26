@@ -11,7 +11,7 @@ module.exports = class Admin extends JikeJs.Model {
     /**
      * 获取用户列表
      */
-    async list({ search, college, sex, pageable, page, pageSize, _d }) {
+    async list({ search, college, gender, pageable, page, pageSize, _d }) {
 
         let pageTotal;
         let _where = [];
@@ -27,9 +27,9 @@ module.exports = class Admin extends JikeJs.Model {
                 college
             })
         }
-        if (!this.isUndefined(sex)) {
+        if (!this.isUndefined(gender)) {
             _where.push("AND", {
-                user_sex: sex
+                user_gender: gender
             })
         }
         //是否需要分页
@@ -54,7 +54,7 @@ module.exports = class Admin extends JikeJs.Model {
             throw new Error("用户不存在");
         }
         //过滤字段
-        data = this.filter_handle(data, ['user_sex', 'nick_name']);
+        data = this.filter_handle(data, ['user_gender', 'nick_name']);
 
         let { affectedRows = 0 } = await this.data(data).update();
         return affectedRows > 0;

@@ -313,7 +313,7 @@ module.exports = class Model extends Mysql {
      * @param {*条件} _where
      * 支持字符串 'id=2 and name=3 or age=5'
      * 支持对象 {id:2,name:3,age:5}  ===> id=2 and name=3 and age=5;
-     * 支持数组 [{ id: 1 }, "or", { name: 2 ,sex:3}]
+     * 支持数组 [{ id: 1 }, "or", { name: 2 ,gender:3}]
      * };
      */
     where(_where) {

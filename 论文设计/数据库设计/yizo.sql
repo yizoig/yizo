@@ -185,7 +185,7 @@ create table users
    wx_id                char(30) comment '微信账号',
    user_tel             char(11) comment '登录手机号',
    user_pwd             char(32) comment '登录密码',
-   user_sex             char(1) comment '性别',
+   user_gender             char(1) comment '性别',
    college              int comment '所在学校',
    `_d`                   char(1) default '0' comment '删除位',
    `_c`                   timestamp default CURRENT_TIMESTAMP comment '创建时间'

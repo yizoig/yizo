@@ -1,7 +1,7 @@
 import { Api, method as m, String, Number, md5, Date } from './interface';
 
 /**
- * 获取所有用户
+ * 获取所有用户 2018年03月27日00:46:03
  */
 
 interface UserList extends Api {
@@ -10,50 +10,54 @@ interface UserList extends Api {
     params: {
         search?: String,//nickname，tel,collegename
         college?: String,
-        sex?: 0 | 1,
+        gender?: 0 | 1,
         _d?: 0 | 1,
         pageable?: 0 | 1 = 0,//是否需要分页
         page?: Number = 1,//当前页   当pageable为true时page生效并返回page
         pageSize?: Number = 5,
     },
-    return: Array<{
-        id: String,
-        tel: String,
-        sex: 0 | 1,
-        college: String,
-        nickname: String,
-        _c: Date,
-        _d?: 0 | 1
-    }>
+    return: {
+        list: Array<{
+            id: String,
+            tel: String,
+            gender: 0 | 1,
+            college: String,
+            nickname: String,
+            _c: Date,
+            _d?: 0 | 1
+        }>,
+        pageSize: Number<1, 100>,
+        pageTotal?: Number
+    }
 }
 /**
- * 添加用户
+ * 添加用户 2018年03月27日00:47:26
  */
 interface UserAdd extends Api {
     name: "/users",
     method: m.POST,
     params: {
         tel: String,
-        // password: String,
-        sex?: 0 | 1,
+        password: String = '123456',
+        gender?: 0 | 1,
         nickname?: String,
     },
     return: String
 }
 /**
- * 修改用户基本信息
+ * 修改用户基本信息 2018年03月27日00:47:28
  */
 interface UserUpdate extends Api {
     name: "/users",
     method: m.PUT,
     params: {
         nickname?: String,
-        sex?: String
+        gender?: String
     },
     return: Boolean
 }
 /**
- * 获取用户基本信息
+ * 获取用户基本信息 2018年03月27日00:47:31
  */
 interface UserInfo extends Api {
     name: "/users/:id(\\d+)",
@@ -61,7 +65,7 @@ interface UserInfo extends Api {
     return: {
         id: String,
         tel: String,
-        sex: 0 | 1,
+        gender: 0 | 1,
         college: String,
         nickname: String,
         _c: Date,
@@ -69,19 +73,19 @@ interface UserInfo extends Api {
     }
 }
 /**
- * 删除用户
+ * 删除用户 2018年03月27日00:47:34
  */
 interface UserDel extends Api {
     name: "/users",
     method: m.DELETE,
     parmas: {
         ids: Array<String>,
-        real: 0 | 1
+        real: 0 | 1 = 0
     },
     return: Boolean
 }
 /**
- * 用户微信登录 （不存在就自动注册）
+ * 用户微信登录 （不存在就自动注册）2018年03月27日00:50:33
  */
 interface UserWeiSignIn extends Api {
     name: "/users/wxSignIn",
@@ -98,7 +102,7 @@ interface UserWeiSignIn extends Api {
     return: {
         id: String,
         tel: String,
-        sex: 0 | 1,
+        gender: 0 | 1,
         college: String,
         nickname: String,
         _c: Date,
