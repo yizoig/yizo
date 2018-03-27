@@ -1,16 +1,17 @@
+
 const { Dvm } = JikeJs;
 //定义路由
 module.exports = {
-    controller: 'admin',//默认controller
-    path: '/admins',
+    controller: 'good',//默认controller
+    path: '/goods',
     routers: [
         /**
-         *  获取管理组
+         *  获取商品类型
          */
         {
-            path: '/groups',
+            path: '/types',
             method: 'get',
-            action: 'groupList',
+            action: 'typeList',
             middle: ['public'],
             rules: {
                 search: Dvm.string(),
@@ -21,36 +22,38 @@ module.exports = {
             },
         },
         /**
-         * 添加管理组
+         * 添加商品类型
          */
         {
-            path: '/groups',
+            path: '/types',
             method: 'post',
-            action: 'groupAdd',
+            action: 'typeAdd',
             middle: ['public'],
             rules: {
-                name: Dvm.string().require()
+                name: Dvm.string().require(),
+                parent: Dvm.string(),
             },
         },
         /**
-         * 修改管理组
+         * 修改商品类型
          */
         {
-            path: '/groups/:id',
+            path: '/types/:id',
             method: 'put',
-            action: 'groupUpdate',
+            action: 'typeUpdate',
             middle: ['public'],
             rules: {
-                name: Dvm.string()
+                name: Dvm.string(),
+                parent: Dvm.string(),
             }
         },
         /**
-         * 删除管理组
+         * 删除商品类型
          */
         {
-            path: '/groups/',
+            path: '/types',
             method: 'delete',
-            action: 'groupDel',
+            action: 'typeDel',
             middle: ['public'],
             rules: {
                 ids: Dvm.array().require(),
@@ -58,7 +61,7 @@ module.exports = {
             }
         },
         /**
-         * 获取管理员列表
+         * 获取商品列表
          */
         {
             path: '/',
@@ -67,16 +70,19 @@ module.exports = {
             middle: ['public'],
             rules: {
                 search: Dvm.string(),
-                group: Dvm.string(),
+                creater: Dvm.string(),
+                partner: Dvm.string(),
+                college: Dvm.string(),
+                type: Dvm.string(),
+                state: Dvm.number().in([0, 1, 2, 3]),
                 pageable: Dvm.number().in([0, 1], "参数必须是0或1").default(0),
                 page: Dvm.number().min(1).default(1),
                 pageSize: Dvm.number().default(5),
-                sort: Dvm.string(),
                 _d: Dvm.number().in([0, 1])
             }
         },
         /**
-         * 添加管理员
+         * 添加商品
          */
         {
             path: '/',
@@ -84,14 +90,30 @@ module.exports = {
             action: 'add',
             middle: ['public'],
             rules: {
-                name: Dvm.string().require(),
-                group: Dvm.string().require(),
-                account: Dvm.string().require(),
-                password: Dvm.string().require()
+                title: Dvm.string().require(),
+                content: Dvm.string().require(),
+                concat: Dvm.string().require(),
+                concat_tel: Dvm.string().require(),
+                images: Dvm.string().require(),
+                type: Dvm.string().require(),
+                price: Dvm.number().require(),
+                oprice: Dvm.number().require(),
+                number: Dvm.number().require()
             }
         },
         /**
-         * 修改管理员基本信息
+         * 获取商品信息
+         */
+        {
+            path: '/:id',
+            method: 'get',
+            action: 'info',
+            middle: ['public'],
+            rules: {
+            }
+        },
+        /**
+         * 修改商品基本信息
          */
         {
             path: '/:id',
@@ -99,12 +121,19 @@ module.exports = {
             action: 'update',
             middle: ['public'],
             rules: {
-                name: Dvm.string(),
-                group: Dvm.string()
+                title: Dvm.string(),
+                content: Dvm.string(),
+                concat: Dvm.string(),
+                concat_tel: Dvm.string(),
+                images: Dvm.string(),
+                type: Dvm.string(),
+                price: Dvm.number(),
+                oprice: Dvm.number(),
+                number: Dvm.number()
             }
         },
         /**
-         * 删除管理员
+         * 删除商品
          */
         {
             path: '/',
@@ -117,15 +146,15 @@ module.exports = {
             }
         },
         /**
-         * 修改管理员密码
+         * 购买商品
          */
         {
-            path: '/pwd/:id',
+            path: '/buy/:id',
             method: 'put',
             action: 'del',
             middle: ['public'],
             rules: {
-                password: Dvm.string()
+                number: Dvm.number()
             }
         }
     ]

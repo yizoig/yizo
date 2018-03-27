@@ -37,7 +37,7 @@ module.exports = class User extends JikeJs.Controller {
     /**
      * 微信登录
      */
-    async weixinSignIn({ code, rawData, signature, encryptedData, iv }) {
+    async wxSignIn({ code, rawData, signature, encryptedData, iv }) {
 
     }
 }

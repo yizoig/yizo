@@ -109,7 +109,6 @@ interface AdminUpdate extends Api {
     name: "/admins/:id",
     method: m.PUT,
     params: {
-        id: String,
         name: String,
         group: String,
     },
@@ -134,7 +133,6 @@ interface AdminPwdUpdate extends Api {
     name: "/admins/pwd/:id",
     method: m.PUT,
     params: {
-        id: String,
         password: String<16>
     },
     return: Boolean

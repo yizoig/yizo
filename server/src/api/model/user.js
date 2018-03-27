@@ -78,7 +78,7 @@ module.exports = class Admin extends JikeJs.Model {
             user_id: ['in', ids]
         }).data({
             _d: 1
-        }).save();
+        }).update();
         return affectedRows > 0;
     }
 }

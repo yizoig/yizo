@@ -10,8 +10,7 @@ interface CommentList extends Api {
     params: {
         search?: String,//typename
         creater?: String,//创建人
-        partner?: String,//参与者
-        postId: String,
+        postId:String,
         _d?: 0 | 1,
         pageable?: 0 | 1,
         page?: Number,
@@ -57,7 +56,7 @@ interface CommentUpdate extends Api {
  * 删除留言 2018年03月27日00:42:48
  */
 interface CommentDel extends Api {
-    name: "/posts/comments/:pid",
+    name: "/posts/comments/:id",
     method: m.DELETE,
     params: {
         cids: Array<String>,

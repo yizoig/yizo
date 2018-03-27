@@ -193,7 +193,7 @@ interface GoodBuy extends Api {
     name: "/goods/buy/:id",
     method: m.POST,
     params: {
-        Number: Number
+        number: Number
     },
     return: Boolean
 }

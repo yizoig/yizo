@@ -28,7 +28,7 @@ module.exports = class Admin extends JikeJs.Model {
             _where.push([
                 {
                     admin_account: ['like', `%${search}%`],
-                    admin_account: ['like', `%${search}%`],
+                    admin_name: ['like', `%${search}%`],
                     _logic: "OR",
                 },
                 "OR", {
@@ -82,7 +82,7 @@ module.exports = class Admin extends JikeJs.Model {
         }
         //过滤字段
         data = this.filter_handle(data, ['admin_name', 'group']);
-        if (Object.keys(data) == 0) {
+        if (Object.keys(data).length == 0) {
             return 0;
         }
         let { affectedRows = 0 } = await this.data(data).update();
@@ -99,7 +99,7 @@ module.exports = class Admin extends JikeJs.Model {
      * 禁用管理员
      */
     async disabled(ids) {
-        let { affectedRows = 0 } = await this.where({ ids: ['in', ids] }).delete();
+        let { affectedRows = 0 } = await this.where({ ids: ['in', ids] }).data({_d:1}).update();
         return affectedRows > 0;
     }
 }

@@ -24,7 +24,9 @@ module.exports = class Admin extends JikeJs.Controller {
         let model = new AdminGroupModel();
         return await model.groupUpdate(id, { group_name: name });
     }
-
+    /**
+     * 删除管理员
+     */
     async groupDel({ ids, real = 0 }) {
 
         let model = new AdminGroupModel();

@@ -66,7 +66,7 @@ module.exports = class College extends JikeJs.Model {
             college_id: ['in', ids]
         }).data({
             _d: 1
-        }).save();
+        }).update();
         return affectedRows > 0;
     }
 }

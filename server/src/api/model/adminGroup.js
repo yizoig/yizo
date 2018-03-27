@@ -56,10 +56,10 @@ module.exports = class AdminGroup extends JikeJs.Model {
         }
         //过滤字段
         data = this.filter_handle(data, ['group_name']);
-        if (Object.keys(data) == 0) {
+        if (Object.keys(data).length == 0) {
             return 0;
         }
-        let { affectedRows = 0 } = await this.data(data).update();
+        let { affectedRows = 0 } = await this.data(data).where({ group_id: id }).update();
         return affectedRows > 0;
     }
     /**
@@ -77,7 +77,7 @@ module.exports = class AdminGroup extends JikeJs.Model {
     async groupDisable(ids) {
         let { affectedRows = 0 } = await this.where({
             ids: ['in', ids]
-        }).data({_d:1}).save();
+        }).data({ _d: 1 }).update();
         return affectedRows > 0;
     }
 }

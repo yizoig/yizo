@@ -30,20 +30,20 @@ interface UserList extends Api {
         pageTotal?: Number
     }
 }
-/**
- * 添加用户 2018年03月27日00:47:26
- */
-interface UserAdd extends Api {
-    name: "/users",
-    method: m.POST,
-    params: {
-        tel: String,
-        password: String = '123456',
-        gender?: 0 | 1,
-        nickname?: String,
-    },
-    return: String
-}
+// /**
+//  * 添加用户 2018年03月27日00:47:26
+//  */
+// interface UserAdd extends Api {
+//     name: "/users",
+//     method: m.POST,
+//     params: {
+//         tel: String,
+//         password: String = '123456',
+//         gender?: 0 | 1,
+//         nickname?: String,
+//     },
+//     return: String
+// }
 /**
  * 修改用户基本信息 2018年03月27日00:47:28
  */
