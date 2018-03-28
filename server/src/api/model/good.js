@@ -9,7 +9,7 @@ module.exports = class Good extends JikeJs.Model {
      * 获取商品列表
      */
     async list({ search, creater, partner, college, type, state, pageable, pageSize, page, _d }) {
-
+        
     }
     /**
      * 添加商品
