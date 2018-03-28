@@ -82,7 +82,7 @@ module.exports = {
             }
         },
         /**
-         * 添加商品
+         * 发布商品
          */
         {
             path: '/',
@@ -151,7 +151,7 @@ module.exports = {
         {
             path: '/buy/:id',
             method: 'put',
-            action: 'del',
+            action: 'buy',
             middle: ['public'],
             rules: {
                 number: Dvm.number()

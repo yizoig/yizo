@@ -87,13 +87,10 @@ interface GoodList extends Api {
             id: String,
             title: String,//标题
             content: String,//内容
-            concat: String,//联系人
-            concat_tel: String,//联系电话
             creater: String,//创建人
             images: String,//图片集
             type: String,
             typeName: String,
-            state: 0 | 1,
             price: Number,//现价
             oprice: Number,//原价
             number: Number,//售卖数量
@@ -117,6 +114,8 @@ interface GoodInfo extends Api {
         concat: String,
         concat_tel: String,
         creater: String,
+        createrName:String,
+        createrGender:0|1
         images: String,
         type: String,
         typeName: String,
