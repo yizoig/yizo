@@ -12,7 +12,7 @@ module.exports = {
             path: '/types',
             method: 'get',
             action: 'typeList',
-            middle: ['public'],
+            middle: [],
             rules: {
                 search: Dvm.string(),
                 pageable: Dvm.number().in([0, 1], "参数必须是0或1").default(0),
@@ -28,7 +28,7 @@ module.exports = {
             path: '/types',
             method: 'post',
             action: 'typeAdd',
-            middle: ['public'],
+            middle: [],
             rules: {
                 name: Dvm.string().require(),
             },
@@ -40,7 +40,7 @@ module.exports = {
             path: '/types/:id',
             method: 'put',
             action: 'typeUpdate',
-            middle: ['public'],
+            middle: [],
             rules: {
                 name: Dvm.string(),
             }
@@ -52,7 +52,7 @@ module.exports = {
             path: '/types',
             method: 'delete',
             action: 'typeDel',
-            middle: ['public'],
+            middle: [],
             rules: {
                 ids: Dvm.array().require(),
                 real: Dvm.number().in([0, 1])

@@ -1,10 +1,10 @@
 
 import React, { Component } from 'react';
 import ReactDom from 'react-dom';
-export default class User extends React.Component{
+export default class Test extends React.Component{
     render(){
         return (
-            <div>qqq</div>
+            <div>Test</div>
         )
     }
 }

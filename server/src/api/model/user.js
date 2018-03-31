@@ -34,11 +34,14 @@ module.exports = class Admin extends JikeJs.Model {
         }
         //是否需要分页
         if (pageable === 1) {
-            pageTotal = await this.where(_where).join('inner join colleges on colleges.college_id=users.college').count();
+            pageTotal = await this
+            .where(_where).join('inner join colleges on colleges.college_id=users.college').count();
             this.page(page - 1, pageSize);
         }
 
-        let list = await this.where(_where).join('inner join colleges on colleges.college_id=users.college').select();
+        let list = await this
+        .field('user_id as uid,wx_id as wxid,nick_name as nickname,user_tel as utel,user_gender as ugender,users.college as cid,college_name as cname,users._c as u_c,users._d as u_d')
+        .where(_where).join('inner join colleges on colleges.college_id=users.college').select();
         return {
             list,
             ...(pageable == 1 ? { pageTotal, pageSize } : {})

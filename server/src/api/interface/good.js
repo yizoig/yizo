@@ -12,7 +12,7 @@ module.exports = {
             path: '/types',
             method: 'get',
             action: 'typeList',
-            middle: ['public'],
+            middle: [],
             rules: {
                 search: Dvm.string(),
                 pageable: Dvm.number().in([0, 1], "参数必须是0或1").default(0),
@@ -28,7 +28,7 @@ module.exports = {
             path: '/types',
             method: 'post',
             action: 'typeAdd',
-            middle: ['public'],
+            middle: [],
             rules: {
                 name: Dvm.string().require(),
                 parent: Dvm.string(),
@@ -41,7 +41,7 @@ module.exports = {
             path: '/types/:id',
             method: 'put',
             action: 'typeUpdate',
-            middle: ['public'],
+            middle: [],
             rules: {
                 name: Dvm.string(),
                 parent: Dvm.string(),
@@ -54,7 +54,7 @@ module.exports = {
             path: '/types',
             method: 'delete',
             action: 'typeDel',
-            middle: ['public'],
+            middle: [],
             rules: {
                 ids: Dvm.array().require(),
                 real: Dvm.number().in([0, 1])
@@ -67,7 +67,7 @@ module.exports = {
             path: '/',
             method: 'get',
             action: 'list',
-            middle: ['public'],
+            middle: [],
             rules: {
                 search: Dvm.string(),
                 creater: Dvm.string(),
@@ -88,7 +88,7 @@ module.exports = {
             path: '/',
             method: 'post',
             action: 'add',
-            middle: ['public'],
+            middle: [],
             rules: {
                 title: Dvm.string().require(),
                 content: Dvm.string().require(),
@@ -108,7 +108,7 @@ module.exports = {
             path: '/:id',
             method: 'get',
             action: 'info',
-            middle: ['public'],
+            middle: [],
             rules: {
             }
         },
@@ -119,7 +119,7 @@ module.exports = {
             path: '/:id',
             method: 'put',
             action: 'update',
-            middle: ['public'],
+            middle: [],
             rules: {
                 title: Dvm.string(),
                 content: Dvm.string(),
@@ -139,7 +139,7 @@ module.exports = {
             path: '/',
             method: 'delete',
             action: 'del',
-            middle: ['public'],
+            middle: [],
             rules: {
                 ids: Dvm.object(),
                 real: Dvm.number().in([0, 1])
@@ -152,7 +152,7 @@ module.exports = {
             path: '/buy/:id',
             method: 'put',
             action: 'buy',
-            middle: ['public'],
+            middle: [],
             rules: {
                 number: Dvm.number()
             }

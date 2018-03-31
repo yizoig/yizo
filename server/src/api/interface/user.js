@@ -11,7 +11,7 @@ module.exports = {
             path: '/',
             method: 'get',
             action: 'list',
-            middle: ['public'],
+            middle: [],
             rules: {
                 search: Dvm.string(),
                 college: Dvm.string(),

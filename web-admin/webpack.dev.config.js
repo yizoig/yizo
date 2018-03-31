@@ -4,11 +4,9 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const { title, version } = require("./package.json");
 const path = require("path");
 module.exports = {
-    entry: {
-        index: [
-            './src/index.js'
-        ],
-    },
+    entry: [
+        'babel-polyfill', './src/index.js'
+    ],
     mode: 'development',
     devServer: {
         port: 3333,

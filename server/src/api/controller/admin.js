@@ -1,14 +1,28 @@
 let AdminGroupModel = require("../model/adminGroup")
 let AdminModel = require("../model/admin")
+const { makeToken } = require('../common/jwt')
 //控制器
 module.exports = class Admin extends JikeJs.Controller {
+    /**
+     * 管理员登录
+     */
+    async signIn({ account, password }) {
+        let model = new AdminModel();
+        let info = await model.signIn({ account, password });
+        //设置请求头
+        this.response.set('access-token', makeToken({
+            sub: info['aid'],
+            type: 'admin'
+        }));
+        return info;
+    }
     /**
      * 获取管理员组
      * @param {} param0 
      */
-    async groupList({ search, pageable, page, pageSize, _d }) {
+    async groupList({ search, page, pageSize, _d }) {
         let model = new AdminGroupModel();
-        return await model.groupList({ search, pageable, page, pageSize, _d });
+        return await model.groupList({ search, page, pageSize, _d });
     }
     /**
      * 添加管理员组
@@ -40,23 +54,23 @@ module.exports = class Admin extends JikeJs.Controller {
      * 获取管理员列表
      * @param {} param0 
      */
-    async list({ search, group, pageable, page, pageSize, _d, sort }) {
+    async list({ search, group, page, pageSize, _d, sort }) {
         let model = new AdminModel();
-        return await model.list({ search, group, sort, pageable, page, pageSize, _d });
+        return await model.list({ search, group, sort, page, pageSize, _d });
     }
     /**
      * 添加管理员
      */
     async add({ name, group, account, password }) {
         let model = new AdminModel();
-        return await model.add({ name });
+        return await model.add({ name, group, account, password });
     }
     /**
-     * 修改管理员组
+     * 修改管理员
      */
     async update({ id, name, group }) {
         let model = new AdminModel();
-        return await model.groupUpdate(id, { group_name: name, group });
+        return await model.updateInfo(id, { admin_name: name, group });
     }
     /**
      * 删除管理员

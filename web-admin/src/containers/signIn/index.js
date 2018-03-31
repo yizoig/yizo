@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { doSignIn, reSize } from '../../redux/actions/signIn';
 import { Form, Input, Button, Icon, notification } from 'antd';
-import { createForm, createFormField } from 'rc-form';
+const{ create:createForm, createFormField } = Form;
 import { push } from 'react-router-redux';
 
 const FormItem = Form.Item;
@@ -37,11 +37,11 @@ class SignIn extends React.Component {
     signInSubmit(event) {
         event.preventDefault();
         this.props.form.validateFields((err, values) => {
-            if (err) {
-                return console.log('Received values of form: ', values);
+            if (!err) {
+                let { user, password } = this.props.form.getFieldsValue();
+                this.props.dispatch(doSignIn({ user, password }))
             }
-            let { user, password } = this.props.form.getFieldsValue();
-            this.props.dispatch(doSignIn({ user, password }))
+            
         });
     }
     render() {
@@ -67,7 +67,9 @@ class SignIn extends React.Component {
                                 <FormItem
                                 >
                                     <Input {...getFieldProps('user', {
-                                        rules: [],
+                                        rules: [{
+                                            required: true, message: '请输入账号',
+                                          }],
                                     })}
                                         prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="账号"
                                     />
@@ -76,7 +78,9 @@ class SignIn extends React.Component {
                                 <FormItem
                                 >
                                     <Input  {...getFieldProps('password', {
-                                        rules: [],
+                                        rules: [{
+                                            required: true, message: '请输入密码',
+                                          }],
                                     })}
                                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="密码" type="password" />
                                 </FormItem>

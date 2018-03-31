@@ -11,7 +11,7 @@ module.exports = {
             path: '/',
             method: 'get',
             action: 'list',
-            middle: ['public'],
+            middle: [],
             rules: {
                 search: Dvm.string(),
                 pageable: Dvm.number().in([0, 1], "参数必须是0或1").default(0),

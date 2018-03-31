@@ -9,8 +9,8 @@ import { createStore, applyMiddleware, compose } from 'redux';
 //all  reducers
 import reducers from './redux/reducers';
 import SignIn from './containers/signIn/index.js';
-import Home from './containers/home/index.js';
-import { Router, Switch, Route } from 'react-router';
+import Main from './containers/main/index.js';
+import { Router, Switch, Route,ProtectedRoute } from './components/common/Route/index';
 import { syncHistoryWithStore, routerMiddleware, ConnectedRouter } from 'react-router-redux';
 import createHistory from 'history/createBrowserHistory'
 import thunkMiddleware from 'redux-thunk';
@@ -51,8 +51,8 @@ const render = () => ReactDom.render(
     <Provider store={store}>
         <ConnectedRouter history={browserHistory}>
             <div>
-                <Route path="/signIn" component={SignIn} />
-                <Route exact component={Home} />
+                <Route path="/signIn" component={SignIn}/>
+                <ProtectedRoute exact component={Main} />
             </div>
         </ConnectedRouter>
     </Provider>,

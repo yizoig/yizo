@@ -9,7 +9,6 @@ interface AdminGroupList extends Api {
     params: {
         search?: String, //关键字 可以搜索 name id
         _d?: 0 | 1,//获取是否删除的组
-        pageable?: 0,//是否需要分页 0不要
         page?: Number,//当前页   当pageable为true时page生效并返回page
         pageSize?: Number = 5,
     }
@@ -70,7 +69,6 @@ interface AdminList extends Api {
         group: String,//指定分组的管理员
         _d?: 0 | 1,
         sort?: String,//排序字符串  _c desc,name desc,id esc
-        pageable?: Boolean,//是否需要分页
         page?: Number,//当前页   当pageable为true时page生效并返回page
         pageSize?: Number
     },
@@ -136,4 +134,26 @@ interface AdminPwdUpdate extends Api {
         password: String<16>
     },
     return: Boolean
+}
+/**
+ * 管理员登录
+ */
+interface AdminSignIn extends Api {
+    name: "/admins/signIn",
+    method: m.POST,
+    params: {
+        account: String,
+        password: String<16>
+    },
+    return: {
+        id: String,
+        account: String,
+        type: 0 | 1,
+        typeName: String,
+        _c: Date,
+        _d?: 0 | 1
+    },
+    returnHeader: {
+        token: String
+    }
 }

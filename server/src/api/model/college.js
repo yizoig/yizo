@@ -26,7 +26,7 @@ module.exports = class College extends JikeJs.Model {
             this.page(page - 1, pageSize);
         }
 
-        let list = await this.where(_where).select();
+        let list = await this.field('college_id as cid,college_name as cname,_c as c_c,_d as c_d').where(_where).select();
         return {
             list,
             ...(pageable == 1 ? { pageTotal, pageSize } : {})

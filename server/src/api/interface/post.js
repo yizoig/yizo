@@ -12,7 +12,7 @@ module.exports = {
             path: '/comments/:id',
             method: 'get',
             action: 'commentList',
-            middle: ['public'],
+            middle: [],
             rules: {
                 search: Dvm.string(),
                 creater: Dvm.string(),
@@ -30,7 +30,7 @@ module.exports = {
             path: '/comments/:id',
             method: 'post',
             action: 'commentAdd',
-            middle: ['public'],
+            middle: [],
             rules: {
                 content: Dvm.string().require()
             },
@@ -42,7 +42,7 @@ module.exports = {
             path: '/comments/:id',
             method: 'put',
             action: 'commentUpdate',
-            middle: ['public'],
+            middle: [],
             rules: {
                 content: Dvm.string(),
                 cid: Dvm.string(),
@@ -54,7 +54,7 @@ module.exports = {
             path: '/comment/:id',
             method: 'delete',
             action: 'commentDel',
-            middle: ['public'],
+            middle: [],
             rules: {
                 cids: Dvm.array().require(),
                 real: Dvm.number().in([0, 1])

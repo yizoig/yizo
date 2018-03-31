@@ -14,7 +14,7 @@ module.exports = class AdminGroup extends JikeJs.Model {
     /**
      * 获取分组
      */
-    async groupList({ search, pageable, page, pageSize, _d }) {
+    async groupList({ search, page, pageSize, _d }) {
         let pageTotal;
         let _where = [];
         if (!this.isUndefined(search)) {
@@ -25,15 +25,10 @@ module.exports = class AdminGroup extends JikeJs.Model {
         if (!this.isUndefined(_d)) {
             _where.push({ _d })
         }
-        //pageable==1 表示需要分页
-        if (pageable == 1) {
-            pageTotal = await this.where(_where).count();
-            this.page(page - 1, pageSize);
-        }
-        let list = await this.field('group_id as id,group_name as name,_c,_d').where(_where).select();
+        pageTotal = await this.where(_where).count();
+        let list = await this.field('group_id as gid,group_name as gname,_c as g_c,_d as g_d').page(page - 1, pageSize).where(_where).select();
         return {
-            list,
-            ...(pageable == 1 ? { pageTotal, pageSize } : {})
+            list, pageTotal, pageSize
         }
 
     }
@@ -41,7 +36,12 @@ module.exports = class AdminGroup extends JikeJs.Model {
      * 添加管理员组
      */
     async groupAdd({ name }) {
-        let { insertId = false } = await this.data({ group_name: name }).where({ group_name: ['LIKE', `%${name}%`] }).insert() || {};
+
+        let info = await this.where({ group_name: ['LIKE', `%${name}%`] }).find();
+        if (info) {
+            this.fail(this.codes.ADMIN_GROUP_NAME_USED)
+        }
+        let { insertId = false } = await this.data({ group_name: name }).insert() || {};
         return insertId
     }
     /**
@@ -52,12 +52,18 @@ module.exports = class AdminGroup extends JikeJs.Model {
     async groupUpdate(id, data) {
 
         if (!(await this.groupInfo(id))) {
-            throw new Error("用户组不存在")
+            this.fail(this.codes.ADMIN_GROUP_NOT_EXISTS)
         }
         //过滤字段
         data = this.filter_handle(data, ['group_name']);
         if (Object.keys(data).length == 0) {
             return 0;
+        }
+        if ('group_name' in data) {
+            let info = await this.where({ group_name: ['LIKE', `%${data['group_name']}%`] }).find();
+            if (info) {
+                this.fail(this.codes.ADMIN_GROUP_NAME_USED)
+            }
         }
         let { affectedRows = 0 } = await this.data(data).where({ group_id: id }).update();
         return affectedRows > 0;
@@ -67,8 +73,8 @@ module.exports = class AdminGroup extends JikeJs.Model {
      */
     async groupDel(ids) {
         let { affectedRows = 0 } = await this.where({
-            ids: ['in', ids]
-        }).del();
+            group_id: ['in', ids]
+        }).delete();
         return affectedRows > 0;
     }
     /**
@@ -76,7 +82,7 @@ module.exports = class AdminGroup extends JikeJs.Model {
      */
     async groupDisable(ids) {
         let { affectedRows = 0 } = await this.where({
-            ids: ['in', ids]
+            group_id: ['in', ids]
         }).data({ _d: 1 }).update();
         return affectedRows > 0;
     }

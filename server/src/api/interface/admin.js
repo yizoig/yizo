@@ -1,4 +1,5 @@
 const { Dvm } = JikeJs;
+const {adminCheck} = require("../config/middleware")
 //定义路由
 module.exports = {
     controller: 'admin',//默认controller
@@ -11,7 +12,7 @@ module.exports = {
             path: '/groups',
             method: 'get',
             action: 'groupList',
-            middle: ['public'],
+            middle: [adminCheck],
             rules: {
                 search: Dvm.string(),
                 pageable: Dvm.number().in([0, 1], "参数必须是0或1").default(0),
@@ -27,7 +28,7 @@ module.exports = {
             path: '/groups',
             method: 'post',
             action: 'groupAdd',
-            middle: ['public'],
+            middle: [adminCheck],
             rules: {
                 name: Dvm.string().require()
             },
@@ -39,7 +40,7 @@ module.exports = {
             path: '/groups/:id',
             method: 'put',
             action: 'groupUpdate',
-            middle: ['public'],
+            middle: [adminCheck],
             rules: {
                 name: Dvm.string()
             }
@@ -51,7 +52,7 @@ module.exports = {
             path: '/groups/',
             method: 'delete',
             action: 'groupDel',
-            middle: ['public'],
+            middle: [adminCheck],
             rules: {
                 ids: Dvm.array().require(),
                 real: Dvm.number().in([0, 1])
@@ -64,14 +65,17 @@ module.exports = {
             path: '/',
             method: 'get',
             action: 'list',
-            middle: ['public'],
+            middle: [adminCheck],
             rules: {
                 search: Dvm.string(),
                 group: Dvm.string(),
-                pageable: Dvm.number().in([0, 1], "参数必须是0或1").default(0),
                 page: Dvm.number().min(1).default(1),
                 pageSize: Dvm.number().default(5),
-                sort: Dvm.string(),
+                // sort: Dvm.object().keys({
+                //     name:Dvm.string().in(['ASC','DESC']),
+                //     _c:Dvm.string().in(['ASC','DESC']),
+                //     id:Dvm.string().in(['ASC','DESC'])
+                // }),
                 _d: Dvm.number().in([0, 1])
             }
         },
@@ -82,7 +86,7 @@ module.exports = {
             path: '/',
             method: 'post',
             action: 'add',
-            middle: ['public'],
+            middle: [adminCheck],
             rules: {
                 name: Dvm.string().require(),
                 group: Dvm.string().require(),
@@ -97,7 +101,7 @@ module.exports = {
             path: '/:id',
             method: 'put',
             action: 'update',
-            middle: ['public'],
+            middle: [adminCheck],
             rules: {
                 name: Dvm.string(),
                 group: Dvm.string()
@@ -110,9 +114,9 @@ module.exports = {
             path: '/',
             method: 'delete',
             action: 'del',
-            middle: ['public'],
+            middle: [adminCheck],
             rules: {
-                ids: Dvm.object(),
+                ids: Dvm.array().require(),
                 real: Dvm.number().in([0, 1])
             }
         },
@@ -123,9 +127,22 @@ module.exports = {
             path: '/pwd/:id',
             method: 'put',
             action: 'del',
-            middle: ['public'],
+            middle: [adminCheck],
             rules: {
                 password: Dvm.string()
+            }
+        },
+        /**
+         * 管理员登录
+         */
+        {
+            path: '/signIn',
+            method: 'post',
+            action: 'signIn',
+            middle: [],
+            rules: {
+                account: Dvm.string().require(),
+                password: Dvm.string().require()
             }
         }
     ]

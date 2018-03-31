@@ -23,6 +23,9 @@
     }
     .main{
         flex:1;
+        &>.content{
+            padding: 10px;
+        }
     }
     .header{
         border-bottom: 1px solid #ccc;
@@ -57,5 +60,13 @@
     /*修改side menu */
     .ant-menu-inline,.ant-menu-horizontal{
         border: none;
+    }
+    .list{
+        .table-btns{
+            margin-top: 10px;
+            &>.ant-btn{
+                margin-right: 5px;
+            }
+        }
     }
 }
