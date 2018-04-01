@@ -71,10 +71,10 @@ class AdminGroupList extends React.Component {
         return (
             <div className="list">
                 <Alert
-                    message="注意事项"
+                    message="管理员分组注意事项"
                     description={(
                         <div>
-                            <div>1.分组名不能重复</div>
+                            <div>1.管理员分组名不能重复</div>
                             <div>2.数据删除就无法恢复，建议使用禁用</div>
                         </div>
                     )}

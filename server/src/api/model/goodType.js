@@ -10,7 +10,6 @@ module.exports = class GoodType extends JikeJs.Model {
      */
     async list({ search, pageable, page, pageSize, _d }) {
 
-        let pageTotal;
         let _where = [];
         if (!this.isUndefined(search)) {
             _where.push({
@@ -22,7 +21,7 @@ module.exports = class GoodType extends JikeJs.Model {
                 _d
             })
         }
-        total = await this.where(_where).count();
+        let total = await this.where(_where).count();
         let list = await this.field('type_id as tid,type_name as tname,_d as t_d,_c as t_c').where(_where).page(page - 1, pageSize).select();
 
         return {
@@ -53,7 +52,7 @@ module.exports = class GoodType extends JikeJs.Model {
             return 0;
         }
         let { affectedRows = 0 } = await this.data(data).where({
-            good_id: id
+            type_id: id
         }).update();
         return affectedRows > 0;
     }

@@ -13,21 +13,21 @@ module.exports = class Good extends JikeJs.Controller {
     /**
      * 添加商品类型
      */
-    async typeAdd({ name, parent }) {
+    async typeAdd({ name }) {
         let model = new TaskTypeModel();
         return await model.add({ name })
     }
     /**
      * 添加商品类型
      */
-    async typeUpdate({ id, name, parent }) {
+    async typeUpdate({ id, name }) {
         let model = new TaskTypeModel();
-        return await model.updateInfo(id, { name })
+        return await model.updateInfo(id, {type_name:name })
     }
     /**
      * 删除商品类型
      */
-    async typeUpdate({ id, real }) {
+    async typeDel({ id, real }) {
         let model = new TaskTypeModel();
         if (real == 0) {
             return await model.del(id)

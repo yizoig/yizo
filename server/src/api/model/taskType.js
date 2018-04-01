@@ -56,7 +56,7 @@ module.exports = class TaskType extends JikeJs.Model {
             return 0;
         }
         let { affectedRows = 0 } = await this.data(data).where({
-            good_id: id
+            type_id: id
         }).update();
         return affectedRows > 0;
     }

@@ -81,11 +81,13 @@ class AdminList extends React.Component {
         return (
             <div className="list">
                 <Alert
-                    message="注意事项"
+                    message="管理员注意事项"
                     description={(
                         <div>
-                            <div>1.分组名不能重复</div>
+                            <div>1.管理员账号不能重复</div>
                             <div>2.数据删除就无法恢复，建议使用禁用</div>
+                            <div>3.重置密码默认为123456</div>
+                            <div>4.管理员必须存在分组，并且分组没有被禁用时，才能登录</div>
                         </div>
                     )}
                     type="info"

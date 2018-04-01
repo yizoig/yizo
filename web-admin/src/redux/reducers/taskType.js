@@ -1,5 +1,5 @@
 
-import { SAVE_LIST } from '../actions/taskType';
+import { TT_SAVE_TO_CACHE, TT_SAVE_TO_MEMORY } from '../actions/taskType';
 //获取用户基本信息
 const stateInit = {
     //会缓存的数据
@@ -10,12 +10,26 @@ const stateInit = {
     memory: {
         loading: true,
         list: [],
-        pageSize: 5
+        pagination: {
+            current:1,
+            pageSize: 5,
+            total: 0
+        },
+        editorData: null,
     }
 }
 export default (state = stateInit, action) => {
     switch (action.type) {
-        case SAVE_LIST: {
+        case TT_SAVE_TO_CACHE: {
+            return {
+                ...state,
+                cache: {
+                    ...state.cache,
+                    ...action.payload
+                }
+            }
+        }
+        case TT_SAVE_TO_MEMORY: {
             return {
                 ...state,
                 memory: {
@@ -25,7 +39,7 @@ export default (state = stateInit, action) => {
             }
         }
         default: {
-            return state
+            return state;
         }
     }
 }

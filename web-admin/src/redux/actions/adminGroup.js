@@ -1,6 +1,6 @@
 import admin from '../../api/admin'
-export const SAVE_TO_CACHE = "SAVE_TO_CACHE";
-export const SAVE_TO_MEMORY = "SAVE_TO_MEMORY";
+export const AG_SAVE_TO_CACHE = "AG_SAVE_TO_CACHE";
+export const AG_SAVE_TO_MEMORY = "AG_SAVE_TO_MEMORY";
 import { message } from 'antd';
 export function get_list(data) {
     return async (dispatch, getState) => {
@@ -14,7 +14,7 @@ export function get_list(data) {
         let { pageSize, current } = data.pagination;
         try {
             dispatch({
-                type: SAVE_TO_MEMORY,
+                type: AG_SAVE_TO_MEMORY,
                 payload: {
                     loading: true
                 }
@@ -22,7 +22,7 @@ export function get_list(data) {
             let { list, pagination } = await admin.groupList({ pageSize, page: current });
             list = list.map(item => ({ ...item, key:"admingroup"+item.gid }))
             dispatch({
-                type: SAVE_TO_MEMORY,
+                type: AG_SAVE_TO_MEMORY,
                 payload: {
                     list,
                     pagination: {
@@ -35,7 +35,7 @@ export function get_list(data) {
             message.success('共'+pagination.total+'条数据，本次查询到'+list.length+"条数据");
         } catch (e) {
             dispatch({
-                type: SAVE_TO_MEMORY,
+                type: AG_SAVE_TO_MEMORY,
                 payload: {
                     loading: false
                 }
@@ -47,7 +47,7 @@ export function get_list(data) {
 
 export function trigger_editor(data) {
     return {
-        type: SAVE_TO_MEMORY,
+        type: AG_SAVE_TO_MEMORY,
         payload: {
             editorData: data
         }

@@ -24,7 +24,7 @@ module.exports = class Good extends JikeJs.Controller {
      */
     async typeUpdate({ id, name }) {
         let model = new GoodTypeModel();
-        return await model.updateInfo(id, { name })
+        return await model.updateInfo(id, { type_name: name })
     }
     /**
      * 删除商品类型

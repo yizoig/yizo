@@ -65,11 +65,13 @@ class UserList extends React.Component {
         return (
             <div className="list">
                 <Alert
-                    message="注意事项"
+                    message="用户管理注意事项"
                     description={(
                         <div>
-                            <div>1.分组名不能重复</div>
+                            <div>1.用户账号不能重复</div>
                             <div>2.数据删除就无法恢复，建议使用禁用</div>
+                            <div>3.用户必须填写学校，并且学校没有被禁用，才能登录</div>
+                            <div>4.重置密码默认123456</div>
                         </div>
                     )}
                     type="info"

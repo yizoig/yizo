@@ -1,5 +1,5 @@
 
-import { SAVE_TO_CACHE, SAVE_TO_MEMORY } from '../actions/admin';
+import { AD_SAVE_TO_CACHE, AD_SAVE_TO_MEMORY } from '../actions/admin';
 //获取用户基本信息
 const stateInit = {
     //会缓存的数据
@@ -20,7 +20,7 @@ const stateInit = {
 }
 export default (state = stateInit, action) => {
     switch (action.type) {
-        case SAVE_TO_CACHE: {
+        case AD_SAVE_TO_CACHE: {
             return {
                 ...state,
                 cache: {
@@ -29,7 +29,7 @@ export default (state = stateInit, action) => {
                 }
             }
         }
-        case SAVE_TO_MEMORY: {
+        case AD_SAVE_TO_MEMORY: {
             return {
                 ...state,
                 memory: {

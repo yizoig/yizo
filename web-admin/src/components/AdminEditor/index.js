@@ -5,8 +5,6 @@ import admin from '../../api/admin';
 import { Select, Spin } from 'antd';
 
 class AdminEditor extends React.Component {
-
-
     constructor(props) {
         super(props);
         this.state = {
@@ -42,7 +40,6 @@ class AdminEditor extends React.Component {
         this.props.form.validateFieldsAndScroll(async (err, { name = '', group, account }) => {
             if (!err) {
                 try {
-
                     let result;
                     if (type == "add") {
                         console.log(account)
@@ -107,8 +104,6 @@ class AdminEditor extends React.Component {
                             <Input placeholder="必填" />
                         )}
                         </Form.Item>
-                    </Form>
-                    <Form >
                         <Form.Item
                             {...this.formItemLayout}
                             label="账号"
@@ -119,8 +114,6 @@ class AdminEditor extends React.Component {
                             <Input placeholder="必填" />
                         )}
                         </Form.Item>
-                    </Form>
-                    <Form >
                         <Form.Item
                             {...this.formItemLayout}
                             label="分组"
