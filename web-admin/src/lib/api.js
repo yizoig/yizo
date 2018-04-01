@@ -5,6 +5,7 @@ import { browserHistory } from '../components/common/Route';
 //解析键值对
 function parseData(key, value) {
     let ret = { key: key, values: [] };
+    console.log(key,typeof value)
     if (typeof value === 'Array') {
         ret.key = `${key}[]`;
         ret.values = value

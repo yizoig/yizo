@@ -10,24 +10,24 @@ class UserList extends React.Component {
         title: '昵称',
         dataIndex: 'nickname',
         key: 'nickname',
-        width: 150
-    },{
+        width: 160
+    }, {
         title: '手机号',
         dataIndex: 'utel',
         key: 'utel',
-        width: 180
+        width: 120
     }, {
         title: '性别',
         dataIndex: 'ugender',
         key: 'ugender',
-        width: 50,
-        render:text=>text==0?"男":"女"
-    },{
+        width: 80,
+        render: text => text == 0 ? "男" : "女"
+    }, {
         title: '学校',
         dataIndex: 'cname',
         key: 'cname',
         width: 180
-    },{
+    }, {
         title: '创建时间',
         dataIndex: 'u_c',
         key: 'u_c',
@@ -42,6 +42,8 @@ class UserList extends React.Component {
                 <a href="#" >删除</a>
                 <Divider type="vertical" />
                 <a href="#">修改</a>
+                <Divider type="vertical" />
+                <a href="#">重置密码</a>
             </span>
         ),
     }];
@@ -49,9 +51,17 @@ class UserList extends React.Component {
 
         this.props.dispatch(get_list())
     }
+    handleTableChange = (pagination, filters, sorter) => {
+        const pager = { ...this.props.memory.pagination };
+        pager.current = pagination.current;
+        this.props.dispatch(get_list({
+            pagination: pager
+        }))
+    }
     render() {
 
-        const { list, loading } = this.props.memory;
+        const { list, loading, pagination, editorData } = this.props.memory;
+        const { dispatch } = this.props;
         return (
             <div className="list">
                 <Alert
@@ -70,9 +80,19 @@ class UserList extends React.Component {
                     <Button type="primary">禁用</Button>
                     <Button type="primary">删除</Button>
                 </div>
-                <Table columns={this.columns} dataSource={list} bordered style={{ marginTop: 10 }} loading={loading} rowSelection={{
-                    fixed: true
-                }} />
+                <Table
+                    columns={this.columns}
+                    dataSource={list}
+                    bordered
+                    style={{ marginTop: 10 }}
+                    loading={loading}
+                    pagination={pagination}
+                    onChange={this.handleTableChange}
+                    expandedRowRender={record => <p style={{ margin: 0 }}>{record.cname}</p>}
+                // rowSelection={{
+                //     fixed: true
+                // }}
+                />
             </div>
         )
     }

@@ -10,7 +10,7 @@ module.exports = class Good extends JikeJs.Model {
      */
     async list({ search, creater, partner, college, type, state, pageable, pageSize, page, _d }) {
 
-        let pageTotal;
+        let total;
         let _where = [];
         if (!this.isUndefined(search)) {
             _where.push({ title: ['like', `%${search}%`] }, "AND")
@@ -40,18 +40,14 @@ module.exports = class Good extends JikeJs.Model {
                 { state: state }
             ])
         }
-        if (pageable == 1) {
-
-            pageTotal = await this
-                .join('inner join posts on goods.post_id=posts.post_id')
-                .join('inner join users on users.user_id=posts.creater_by')
-                .join('inner join good_buy_records on good_buy_records.good_id=goods.good_id')
-                .join('inner join user on users.user_id=good_buy_records.user_id')
-                .join('inner join good_types on good_types.type_id=goods.type_id')
-                .where(_where)
-                .count();
-            this.page(page - 1, pageSize);
-        }
+        total = await this
+            .join('inner join posts on goods.post_id=posts.post_id')
+            .join('inner join users on users.user_id=posts.creater_by')
+            .join('inner join good_buy_records on good_buy_records.good_id=goods.good_id')
+            .join('inner join user on users.user_id=good_buy_records.user_id')
+            .join('inner join good_types on good_types.type_id=goods.type_id')
+            .where(_where)
+            .count();
         let list = await this
             .join('inner join posts on goods.post_id=posts.post_id')
             .join('inner join users on users.user_id=posts.creater_by')
@@ -59,10 +55,13 @@ module.exports = class Good extends JikeJs.Model {
             .join('inner join user on users.user_id=good_buy_records.user_id')
             .join('inner join good_types on good_types.type_id=goods.type_id')
             .where(_where)
+            .page(page - 1, pageSize)
             .select();
         return {
             list,
-            ...(pageable == 1 ? { pageSize, pageTotal } : {})
+            pagination: {
+                total, pageSize
+            }
         }
     }
     /**

@@ -15,8 +15,7 @@ module.exports = {
             middle: [adminCheck],
             rules: {
                 search: Dvm.string(),
-                pageable: Dvm.number().in([0, 1], "参数必须是0或1").default(0),
-                page: Dvm.number().min(1).default(1),
+                page: Dvm.number().min(1,true).default(1),
                 pageSize: Dvm.number().default(5),
                 _d: Dvm.number().in([0, 1])
             },
@@ -55,7 +54,7 @@ module.exports = {
             middle: [adminCheck],
             rules: {
                 ids: Dvm.array().require(),
-                real: Dvm.number().in([0, 1])
+                real: Dvm.number().in([0, 1]).default(0)
             }
         },
         /**
@@ -69,13 +68,8 @@ module.exports = {
             rules: {
                 search: Dvm.string(),
                 group: Dvm.string(),
-                page: Dvm.number().min(1).default(1),
+                page: Dvm.number().min(1,true).default(1),
                 pageSize: Dvm.number().default(5),
-                // sort: Dvm.object().keys({
-                //     name:Dvm.string().in(['ASC','DESC']),
-                //     _c:Dvm.string().in(['ASC','DESC']),
-                //     id:Dvm.string().in(['ASC','DESC'])
-                // }),
                 _d: Dvm.number().in([0, 1])
             }
         },

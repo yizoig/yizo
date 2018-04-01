@@ -10,7 +10,7 @@ module.exports = class GoodType extends JikeJs.Model {
      */
     async list({ search, creater, partner, postId, pageable, page, pageSize, _d }) {
 
-        let pageTotal;
+        let total;
         let _where = [];
         if (!this.isUndefined(search)) {
             _where.push({
@@ -32,18 +32,13 @@ module.exports = class GoodType extends JikeJs.Model {
                 _d
             })
         }
-        //需要分页
-        if (pageable == 1) {
-            pageTotal = await this.where(_where).count();
-            this.page(page - 1, pageSize);
-        }
-
-        let list = await this.field('comment_id as id,user,_d,parent,_c,postId').where(_where).select();
-
+        total = await this.where(_where).count();
+        let list = await this.field('comment_id as id,user,_d,parent,_c,postId').where(_where).page(page - 1, pageSize).select();
         return {
             list,
-            ...(pageable == 1 ? { pageTotal, pageSize } : {})
-
+            pagination: {
+                total, pageSize
+            }
         }
     }
     /**
@@ -73,20 +68,20 @@ module.exports = class GoodType extends JikeJs.Model {
     /**
      * 删除评论
      */
-    async del(id,cids) {
+    async del(id, cids) {
         let { affectedRows = 0 } = await this.where({
             comment_id: ['in', cids],
-            post_id:id
+            post_id: id
         }).delete();
         return affectedRows > 0;
     }
     /**
      * 禁用商品类型
      */
-    async disabled(id,cids) {
+    async disabled(id, cids) {
         let { affectedRows = 0 } = await this.where({
             comment_id: ['in', cids],
-            post_id:id
+            post_id: id
         }).data({
             _d: 1
         }).update();

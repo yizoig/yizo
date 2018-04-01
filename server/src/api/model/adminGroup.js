@@ -15,7 +15,7 @@ module.exports = class AdminGroup extends JikeJs.Model {
      * 获取分组
      */
     async groupList({ search, page, pageSize, _d }) {
-        let pageTotal;
+        let total;
         let _where = [];
         if (!this.isUndefined(search)) {
             _where.push({
@@ -25,10 +25,13 @@ module.exports = class AdminGroup extends JikeJs.Model {
         if (!this.isUndefined(_d)) {
             _where.push({ _d })
         }
-        pageTotal = await this.where(_where).count();
+        total = await this.where(_where).count();
         let list = await this.field('group_id as gid,group_name as gname,_c as g_c,_d as g_d').page(page - 1, pageSize).where(_where).select();
         return {
-            list, pageTotal, pageSize
+            list,
+            pagination:{
+                total, pageSize
+            }
         }
 
     }
@@ -37,7 +40,7 @@ module.exports = class AdminGroup extends JikeJs.Model {
      */
     async groupAdd({ name }) {
 
-        let info = await this.where({ group_name: ['LIKE', `%${name}%`] }).find();
+        let info = await this.where({ group_name: name }).find();
         if (info) {
             this.fail(this.codes.ADMIN_GROUP_NAME_USED)
         }

@@ -1,5 +1,5 @@
 
-import { SAVE_LIST } from '../actions/admin';
+import { SAVE_TO_CACHE, SAVE_TO_MEMORY } from '../actions/admin';
 //获取用户基本信息
 const stateInit = {
     //会缓存的数据
@@ -10,12 +10,26 @@ const stateInit = {
     memory: {
         loading: true,
         list: [],
-        pageSize: 5
+        pagination: {
+            current:1,
+            pageSize: 5,
+            total: 0
+        },
+        editorData: null,
     }
 }
 export default (state = stateInit, action) => {
     switch (action.type) {
-        case SAVE_LIST: {
+        case SAVE_TO_CACHE: {
+            return {
+                ...state,
+                cache: {
+                    ...state.cache,
+                    ...action.payload
+                }
+            }
+        }
+        case SAVE_TO_MEMORY: {
             return {
                 ...state,
                 memory: {
@@ -25,7 +39,7 @@ export default (state = stateInit, action) => {
             }
         }
         default: {
-            return state
+            return state;
         }
     }
 }

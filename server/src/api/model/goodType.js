@@ -22,28 +22,23 @@ module.exports = class GoodType extends JikeJs.Model {
                 _d
             })
         }
-        //需要分页
-        if (pageable == 1) {
-            pageTotal = await this.where(_where).count();
-            this.page(page - 1, pageSize);
-        }
-
-        let list = await this.field('type_id as id,type_name name,_d,parent').where(_where).select();
+        total = await this.where(_where).count();
+        let list = await this.field('type_id as tid,type_name as tname,_d as t_d,_c as t_c').where(_where).page(page - 1, pageSize).select();
 
         return {
             list,
-            ...(pageable == 1 ? { pageTotal, pageSize } : {})
-
+            pagination: {
+                total, pageSize
+            }
         }
     }
     /**
      * 添加商品类型
      */
-    async add({ name, parent }) {
+    async add({ name, }) {
 
         let { insertId } = await this.data({
             type_name: name,
-            parent
         }).insert();
         return insertId;
     }
@@ -53,7 +48,7 @@ module.exports = class GoodType extends JikeJs.Model {
     async updateInfo(id, data) {
 
         //过滤字段
-        data = this.filter_handle(data, ['type_name', 'parent']);
+        data = this.filter_handle(data, ['type_name']);
         if (Object.keys(data).length == 0) {
             return 0;
         }

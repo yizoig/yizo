@@ -10,7 +10,7 @@ module.exports = class TaskType extends JikeJs.Model {
      */
     async list({ search, pageable, page, pageSize, _d }) {
 
-        let pageTotal;
+        let total;
         let _where = [];
         if (!this.isUndefined(search)) {
             _where.push({
@@ -22,17 +22,15 @@ module.exports = class TaskType extends JikeJs.Model {
                 _d
             })
         }
-        //需要分页
-        if (pageable == 1) {
-            pageTotal = await this.where(_where).count();
-            this.page(page - 1, pageSize);
-        }
+        total = await this.where(_where).count();
 
-        let list = await this.field('type_id as id,type_name name,_d').where(_where).select();
+        let list = await this.field('type_id as tid,type_name tname,_d as t_d,_c as t_c').where(_where).page(page - 1, pageSize).select();
 
         return {
             list,
-            ...(pageable == 1 ? { pageTotal, pageSize } : {})
+            pagination: {
+                pageSize, total
+            }
 
         }
     }

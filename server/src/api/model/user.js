@@ -13,7 +13,7 @@ module.exports = class Admin extends JikeJs.Model {
      */
     async list({ search, college, gender, pageable, page, pageSize, _d }) {
 
-        let pageTotal;
+        let total;
         let _where = [];
         if (!this.isUndefined(search)) {
             _where.push([{
@@ -32,19 +32,18 @@ module.exports = class Admin extends JikeJs.Model {
                 user_gender: gender
             })
         }
-        //是否需要分页
-        if (pageable === 1) {
-            pageTotal = await this
+        total = await this
             .where(_where).join('inner join colleges on colleges.college_id=users.college').count();
-            this.page(page - 1, pageSize);
-        }
+
 
         let list = await this
-        .field('user_id as uid,wx_id as wxid,nick_name as nickname,user_tel as utel,user_gender as ugender,users.college as cid,college_name as cname,users._c as u_c,users._d as u_d')
-        .where(_where).join('inner join colleges on colleges.college_id=users.college').select();
+            .field('user_id as uid,wx_id as wxid,nick_name as nickname,user_tel as utel,user_gender as ugender,users.college as cid,college_name as cname,users._c as u_c,users._d as u_d')
+            .where(_where).join('inner join colleges on colleges.college_id=users.college').page(page - 1, pageSize).select();
         return {
             list,
-            ...(pageable == 1 ? { pageTotal, pageSize } : {})
+            pagination: {
+                total, pageSize
+            }
         }
     }
     /**

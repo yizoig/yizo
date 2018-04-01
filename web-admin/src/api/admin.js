@@ -11,6 +11,13 @@ export default {
     cache.local.setJsonItem('userinfo', data);
     return data;
   },
-  groupList:Api.get('/admins/groups'),
-  list:Api.get('/admins')
+  list: Api.get('/admins'),
+  add: Api.post("/admins"),
+  update: Api.put("/admins/:id"),
+  del: Api.delete("/admins"),
+  //分组
+  groupList: Api.get('/admins/groups'),
+  updateGroup: Api.put('/admins/groups/:id'),
+  addGroup: Api.post("/admins/groups"),
+  delGroup: Api.delete("/admins/groups")
 }

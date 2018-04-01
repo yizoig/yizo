@@ -13,23 +13,21 @@ module.exports = class College extends JikeJs.Model {
      */
     async list({ search, pageable, page, pageSize, _d }) {
 
-        let pageTotal;
+        let total;
         let _where = [];
         if (!this.isUndefined(search)) {
             _where.push({
                 college_name: ['like', `%${search}%`]
             })
         }
-        //是否需要分页
-        if (pageable === 1) {
-            pageTotal = await this.where(_where).count();
-            this.page(page - 1, pageSize);
-        }
 
-        let list = await this.field('college_id as cid,college_name as cname,_c as c_c,_d as c_d').where(_where).select();
+        total = await this.where(_where).count();
+        let list = await this.field('college_id as cid,college_name as cname,_c as c_c,_d as c_d').page(page - 1, pageSize).where(_where).select();
         return {
             list,
-            ...(pageable == 1 ? { pageTotal, pageSize } : {})
+            pagination: {
+                total, pageSize
+            }
         }
     }
     /**
@@ -44,8 +42,15 @@ module.exports = class College extends JikeJs.Model {
         //过滤字段
         data = this.filter_handle(data, ['college_name']);
 
-        let { affectedRows = 0 } = await this.data(data).update();
+        let { affectedRows = 0 } = await this.data(data).where({ college_id: id }).update();
         return affectedRows > 0;
+    }
+    async add({ name }) {
+        if (await this.where({ college_name: name }).find()) {
+            this.fail(this.codes.COLLEGE_NAME_USED);
+        }
+        let { insertId = false } = await this.data({ college_name:name}).insert() || {};
+        return insertId;
     }
     /**
      * 删除学校
@@ -60,7 +65,7 @@ module.exports = class College extends JikeJs.Model {
     /**
      * 禁用学校
      */
-    async del(ids) {
+    async disabled(ids) {
 
         let { affectedRows = 0 } = await this.where({
             college_id: ['in', ids]

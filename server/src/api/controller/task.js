@@ -5,10 +5,10 @@ module.exports = class Good extends JikeJs.Controller {
     /**
      * 获取商品类型列表 
      */
-    async typeList({ search, pageable, page, pageSize, _d }) {
+    async typeList({ search, page, pageSize, _d }) {
 
         let model = new TaskTypeModel();
-        return await model.list({ search, pageable, page, pageSize, _d });
+        return await model.list({ search, page, pageSize, _d });
     }
     /**
      * 添加商品类型

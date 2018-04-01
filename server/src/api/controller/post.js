@@ -2,10 +2,10 @@ let CommentModel = require("../model/comment")
 //控制器
 module.exports = class Post extends JikeJs.Controller {
 
-    async commentList({ search, creater, postID, pageable, page, pageSize, _d }) {
+    async commentList({ search, creater, postId, page, pageSize, _d }) {
 
         let model = new CommentModel();
-        return await model.list({ search, creater, postID, pageable, page, pageSize, _d });
+        return await model.list({ search, creater, postId, page, pageSize, _d });
     }
     async commentAdd({ id, content }) {
 

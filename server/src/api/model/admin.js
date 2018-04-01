@@ -47,7 +47,7 @@ module.exports = class Admin extends JikeJs.Model {
      * 获取管理员列表
      */
     async list({ search, group, pageable, page, pageSize, _d, sort }) {
-        let pageTotal;
+        let total;
         let _where = [];
         if (!this.isUndefined(search)) {
             _where.push([
@@ -69,7 +69,7 @@ module.exports = class Admin extends JikeJs.Model {
                 'admins._d': _d
             })
         }
-        pageTotal = await this.where(_where).join("inner join admin_groups on admin_groups.group_id=admins.group").count();
+        total = await this.where(_where).join("inner join admin_groups on admin_groups.group_id=admins.group").count();
         // if (sort) {
         //     let sortObj = {};
         //     sort.split(',').forEach(item => {
@@ -82,12 +82,15 @@ module.exports = class Admin extends JikeJs.Model {
         //     this.order(sortObj);
         // }
         let list = await this
-            .field('admin_id as aid,admin_name as aname,admin_account as aaccount,group as agroup,admins._c as a_c,admins._d as a_d')
+            .field('admin_id as aid,admin_name as aname,admin_account as aaccount,group as gid,group_name as gname,admins._c as a_c,admins._d as a_d')
             .join("inner join admin_groups on admin_groups.group_id=admins.group")
             .page(page - 1, pageSize)
             .where(_where).select();
         return {
-            list, pageTotal, pageSize
+            list,
+            pagination:{
+                total, pageSize
+            }
         }
 
     }

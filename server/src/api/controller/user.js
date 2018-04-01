@@ -4,10 +4,10 @@ module.exports = class User extends JikeJs.Controller {
     /**
      * 获取用户列表
      */
-    async list({ search, college, gender, pageable, page, pageSize, _d }) {
+    async list({ search, college, gender, page, pageSize, _d }) {
 
         let model = new UserModel();
-        return await model.list({ search, college, gender, pageable, page, pageSize, _d });
+        return await model.list({ search, college, gender, page, pageSize, _d });
     }
     /**
      * 修改用户基本信息

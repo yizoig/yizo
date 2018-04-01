@@ -16,8 +16,7 @@ module.exports = {
                 search: Dvm.string(),
                 college: Dvm.string(),
                 gender: Dvm.number().in([0, 1]),
-                pageable: Dvm.number().in([0, 1], "参数必须是0或1").default(0),
-                page: Dvm.number().min(1).default(1),
+                page: Dvm.number().min(1, true).default(1),
                 pageSize: Dvm.number().default(5),
                 _d: Dvm.number().in([0, 1])
             },

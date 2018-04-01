@@ -15,8 +15,7 @@ module.exports = {
             middle: [],
             rules: {
                 search: Dvm.string(),
-                pageable: Dvm.number().in([0, 1], "参数必须是0或1").default(0),
-                page: Dvm.number().min(1).default(1),
+                page: Dvm.number().min(1, true).default(1),
                 pageSize: Dvm.number().default(5),
                 _d: Dvm.number().in([0, 1])
             },
@@ -31,7 +30,6 @@ module.exports = {
             middle: [],
             rules: {
                 name: Dvm.string().require(),
-                parent: Dvm.string(),
             },
         },
         /**
@@ -44,7 +42,6 @@ module.exports = {
             middle: [],
             rules: {
                 name: Dvm.string(),
-                parent: Dvm.string(),
             }
         },
         /**
@@ -75,8 +72,7 @@ module.exports = {
                 college: Dvm.string(),
                 type: Dvm.string(),
                 state: Dvm.number().in([0, 1, 2, 3]),
-                pageable: Dvm.number().in([0, 1], "参数必须是0或1").default(0),
-                page: Dvm.number().min(1).default(1),
+                page: Dvm.number().min(1, true).default(1),
                 pageSize: Dvm.number().default(5),
                 _d: Dvm.number().in([0, 1])
             }

@@ -41,7 +41,7 @@ module.exports = class Admin extends JikeJs.Controller {
     /**
      * 删除管理员
      */
-    async groupDel({ ids, real = 0 }) {
+    async groupDel({ ids, real }) {
 
         let model = new AdminGroupModel();
         if (real == 0) {

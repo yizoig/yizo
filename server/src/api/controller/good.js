@@ -7,24 +7,24 @@ module.exports = class Good extends JikeJs.Controller {
     /**
      * 获取商品类型列表 
      */
-    async typeList({ search, pageable, page, pageSize, _d }) {
+    async typeList({ search, page, pageSize, _d }) {
 
         let model = new GoodTypeModel();
-        return await model.list({ search, pageable, page, pageSize, _d });
+        return await model.list({ search, page, pageSize, _d });
     }
     /**
      * 添加商品类型
      */
-    async typeAdd({ name, parent }) {
+    async typeAdd({ name }) {
         let model = new GoodTypeModel();
-        return await model.add({ name, parent })
+        return await model.add({ name })
     }
     /**
      * 添加商品类型
      */
-    async typeUpdate({ id, name, parent }) {
+    async typeUpdate({ id, name }) {
         let model = new GoodTypeModel();
-        return await model.updateInfo(id, { name, parent })
+        return await model.updateInfo(id, { name })
     }
     /**
      * 删除商品类型
@@ -39,9 +39,9 @@ module.exports = class Good extends JikeJs.Controller {
     /**
      * 获取商品列表
      */
-    async list({ search, creater, partner, college, type, state, pageable, page, pageSize, _d }) {
+    async list({ search, creater, partner, college, type, state, page, pageSize, _d }) {
         let model = new GoodModel();
-        return await model.list({ search, creater, partner, college, type, state, pageable, page, pageSize, _d })
+        return await model.list({ search, creater, partner, college, type, state, page, pageSize, _d })
     }
     async add() {
         let model = new GoodModel();
@@ -74,7 +74,7 @@ module.exports = class Good extends JikeJs.Controller {
     /**
      * 获取基本信息
      */
-    async info({id}){
+    async info({ id }) {
         let model = new GoodModel();
         return await model.info(id);
     }
