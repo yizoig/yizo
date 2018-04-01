@@ -99,7 +99,8 @@ class AdminList extends React.Component {
                             type: "add"
                         }))
                     }}>添加</Button>
-                    <Button type="primary">禁用</Button>
+                   <Button className="btn-danger">禁用</Button>
+                    <Button className="btn-success">启用</Button>
                     <Button type="primary">删除</Button>
                 </div>
                 <Table

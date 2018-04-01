@@ -1,6 +1,6 @@
 {
   "name": "web-admin",
-  "title": "后台",
+  "title": "yizo后台管理系统",
   "version": "1.0.0",
   "description": "yizo后台",
   "main": "index.js",

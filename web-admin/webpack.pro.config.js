@@ -49,7 +49,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            title: title + '-' + version,
+            title: title + 'v' + version,
             template: path.join(__dirname, './index.html')
         }),
         // new webpack.HotModuleReplacementPlugin()

@@ -15,7 +15,7 @@ import { syncHistoryWithStore, routerMiddleware, ConnectedRouter } from 'react-r
 import createHistory from 'history/createBrowserHistory'
 import thunkMiddleware from 'redux-thunk';
 import persistState from 'redux-localstorage'
-
+import './base';
 
 const browserHistory = createHistory();
 const DevTools = createDevTools(

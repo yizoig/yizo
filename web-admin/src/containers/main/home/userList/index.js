@@ -79,7 +79,8 @@ class UserList extends React.Component {
                 />
                 <div className="table-btns">
                     <Button type="primary">添加</Button>
-                    <Button type="primary">禁用</Button>
+                    <Button className="btn-danger">禁用</Button>
+                    <Button className="btn-success">启用</Button>
                     <Button type="primary">删除</Button>
                 </div>
                 <Table
