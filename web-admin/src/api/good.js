@@ -3,5 +3,6 @@ export default {
   typeList:Api.get('/goods/types'),
   addType:Api.post("/goods/types"),
   updateType:Api.put("/goods/types/:id"),
-  delType:Api.delete("/goods/types")
+  delType:Api.delete("/goods/types"),
+  useType:Api.put("/goods/types/use")
 }

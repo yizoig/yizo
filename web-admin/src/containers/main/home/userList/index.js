@@ -37,7 +37,7 @@ class UserList extends React.Component {
         key: 'action',
         render: (text, record) => (
             <span>
-                {record['u_d'] == 0 ? (<a href="#" style={{ color: '#F00' }}>禁用</a>) : (<a href="#" style={{ color: '#50B233' }}>启用</a>)}
+                {record['is_use'] == 1 ? (<a href="#" style={{ color: '#F00' }}>禁用</a>) : (<a href="#" style={{ color: '#50B233' }}>启用</a>)}
                 <Divider type="vertical" />
                 <a href="#" >删除</a>
                 <Divider type="vertical" />

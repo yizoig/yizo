@@ -17,7 +17,8 @@ module.exports = {
                 search: Dvm.string(),
                 page: Dvm.number().min(1,true).default(1),
                 pageSize: Dvm.number().default(5),
-                _d: Dvm.number().in([0, 1])
+                use: Dvm.number().in([0, 1]),
+                del: Dvm.number().in([0, 1]).default(0)
             },
         },
         /**
@@ -31,6 +32,19 @@ module.exports = {
             rules: {
                 name: Dvm.string().require(),
             },
+        },
+         /**
+         * 禁用任务类型
+         */
+        {
+            path: '/types/use',
+            method: 'delete',
+            action: 'typeUse',
+            middle: [],
+            rules: {
+                ids: Dvm.array().require(),
+                use: Dvm.number().in([0, 1]).default(1)
+            }
         },
         /**
          * 修改任务类型
@@ -54,7 +68,7 @@ module.exports = {
             middle: [],
             rules: {
                 ids: Dvm.array().require(),
-                real: Dvm.number().in([0, 1])
+                del: Dvm.number().in([0, 1]).default(0)
             }
         },
     ]

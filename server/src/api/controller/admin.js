@@ -20,9 +20,9 @@ module.exports = class Admin extends JikeJs.Controller {
      * 获取管理员组
      * @param {} param0 
      */
-    async groupList({ search, page, pageSize, _d }) {
+    async groupList({ search, page, pageSize, use, del }) {
         let model = new AdminGroupModel();
-        return await model.groupList({ search, page, pageSize, _d });
+        return await model.groupList({ search, page, pageSize, use, del });
     }
     /**
      * 添加管理员组
@@ -39,24 +39,27 @@ module.exports = class Admin extends JikeJs.Controller {
         return await model.groupUpdate(id, { group_name: name });
     }
     /**
-     * 删除管理员
+     * 删除/恢复管理员
      */
-    async groupDel({ ids, real }) {
+    async groupDel({ ids, del }) {
+        let model = new AdminGroupModel();
+        return await model.groupDel(ids, del);
+    }
+    /**
+     * 删除/恢复管理员
+     */
+    async groupUsed({ ids, use }) {
 
         let model = new AdminGroupModel();
-        if (real == 0) {
-            return await model.groupDisable(ids);
-        } else {
-            return await model.groupDel(ids);
-        }
+        return await model.groupUse(ids, use);
     }
     /**
      * 获取管理员列表
      * @param {} param0 
      */
-    async list({ search, group, page, pageSize, _d, sort }) {
+    async list({ search, group, page, pageSize, use,del, sort }) {
         let model = new AdminModel();
-        return await model.list({ search, group, sort, page, pageSize, _d });
+        return await model.list({ search, group, sort, page, pageSize,  use,del });
     }
     /**
      * 添加管理员
@@ -75,13 +78,17 @@ module.exports = class Admin extends JikeJs.Controller {
     /**
      * 删除管理员
      */
-    async del({ ids, real = 0 }) {
+    async del({ ids, del }) {
 
         let model = new AdminModel();
-        if (real == 0) {
-            return await model.disabled(ids);
-        } else {
-            return await model.del(ids);
-        }
+        return await model.del(ids, del);
+    }
+    /**
+     * 删除管理员
+     */
+    async use({ ids, use }) {
+
+        let model = new AdminModel();
+        return await model.use(ids,use);
     }
 }

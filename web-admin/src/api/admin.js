@@ -15,9 +15,11 @@ export default {
   add: Api.post("/admins"),
   update: Api.put("/admins/:id"),
   del: Api.delete("/admins"),
+  use: Api.put("/admins/use"),
   //分组
   groupList: Api.get('/admins/groups'),
   updateGroup: Api.put('/admins/groups/:id'),
   addGroup: Api.post("/admins/groups"),
-  delGroup: Api.delete("/admins/groups")
+  delGroup: Api.delete("/admins/groups"),
+  useGroup: Api.put("/admins/groups/use")
 }

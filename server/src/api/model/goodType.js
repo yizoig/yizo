@@ -8,7 +8,7 @@ module.exports = class GoodType extends JikeJs.Model {
     /**
      * 获取商品类型
      */
-    async list({ search, pageable, page, pageSize, _d }) {
+    async list({ search, pageable, page, pageSize, use,del }) {
 
         let _where = [];
         if (!this.isUndefined(search)) {
@@ -16,13 +16,16 @@ module.exports = class GoodType extends JikeJs.Model {
                 type_name: ['like', `%${search}%`]
             }, "AND")
         }
-        if (!this.isUndefined(_d)) {
+        if (!this.isUndefined(use)) {
             _where.push({
-                _d
-            })
+                is_use:use
+            },"AND")
         }
+        _where.push({
+            is_del:del
+        })
         let total = await this.where(_where).count();
-        let list = await this.field('type_id as tid,type_name as tname,_d as t_d,_c as t_c').where(_where).page(page - 1, pageSize).select();
+        let list = await this.field('type_id as tid,type_name as tname,_c as t_c,is_use,is_del').where(_where).page(page - 1, pageSize).select();
 
         return {
             list,
@@ -59,20 +62,22 @@ module.exports = class GoodType extends JikeJs.Model {
     /**
      * 删除商品类型
      */
-    async del(ids) {
+    async del(ids,is_del) {
         let { affectedRows = 0 } = await this.where({
             type_id: ['in', ids]
-        }).delete();
+        }).data({
+            is_del
+        }).update();
         return affectedRows > 0;
     }
     /**
      * 禁用商品类型
      */
-    async disabled(ids) {
+    async use(ids,is_use) {
         let { affectedRows = 0 } = await this.where({
             type_id: ['in', ids]
         }).data({
-            _d: 1
+            is_use
         }).update();
         return affectedRows > 0;
     }

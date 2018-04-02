@@ -1,7 +1,8 @@
 import task from '../../api/task'
 export const TT_SAVE_TO_CACHE = "TT_SAVE_TO_CACHE";
 export const TT_SAVE_TO_MEMORY = "TT_SAVE_TO_MEMORY";
-import { message } from 'antd';
+import React, { Component } from 'react';
+import { message ,notification,Icon} from 'antd';
 export function get_list(data) {
     return async (dispatch, getState) => {
         //获取默认数据
@@ -20,7 +21,7 @@ export function get_list(data) {
                 }
             })
             let { list, pagination } = await task.typeList({ pageSize, page: current });
-            list = list.map(item => ({ ...item, key: "typetype" + item.tid }))
+            list = list.map(item => ({ ...item, key: item.tid }))
             dispatch({
                 type: TT_SAVE_TO_MEMORY,
                 payload: {
@@ -54,12 +55,56 @@ export function trigger_editor(data) {
     }
 }
 
-export function del_items({ ids, real = 0 }) {
+export function del_items({ ids, del = 0 }) {
     return async (dispatch) => {
-        try {
-            let result = await task.delGroup({ ids, real });
-        } catch (e) {
 
+        if(ids.length==0){
+            return  message.warning('请选择需要删除的数据');
+        }
+        try {
+            let result = await task.delType({ ids, del });
+            notification.open({
+                message: "操作成功",
+                icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
+            })
+            dispatch(get_list())
+        } catch (e) {
+            notification.open({
+                message: "操作失败",
+                description: e.message,
+                icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
+            })
+        }
+    }
+}
+export function use_items({ ids, use = 1 }) {
+    return async (dispatch) => {
+
+        if(ids.length==0){
+            return  message.warning('请选择需要操作的数据');
+        }
+        try {
+            let result = await task.useType({ ids, use });
+            notification.open({
+                message: "操作成功",
+                icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
+            })
+            dispatch(get_list())
+        } catch (e) {
+            notification.open({
+                message: "操作失败",
+                description: e.message,
+                icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
+            })
+        }
+    }
+}
+
+export function select_row(selectedRowKeys){
+    return {
+        type: TT_SAVE_TO_MEMORY,
+        payload: {
+            selectedRowKeys
         }
     }
 }

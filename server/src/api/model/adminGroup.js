@@ -14,7 +14,7 @@ module.exports = class AdminGroup extends JikeJs.Model {
     /**
      * 获取分组
      */
-    async groupList({ search, page, pageSize, _d }) {
+    async groupList({ search, page, pageSize, use, del }) {
         let total;
         let _where = [];
         if (!this.isUndefined(search)) {
@@ -22,14 +22,17 @@ module.exports = class AdminGroup extends JikeJs.Model {
                 group_name: ['like', `%${search}%`]
             }, "AND")
         }
-        if (!this.isUndefined(_d)) {
-            _where.push({ _d })
+        if (!this.isUndefined(use)) {
+            _where.push({
+                is_use: use
+            }, "AND")
         }
+        _where.push({ is_del: del })
         total = await this.where(_where).count();
-        let list = await this.field('group_id as gid,group_name as gname,_c as g_c,_d as g_d').page(page - 1, pageSize).where(_where).select();
+        let list = await this.field('group_id as gid,group_name as gname,_c as g_c,is_del,is_use').page(page - 1, pageSize).where(_where).select();
         return {
             list,
-            pagination:{
+            pagination: {
                 total, pageSize
             }
         }
@@ -74,19 +77,19 @@ module.exports = class AdminGroup extends JikeJs.Model {
     /**
      * 删除用户组
      */
-    async groupDel(ids) {
+    async groupDel(ids,is_del) {
         let { affectedRows = 0 } = await this.where({
             group_id: ['in', ids]
-        }).delete();
+        }).data({ is_del}).update();
         return affectedRows > 0;
     }
     /**
      * 禁用用户组
      */
-    async groupDisable(ids) {
+    async groupUse(ids,is_use) {
         let { affectedRows = 0 } = await this.where({
             group_id: ['in', ids]
-        }).data({ _d: 1 }).update();
+        }).data({ is_use }).update();
         return affectedRows > 0;
     }
 }

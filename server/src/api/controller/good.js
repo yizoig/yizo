@@ -7,10 +7,10 @@ module.exports = class Good extends JikeJs.Controller {
     /**
      * 获取商品类型列表 
      */
-    async typeList({ search, page, pageSize, _d }) {
+    async typeList({ search, page, pageSize, use,del }) {
 
         let model = new GoodTypeModel();
-        return await model.list({ search, page, pageSize, _d });
+        return await model.list({ search, page, pageSize, use,del });
     }
     /**
      * 添加商品类型
@@ -29,12 +29,16 @@ module.exports = class Good extends JikeJs.Controller {
     /**
      * 删除商品类型
      */
-    async typeDel({ id, real }) {
+    async typeDel({ ids, del }) {
         let model = new GoodTypeModel();
-        if (real == 0) {
-            return await model.del(id)
-        }
-        return await model.disabled(id)
+            return await model.del(ids,del)
+    }
+    /**
+     * 删除商品类型
+     */
+    async typeUse({ ids, use }) {
+        let model = new GoodTypeModel();
+        return await model.use(ids,use)
     }
     /**
      * 获取商品列表

@@ -18,7 +18,8 @@ module.exports = {
                 gender: Dvm.number().in([0, 1]),
                 page: Dvm.number().min(1, true).default(1),
                 pageSize: Dvm.number().default(5),
-                _d: Dvm.number().in([0, 1])
+                use: Dvm.number().in([0, 1]),
+                del: Dvm.number().in([0, 1]).default(0)
             },
         },
         //修改用户基本信息
@@ -46,6 +47,19 @@ module.exports = {
                 iv: Dvm.string()
             }
         },
+         /**
+         * 禁用用户
+         */
+        {
+            path: '/use',
+            method: 'put',
+            action: 'use',
+            middle: [],
+            rules: {
+                ids: Dvm.array().require(),
+                use: Dvm.number().in([0, 1]).default(1)
+            }
+        },
         /**
          * 获取用户基本信息
          */
@@ -63,7 +77,7 @@ module.exports = {
             action: "del",
             rules: {
                 ids: Dvm.array().require(),
-                real: Dvm.number().in([0, 1])
+                del: Dvm.number().in([0, 1]).default(0)
             }
         }
     ]

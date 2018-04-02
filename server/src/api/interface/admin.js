@@ -1,5 +1,5 @@
 const { Dvm } = JikeJs;
-const {adminCheck} = require("../config/middleware")
+const { adminCheck } = require("../config/middleware")
 //定义路由
 module.exports = {
     controller: 'admin',//默认controller
@@ -15,9 +15,10 @@ module.exports = {
             middle: [adminCheck],
             rules: {
                 search: Dvm.string(),
-                page: Dvm.number().min(1,true).default(1),
+                page: Dvm.number().min(1, true).default(1),
                 pageSize: Dvm.number().default(5),
-                _d: Dvm.number().in([0, 1])
+                use: Dvm.number().in([0, 1]),
+                del: Dvm.number().in([0, 1]).default(0)
             },
         },
         /**
@@ -33,6 +34,32 @@ module.exports = {
             },
         },
         /**
+         * 删除/恢复 管理组
+         */
+        {
+            path: '/groups',
+            method: 'delete',
+            action: 'groupDel',
+            middle: [adminCheck],
+            rules: {
+                ids: Dvm.array().require(),
+                del: Dvm.number().in([0, 1]).default(0)
+            }
+        },
+        /**
+         * 禁用/启用 管理组
+         */
+        {
+            path: '/groups/use',
+            method: 'put',
+            action: 'groupUsed',
+            middle: [adminCheck],
+            rules: {
+                ids: Dvm.array().require(),
+                use: Dvm.number().in([0, 1]).default(1)
+            }
+        },
+        /**
          * 修改管理组
          */
         {
@@ -42,19 +69,6 @@ module.exports = {
             middle: [adminCheck],
             rules: {
                 name: Dvm.string()
-            }
-        },
-        /**
-         * 删除管理组
-         */
-        {
-            path: '/groups/',
-            method: 'delete',
-            action: 'groupDel',
-            middle: [adminCheck],
-            rules: {
-                ids: Dvm.array().require(),
-                real: Dvm.number().in([0, 1]).default(0)
             }
         },
         /**
@@ -68,9 +82,10 @@ module.exports = {
             rules: {
                 search: Dvm.string(),
                 group: Dvm.string(),
-                page: Dvm.number().min(1,true).default(1),
+                page: Dvm.number().min(1, true).default(1),
                 pageSize: Dvm.number().default(5),
-                _d: Dvm.number().in([0, 1])
+                use: Dvm.number().in([0, 1]),
+                del: Dvm.number().in([0, 1]).default(0)
             }
         },
         /**
@@ -89,6 +104,32 @@ module.exports = {
             }
         },
         /**
+        * 删除/禁用管理员
+        */
+        {
+            path: '/',
+            method: 'delete',
+            action: 'del',
+            middle: [adminCheck],
+            rules: {
+                ids: Dvm.array().require(),
+                del: Dvm.number().in([0, 1]).default(0)
+            }
+        },
+        /**
+        * 禁用/启用管理员
+        */
+        {
+            path: '/use',
+            method: 'put',
+            action: 'use',
+            middle: [adminCheck],
+            rules: {
+                ids: Dvm.array().require(),
+                use: Dvm.number().in([0, 1]).default(1)
+            }
+        },
+        /**
          * 修改管理员基本信息
          */
         {
@@ -99,19 +140,6 @@ module.exports = {
             rules: {
                 name: Dvm.string(),
                 group: Dvm.string()
-            }
-        },
-        /**
-         * 删除管理员
-         */
-        {
-            path: '/',
-            method: 'delete',
-            action: 'del',
-            middle: [adminCheck],
-            rules: {
-                ids: Dvm.array().require(),
-                real: Dvm.number().in([0, 1])
             }
         },
         /**

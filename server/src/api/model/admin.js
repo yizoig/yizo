@@ -46,7 +46,7 @@ module.exports = class Admin extends JikeJs.Model {
     /**
      * 获取管理员列表
      */
-    async list({ search, group, pageable, page, pageSize, _d, sort }) {
+    async list({ search, group, pageable, page, pageSize, use,del, sort }) {
         let total;
         let _where = [];
         if (!this.isUndefined(search)) {
@@ -64,11 +64,14 @@ module.exports = class Admin extends JikeJs.Model {
         if (!this.isUndefined(group)) {
             _where.push({ group })
         }
-        if (!this.isUndefined(_d)) {
+        if (!this.isUndefined(use)) {
             _where.push({
-                'admins._d': _d
-            })
+                "admins.is_use":use
+            },"AND")
         }
+        _where.push({
+            "admins.is_del":del
+        })
         total = await this.where(_where).join("inner join admin_groups on admin_groups.group_id=admins.group").count();
         // if (sort) {
         //     let sortObj = {};
@@ -82,13 +85,13 @@ module.exports = class Admin extends JikeJs.Model {
         //     this.order(sortObj);
         // }
         let list = await this
-            .field('admin_id as aid,admin_name as aname,admin_account as aaccount,group as gid,group_name as gname,admins._c as a_c,admins._d as a_d')
+            .field('admin_id as aid,admin_name as aname,admin_account as aaccount,group as gid,group_name as gname,admins._c as a_c,admins.is_del as is_del,admins.is_use as is_use')
             .join("inner join admin_groups on admin_groups.group_id=admins.group")
             .page(page - 1, pageSize)
             .where(_where).select();
         return {
             list,
-            pagination:{
+            pagination: {
                 total, pageSize
             }
         }
@@ -99,7 +102,7 @@ module.exports = class Admin extends JikeJs.Model {
      */
     async add({ name, group, account, password }) {
 
-        if(await this.where({admin_account: account }).find()){
+        if (await this.where({ admin_account: account }).find()) {
             this.fail(this.codes.ACCOUNT_EXISTS);
         }
         let { insertId = false } = await this.data({ admin_name: name, group, admin_account: account, admin_pwd: md5(password) }).insert() || {};
@@ -119,22 +122,21 @@ module.exports = class Admin extends JikeJs.Model {
             return 0;
         }
         console.log(data)
-        let { affectedRows = 0 } = await this.data(data).where({admin_id:id}).update();
+        let { affectedRows = 0 } = await this.data(data).where({ admin_id: id }).update();
         return affectedRows > 0;
     }
     /**
      * 删除管理员
      */
-    async del(ids) {
-        let { affectedRows = 0 } = await this.where({ admin_id: ['in', ids] }).delete();
+    async del(ids, is_del) {
+        let { affectedRows = 0 } = await this.where({ admin_id: ['in', ids] }).data({ is_del }).update();
         return affectedRows > 0;
     }
     /**
      * 禁用管理员
      */
-    async disabled(ids) {
-        console.log(ids)
-        let { affectedRows = 0 } = await this.where({ admin_id: ['in', ids] }).data({ _d: 1 }).update();
+    async use(ids, is_use) {
+        let { affectedRows = 0 } = await this.where({ admin_id: ['in', ids] }).data({ is_use }).update();
         return affectedRows > 0;
     }
 }

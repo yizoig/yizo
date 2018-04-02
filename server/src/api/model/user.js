@@ -11,7 +11,7 @@ module.exports = class Admin extends JikeJs.Model {
     /**
      * 获取用户列表
      */
-    async list({ search, college, gender, pageable, page, pageSize, _d }) {
+    async list({ search, college, gender, pageable, page, pageSize, use, del }) {
 
         let total;
         let _where = [];
@@ -32,12 +32,20 @@ module.exports = class Admin extends JikeJs.Model {
                 user_gender: gender
             })
         }
+        if (!this.isUndefined(use)) {
+            _where.push({
+                "users.is_use": use
+            }, "AND")
+        }
+        _where.push({
+            "users.is_del": del
+        })
         total = await this
             .where(_where).join('inner join colleges on colleges.college_id=users.college').count();
 
 
         let list = await this
-            .field('user_id as uid,wx_id as wxid,nick_name as nickname,user_tel as utel,user_gender as ugender,users.college as cid,college_name as cname,users._c as u_c,users._d as u_d')
+            .field('user_id as uid,wx_id as wxid,nick_name as nickname,user_tel as utel,user_gender as ugender,users.college as cid,college_name as cname,users._c as u_c,users.is_del as is_del,users.is_use as is_use')
             .where(_where).join('inner join colleges on colleges.college_id=users.college').page(page - 1, pageSize).select();
         return {
             list,
@@ -64,22 +72,24 @@ module.exports = class Admin extends JikeJs.Model {
     /**
      * 删除用户
      */
-    async del(ids) {
+    async del(ids, is_del) {
 
         let { affectedRows = 0 } = await this.where({
             user_id: ['in', ids]
-        }).delete();
+        }).data({
+            is_del
+        }).update();
         return affectedRows > 0;
     }
     /**
      * 禁用用户
      */
-    async del(ids) {
+    async use(ids, is_use) {
 
         let { affectedRows = 0 } = await this.where({
             user_id: ['in', ids]
         }).data({
-            _d: 1
+            is_use
         }).update();
         return affectedRows > 0;
     }

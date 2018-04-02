@@ -16,7 +16,8 @@ module.exports = {
                 search: Dvm.string(),
                 page: Dvm.number().min(1, true).default(1),
                 pageSize: Dvm.number().default(5),
-                _d: Dvm.number().in([0, 1])
+                use: Dvm.number().in([0, 1]),
+                del: Dvm.number().in([0, 1]).default(0)
             },
         },
         // 添加学校
@@ -28,6 +29,32 @@ module.exports = {
                 name: Dvm.string().require()
             }
         },
+        /**
+       * 删除/禁用
+       */
+        {
+            path: '/',
+            method: 'delete',
+            action: 'del',
+            middle: [],
+            rules: {
+                ids: Dvm.array().require(),
+                del: Dvm.number().in([0, 1]).default(0)
+            }
+        },
+        /**
+        * 禁用/启用
+        */
+        {
+            path: '/use',
+            method: 'put',
+            action: 'use',
+            middle: [],
+            rules: {
+                ids: Dvm.array().require(),
+                use: Dvm.number().in([0, 1]).default(1)
+            }
+        },
         //修改学校基本信息
         {
             path: "/:id",
@@ -35,18 +62,6 @@ module.exports = {
             action: "updateInfo",
             rules: {
                 name: Dvm.string()
-            }
-        },
-        /**
-         * 删除学校
-         */
-        {
-            path: "/",
-            method: "delete",
-            action: "del",
-            rules: {
-                ids: Dvm.array().require(),
-                real: Dvm.number().in([0, 1])
             }
         }
     ]

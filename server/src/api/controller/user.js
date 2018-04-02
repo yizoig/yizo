@@ -4,10 +4,10 @@ module.exports = class User extends JikeJs.Controller {
     /**
      * 获取用户列表
      */
-    async list({ search, college, gender, page, pageSize, _d }) {
+    async list({ search, college, gender, page, pageSize, del, use }) {
 
         let model = new UserModel();
-        return await model.list({ search, college, gender, page, pageSize, _d });
+        return await model.list({ search, college, gender, page, pageSize, del, use });
     }
     /**
      * 修改用户基本信息
@@ -26,13 +26,17 @@ module.exports = class User extends JikeJs.Controller {
     /**
      * 删除用户
      */
-    async del({ ids, real = 0 }) {
+    async del({ ids, del }) {
         let model = new UserModel();
-        if (real == 0) {
-            return await model.del(ids);
-        } else {
-            return await model.disable(ids);
-        }
+        return await model.del(ids, del);
+    }
+    /**
+     * 禁用用户
+     */
+    async use({ ids, use }) {
+        let model = new UserModel();
+        return await model.use(ids, use);
+
     }
     /**
      * 微信登录

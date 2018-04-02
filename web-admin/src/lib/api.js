@@ -5,10 +5,8 @@ import { browserHistory } from '../components/common/Route';
 //解析键值对
 function parseData(key, value) {
     let ret = { key: key, values: [] };
-    console.log(key,typeof value)
-    if (typeof value === 'Array') {
-        ret.key = `${key}[]`;
-        ret.values = value
+    if (Object.prototype.toString.call(value) == '[object Array]') {
+        ret.values = value;
     } else if (typeof value === "string" || value instanceof File || value instanceof Blob) {
         ret.values = [value];
     } else {
@@ -56,14 +54,14 @@ function dofetch(_url, method, params = {}, desc) {
         fetch(api.host + url, {
             method,
             mode: "cors",
-            headers:{
-                "access-token":cache.local.getItem("access-token")
+            headers: {
+                "access-token": cache.local.getItem("access-token")
             },
             ...(method !== 'GET') ? { body } : {}
         }).then(res => {
             let token = res.headers.get('access-token');
-            if(token){
-                cache.local.setItem('access-token',token)
+            if (token) {
+                cache.local.setItem('access-token', token)
             }
             return res.json()
         }).then(result => {
@@ -71,7 +69,7 @@ function dofetch(_url, method, params = {}, desc) {
             if (result.err) throw new Error(result.err);
             if (result.code == 0) {
                 resolve(result.data);
-            }else {
+            } else {
                 throw new Error(result.code in codes ? codes[result.code] : '未知错误，未定义');
             }
         }).catch(e => {

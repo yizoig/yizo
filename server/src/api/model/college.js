@@ -11,18 +11,25 @@ module.exports = class College extends JikeJs.Model {
     /**
      * 获取学校列表
      */
-    async list({ search, pageable, page, pageSize, _d }) {
+    async list({ search, pageable, page, pageSize, del, use }) {
 
         let total;
         let _where = [];
         if (!this.isUndefined(search)) {
             _where.push({
                 college_name: ['like', `%${search}%`]
-            })
+            }, "AND")
         }
-
+        if (!this.isUndefined(use)) {
+            _where.push({
+                is_use: use
+            }, "AND")
+        }
+        _where.push({
+            is_del: del
+        })
         total = await this.where(_where).count();
-        let list = await this.field('college_id as cid,college_name as cname,_c as c_c,_d as c_d').page(page - 1, pageSize).where(_where).select();
+        let list = await this.field('college_id as cid,college_name as cname,_c as c_c,is_use,is_del').page(page - 1, pageSize).where(_where).select();
         return {
             list,
             pagination: {
@@ -49,28 +56,31 @@ module.exports = class College extends JikeJs.Model {
         if (await this.where({ college_name: name }).find()) {
             this.fail(this.codes.COLLEGE_NAME_USED);
         }
-        let { insertId = false } = await this.data({ college_name:name}).insert() || {};
+        let { insertId = false } = await this.data({ college_name: name }).insert() || {};
         return insertId;
     }
     /**
      * 删除学校
      */
-    async del(ids) {
+    async del(ids, is_del) {
 
         let { affectedRows = 0 } = await this.where({
             college_id: ['in', ids]
-        }).delete();
+        }).data({
+            is_del
+        }).update();
         return affectedRows > 0;
     }
     /**
      * 禁用学校
      */
-    async disabled(ids) {
+    async use(ids, is_use) {
 
+        console.log(is_use)
         let { affectedRows = 0 } = await this.where({
             college_id: ['in', ids]
         }).data({
-            _d: 1
+            is_use
         }).update();
         return affectedRows > 0;
     }

@@ -16,6 +16,7 @@ const stateInit = {
             total: 0
         },
         editorData: null,
+        selectedRowKeys:[]
     }
 }
 export default (state = stateInit, action) => {
