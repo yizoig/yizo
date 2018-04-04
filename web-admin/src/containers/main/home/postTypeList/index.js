@@ -4,9 +4,9 @@ import ReactDom from 'react-dom';
 import { Alert, Table, Icon, Divider, Button, Popconfirm } from 'antd';
 import { connect } from 'react-redux'
 // import './index.less';
-import { get_list, trigger_editor, del_items, use_items, select_row } from '../../../../redux/actions/goodType'
-import GoodTypeEditor from '../../../../components/GoodTypeEditor';
-class GoodTypeList extends React.Component {
+import { get_list, trigger_editor, del_items, use_items, select_row } from '../../../../redux/actions/postType'
+import PostTypeEditor from '../../../../components/PostTypeEditor';
+class PostTypeList extends React.Component {
     columns = [{
         title: '序号',
         dataIndex: 'tid',
@@ -72,7 +72,7 @@ class GoodTypeList extends React.Component {
         return (
             <div className="list">
                 <Alert
-                    message="物品类型管理注意事项"
+                    message="动态类型管理注意事项"
                     description={(
                         <div>
                             <div>1.类型名不能重复</div>
@@ -139,6 +139,6 @@ class GoodTypeList extends React.Component {
 }
 
 function mapStateToProps(state) {
-    return state.goodType
+    return state.postType
 }
-export default connect(mapStateToProps)(GoodTypeList)
+export default connect(mapStateToProps)(PostTypeList)

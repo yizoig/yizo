@@ -1,14 +1,25 @@
 //模型
-module.exports = class TaskType extends JikeJs.Model {
+module.exports = class PostType extends JikeJs.Model {
 
     constructor(props) {
         super(props);
-        this.table("task_types");
+        this.table("post_types");
+    }
+    listToTree(data, parent = 0) {
+        let arr = [];
+        for (let item of data) {
+            if (item.parent == parent) {
+                item.children = this.listToTree(data, item.tid)
+                arr.push(item);
+            }
+        }
+        return arr;
     }
     /**
-     * 获取任务类型
+     * 获取类型
      */
-    async list({ search, pageable, page, pageSize, use, del }) {
+    async list({ search, pageable, page, pageSize, type, use, del }) {
+
         let _where = [];
         if (!this.isUndefined(search)) {
             _where.push({
@@ -24,30 +35,33 @@ module.exports = class TaskType extends JikeJs.Model {
             is_del: del
         })
         let total = await this.where(_where).count();
-
-        let list = await this.field('type_id as tid,type_name tname,_c as t_c,is_del,is_use').where(_where).page(page - 1, pageSize).select();
-
-        return {
-            list,
-            pagination: {
-                pageSize, total
+        if (type == "list") {
+            this.page(page - 1, pageSize);
+        }
+        let list = await this.field('type_id as tid,type_name as tname,_c as t_c,is_use,is_del,parent').where(_where).select();
+        if(type=="list"){
+            return {
+                list,
+                pagination: {
+                    total, pageSize
+                }
             }
-
+        }else{
+            return this.listToTree(list)
         }
     }
     /**
-     * 添加任务类型
+     * 添加类型
      */
-    async add({ name, parent }) {
+    async add({ name, }) {
 
         let { insertId } = await this.data({
             type_name: name,
-            parent
         }).insert();
         return insertId;
     }
     /**
-     * 修改任务类型信息
+     * 修改类型信息
      */
     async updateInfo(id, data) {
 
@@ -62,8 +76,8 @@ module.exports = class TaskType extends JikeJs.Model {
         return affectedRows > 0;
     }
     /**
-    * 删除任务类型
-    */
+     * 删除类型
+     */
     async del(ids, is_del) {
         let { affectedRows = 0 } = await this.where({
             type_id: ['in', ids]
@@ -73,7 +87,7 @@ module.exports = class TaskType extends JikeJs.Model {
         return affectedRows > 0;
     }
     /**
-     * 禁用任务类型
+     * 禁用类型
      */
     async use(ids, is_use) {
         let { affectedRows = 0 } = await this.where({

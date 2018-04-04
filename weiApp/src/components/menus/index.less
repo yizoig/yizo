@@ -1,3 +1,4 @@
+@import '../../var.less';
 .menu{
   .menus {
       background: #fff;
@@ -11,11 +12,11 @@
           flex: 1;
           text-align: center;
           &.active {
-              color: #3385ff;
+              color: @primaryColor;
               .title {
                   height: 100%;
                   display: inline-block;
-                  border-bottom: 3px solid #3385ff;
+                  border-bottom: 3px solid @primaryColor;
                   box-sizing: border-box;
               }
           }
@@ -32,7 +33,7 @@
       .sub-nav-item {
           padding: 0 25rpx;
           &.active {
-              color: #3385ff;
+              color: @primaryColor;
               .title {
                   height: 100%;
                   display: inline-block;

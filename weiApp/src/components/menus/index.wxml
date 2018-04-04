@@ -1,17 +1,17 @@
 <view class="menu">
   <view class="menus">
     <repeat  for="{{menus}}" item="menu" index="menuIndex" key="unique">
-      <view class="nav-item {{current==menuIndex?'active':''}}" bindtap="onSwitch" data-type="menu" data-key="{{menu.key}}"
+      <view class="nav-item {{current==menuIndex?'active':''}}" bindtap="onSwitch" data-type="menu" data-key="{{menu.tid}}"
         data-index="{{menuIndex}}">
-        <text class="title">{{menu.name}}</text>
+        <text class="title">{{menu.tname}}</text>
       </view>
     </repeat>
   </view>
   <view class="sub-menus">
-    <repeat for="{{menus[current].subMenus}}" item="subMenu" index="subIndex" key="unique">
-      <view class="sub-nav-item {{menus[current].current==subIndex?'active':''}}" bindtap="onSwitch" data-key="{{subMenu.key}}"
+    <repeat for="{{menus[current].children}}" item="subMenu" index="subIndex" key="unique">
+      <view class="sub-nav-item {{menus[current].current==subIndex?'active':''}}" bindtap="onSwitch" data-key="{{subMenu.tid}}"
         data-type="sub" data-index="{{subIndex}}">
-        <text class="title">{{subMenu.name}}</text>
+        <text class="title">{{subMenu.tname}}</text>
       </view>
     </repeat>
   </view>

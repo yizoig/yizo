@@ -5,10 +5,9 @@ import collegeApi from '../../lib/apis/college'
 export default class Index extends wepy.page {
   config = {
     'enablePullDownRefresh': true,
-    'backgroundColor': '#3385ff'
+    'backgroundColor': '#58B3BB'
   }
   data = {
-    collegelogo: collegeApi.logo,
     colleges: []
   }
   methods = {
@@ -23,7 +22,7 @@ export default class Index extends wepy.page {
   }
   getCollege(id) {
     for (let i = 0; i < this.colleges.length; i++) {
-      if (this.colleges[i]['college_id'] === id) {
+      if (this.colleges[i]['cid'] === id) {
         return this.colleges[i]
       }
     }
@@ -42,7 +41,7 @@ export default class Index extends wepy.page {
       let { list: colleges } = data
       console.log(data)
       for (let i = 0; i < colleges.length; i++) {
-        colleges[i]['logo'] = this.collegelogo + colleges[i]['college_id'] + '.png'
+        colleges[i]['logo'] = collegeApi.logo(colleges[i]['cid']);
       }
       this.colleges = colleges || []
       this.$apply()

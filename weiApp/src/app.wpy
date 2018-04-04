@@ -9,12 +9,12 @@ import User from './lib/services/user'
 export default class extends wepy.app {
   config = {
     pages: [
+      'pages/mine/index',
       'pages/index/index',
+      'pages/home/index',
       'pages/release/wantHelp/index',
       'pages/account/signIn/index',
       'pages/order/details/wantHelp/index',
-      'pages/home/index',
-      'pages/mine/index',
       'pages/release/index',
       'pages/order/result/index',
       'pages/mine/setting/baseinfo/index',
@@ -26,19 +26,19 @@ export default class extends wepy.app {
     ],
     window: {
       backgroundTextStyle: 'light',
-      navigationBarBackgroundColor: '#3385ff',
+      navigationBarBackgroundColor: '#F1A468',
       navigationBarTitleText: 'yizo微校园',
       navigationBarTextStyle: 'white'
     },
     tabBar: {
-      selectedColor: '#1C79FF',
+      selectedColor: '#F1A468',
       color: '#8a8a8a',
       borderStyle: 'white',
       backgroundColor: '#fff',
       list: [
         {
           pagePath: 'pages/home/index',
-          text: '首页',
+          text: '校内',
           iconPath: './public/image/index.png',
           selectedIconPath: './public/image/index-active.png'
         },

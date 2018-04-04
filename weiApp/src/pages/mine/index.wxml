@@ -1,94 +1,119 @@
 <view class="mine">
   <toast />
-  <view class="header">
-    <block wx:if="{{userInfo}}">
-      <view class="info-box">
-        <view class="user-info">
+  <view class="background"></view>
+  <view class="main">
+    <view class="info-box">
+      <!-- <block wx:if="{{userInfo}}"> -->
+      <view class="header">
+        <view class="left">
           <avatar :id="id"></avatar>
-          <view class="right">
-            <view class="info">
-              <text class="item name">{{userInfo['nickname']}}</text>
-              <text class="item iconfont icon-{{userInfo['gender']==0?'female':'male'}}"></text>
-              <text class="item" style="font-size:25rpx;">一个月前</text>
-            </view>
-            <view class="create_time">{{userInfo['_c']}} 加入</view>
+          <view class="info">
+            <text class="item name">李李凌云</text>
+            <text class="item iconfont icon-{{userInfo['gender']==0?'female':'male'}}"></text>
           </view>
-          <view @tap="navigateTo({{'/pages/mine/setting/baseinfo/index'}})" class="editor">编辑</view>
+        </view>
+        <view @tap="navigateTo({{'/pages/mine/setting/baseinfo/index'}})" class="iconfont icon-right-arrow"></view>
+
+      </view>
+      <view class="items">
+        <view class="item">
+          <i class="iconfont icon-feed-back" style="color:#4285F4;"></i>
+          <text>我发布的</text>
+        </view>
+        <view class="item">
+          <i class="iconfont icon-feed-back" style="color:#4285F4;"></i>
+          <text>我参与的</text>
+        </view>
+        <view class="item">
+          <i class="iconfont icon-feed-back" style="color:#4285F4;"></i>
+          <text>我发布的</text>
+        </view>
+        <view class="item">
+          <i class="iconfont icon-feed-back" style="color:#4285F4;"></i>
+          <text>我参与的</text>
         </view>
       </view>
-    </block>
-    <block wx:else>
-      <view class="info-box">
+      <!-- </block> -->
+      <!-- <block wx:else>
         <view class="user-info">
           <avatar :id.sync="id"></avatar>
           <view @tap="navigateTo({{'/pages/account/signIn/index'}})">登录/注册</view>
         </view>
-      </view>
-    </block>
-  </view>
-
-  <!-- <view class="account">
-    <view class="account-inner">
-      <view class="item enchashment" style="text-align:left">
-        <view>
-          <text class="money">10.00</text>元</view>
-        <text>可提现</text>
-      </view>
-      <view style="width:2rpx;background:#f1f1f1;height:50rpx;"></view>
-      <view class="item profit" style="text-align:right">
-        <view>
-          <text class="money">10.00</text>元</view>
-        <text>我赚到的</text>
-      </view>
+      </block> -->
     </view>
-  </view> -->
-  <view class="menu">
-    <view class="menu-group">
-      <view class="menu-list">
-        <view class="menu-item" @tap="syncWxInfo">
-          <view>
+    <view class="menu">
+      <view class="menu-group">
+        <view class="menu-title">任务</view>
+        <view class="menu-list">
+          <view class="menu-item">
             <i class="iconfont icon-feed-back" style="color:#4285F4;"></i>
-            <text>同步微信信息</text>
+            <text>我发布的</text>
           </view>
-          <view class="iconfont icon-right-arrow" style="color:#51C332;"></view>
+          <view class="menu-item">
+            <i class="iconfont icon-feed-back" style="color:#4285F4;"></i>
+            <text>我参与的</text>
+          </view>
+          <view class="menu-item">
+            <i class="iconfont icon-feed-back" style="color:#4285F4;"></i>
+            <text>我发布的</text>
+          </view>
+          <view class="menu-item">
+            <i class="iconfont icon-feed-back" style="color:#4285F4;"></i>
+            <text>我参与的</text>
+          </view>
+          <view class="menu-item">
+            <i class="iconfont icon-feed-back" style="color:#4285F4;"></i>
+            <text>我发布的</text>
+          </view>
+          <view class="menu-item">
+            <i class="iconfont icon-feed-back" style="color:#4285F4;"></i>
+            <text>我参与的</text>
+          </view>
+          <view class="menu-item">
+            <i class="iconfont icon-feed-back" style="color:#4285F4;"></i>
+            <text>我发布的</text>
+          </view>
+          <view class="menu-item">
+            <i class="iconfont icon-feed-back" style="color:#4285F4;"></i>
+            <text>我参与的</text>
+          </view>
         </view>
       </view>
-    </view>
-    <view class="menu-group">
-      <view class="menu-title">寻求帮助</view>
-      <view class="menu-list">
-        <view class="menu-item">
-          <view>
+      <view class="menu-group">
+        <view class="menu-title">任务</view>
+        <view class="menu-list">
+          <view class="menu-item">
             <i class="iconfont icon-feed-back" style="color:#4285F4;"></i>
-            <text>我的求助</text>
+            <text>我发布的</text>
           </view>
-          <view class="iconfont icon-right-arrow" style="color:#51C332;"></view>
-        </view>
-        <!-- <view class="menu-item">
-          <view>
+          <view class="menu-item">
             <i class="iconfont icon-feed-back" style="color:#4285F4;"></i>
-            <text>我提供的求助</text>
+            <text>我参与的</text>
           </view>
-          <view class="iconfont icon-right-arrow" style="color:#51C332"></view>
-        </view> -->
-      </view>
-    </view>
-    <view class="menu-group">
-      <view class="menu-title">其他</view>
-      <view class="menu-list">
-        <!-- <view class="menu-item" @tap="navigateTo({{'/pages/mine/setting/account/index'}})">
-          <view>
+          <view class="menu-item">
             <i class="iconfont icon-feed-back" style="color:#4285F4;"></i>
-            <text>帐号安全</text>
+            <text>我发布的</text>
           </view>
-          <view class="iconfont icon-right-arrow" style="color:#51C332;"></view>
-        </view> -->
-        <view class="menu-item"  @tap="signOut()">
-          <view>
+          <view class="menu-item">
             <i class="iconfont icon-feed-back" style="color:#4285F4;"></i>
-            <text>退出账号</text>
+            <text>我参与的</text>
           </view>
-          <view class="iconfont icon-right-arrow" style="color:#51C332;"></view>
+          <view class="menu-item">
+            <i class="iconfont icon-feed-back" style="color:#4285F4;"></i>
+            <text>我发布的</text>
+          </view>
+          <view class="menu-item">
+            <i class="iconfont icon-feed-back" style="color:#4285F4;"></i>
+            <text>我参与的</text>
+          </view>
+          <view class="menu-item">
+            <i class="iconfont icon-feed-back" style="color:#4285F4;"></i>
+            <text>我发布的</text>
+          </view>
+          <view class="menu-item">
+            <i class="iconfont icon-feed-back" style="color:#4285F4;"></i>
+            <text>我参与的</text>
+          </view>
         </view>
       </view>
     </view>

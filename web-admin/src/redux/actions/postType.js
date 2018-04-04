@@ -1,14 +1,13 @@
-import good from '../../api/good'
-export const GT_SAVE_TO_CACHE = "GT_SAVE_TO_CACHE";
-export const GT_SAVE_TO_MEMORY = "GT_SAVE_TO_MEMORY";
+import posts from '../../api/post'
+export const PT_SAVE_TO_CACHE = "PT_SAVE_TO_CACHE";
+export const PT_SAVE_TO_MEMORY = "PT_SAVE_TO_MEMORY";
 import React, { Component } from 'react';
-
 import { message ,notification,Icon} from 'antd';
 export function get_list(data) {
     return async (dispatch, getState) => {
         //获取默认数据
         if (!data) {
-            let { goodType: { memory: { pagination } } } = getState();
+            let { postType: { memory: { pagination } } } = getState();
             data = {
                 pagination
             }
@@ -16,15 +15,15 @@ export function get_list(data) {
         let { pageSize, current } = data.pagination;
         try {
             dispatch({
-                type: GT_SAVE_TO_MEMORY,
+                type: PT_SAVE_TO_MEMORY,
                 payload: {
                     loading: true
                 }
             })
-            let { list, pagination } = await good.typeList({ pageSize, page: current });
-            list = list.map(item => ({ ...item, key:item.tid }))
+            let { list, pagination } = await posts.typeList({ pageSize, page: current });
+            list = list.map(item => ({ ...item, key: item.tid }))
             dispatch({
-                type: GT_SAVE_TO_MEMORY,
+                type: PT_SAVE_TO_MEMORY,
                 payload: {
                     list,
                     pagination: {
@@ -34,10 +33,10 @@ export function get_list(data) {
                     loading: false
                 }
             })
-            message.success('共'+pagination.total+'条数据，本次查询到'+list.length+"条数据");
+            message.success('共' + pagination.total + '条数据，本次查询到' + list.length + "条数据");
         } catch (e) {
             dispatch({
-                type: GT_SAVE_TO_MEMORY,
+                type: PT_SAVE_TO_MEMORY,
                 payload: {
                     loading: false
                 }
@@ -49,12 +48,13 @@ export function get_list(data) {
 
 export function trigger_editor(data) {
     return {
-        type: GT_SAVE_TO_MEMORY,
+        type: PT_SAVE_TO_MEMORY,
         payload: {
             editorData: data
         }
     }
 }
+
 export function del_items({ ids, del = 0 }) {
     return async (dispatch) => {
 
@@ -62,7 +62,7 @@ export function del_items({ ids, del = 0 }) {
             return  message.warning('请选择需要删除的数据');
         }
         try {
-            let result = await good.delType({ ids, del });
+            let result = await posts.delType({ ids, del });
             notification.open({
                 message: "操作成功",
                 icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
@@ -84,7 +84,7 @@ export function use_items({ ids, use = 1 }) {
             return  message.warning('请选择需要操作的数据');
         }
         try {
-            let result = await good.useType({ ids, use });
+            let result = await posts.useType({ ids, use });
             notification.open({
                 message: "操作成功",
                 icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
@@ -97,12 +97,13 @@ export function use_items({ ids, use = 1 }) {
                 icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
             })
         }
+        
     }
 }
 
 export function select_row(selectedRowKeys){
     return {
-        type: GT_SAVE_TO_MEMORY,
+        type: PT_SAVE_TO_MEMORY,
         payload: {
             selectedRowKeys
         }

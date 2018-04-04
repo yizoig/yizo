@@ -1,4 +1,6 @@
 let CollegeModel = require("../model/college")
+const fs = require("fs");
+const path = require("path");
 //控制器
 module.exports = class College extends JikeJs.Controller {
     /**
@@ -16,12 +18,38 @@ module.exports = class College extends JikeJs.Controller {
         let model = new CollegeModel();
         return await model.updateInfo(id, { college_name: name });
     }
+    async logo({id}){
+
+        let pathname =path.join(__dirname,`../static/college/logo/`);
+        if(fs.existsSync(pathname+`${id}.png`)){
+            pathname += `${id}.png`;
+        }else{
+            pathname +=`_0.png`
+        }
+        this.ctx.type="image/png"
+        this.ctx.status = 200;
+        this.ctx.body = fs.readFileSync(pathname);
+    }
     /**
      * 添加学校
      */
-    async add({ name }) {
-        let model = new CollegeModel();
-        return await model.add({ name });
+    async add({ name, logo }) {
+        //保存logo
+
+        try {
+            let logoFile = fs.readFileSync(logo.path);
+            let model = new CollegeModel();
+            let id = await model.add({ name });
+            fs.writeFileSync(path.join(__dirname,`../static/college/logo/${id}.png`), logoFile);
+            return id;
+        } catch (e) {
+            if (e instanceof JikeJs.BaseError) {
+                throw e;
+            }
+            console.log(e)
+            throw new Error("文件移动失败")
+        }
+
     }
     /**
      * 删除学校

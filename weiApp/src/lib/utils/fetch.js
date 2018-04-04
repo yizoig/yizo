@@ -1,11 +1,5 @@
 import wepy from 'wepy'
-import Code from '../../config/code';
-import Detail from '../../config/detail.js';
-
-let code = {};
-for (let key in Code) {
-  code[Code[key]] = Detail[key];
-}
+import code from '../../config/code';
 async function doFetch(url, method = 'GET', data = {}, header = {}) {
 
   let token = wepy.getStorageSync("access-token")
@@ -31,6 +25,7 @@ async function doFetch(url, method = 'GET', data = {}, header = {}) {
     url += '?' + urlData.join('&')
     data = {}
   }
+  console.log(url)
   //发起请求
   let res = await wepy.request({
     url,

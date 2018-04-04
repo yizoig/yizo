@@ -29,7 +29,7 @@ module.exports = class College extends JikeJs.Model {
             is_del: del
         })
         total = await this.where(_where).count();
-        let list = await this.field('college_id as cid,college_name as cname,_c as c_c,is_use,is_del').page(page - 1, pageSize).where(_where).select();
+        let list = await this.field('college_id as cid,college_name as cname,_c as c_c,liveness,yesterday_live as yest_live,is_use,is_del').page(page - 1, pageSize).where(_where).select();
         return {
             list,
             pagination: {

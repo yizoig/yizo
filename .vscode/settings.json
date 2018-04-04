@@ -6,5 +6,15 @@
 	"npm-intellisense.importQuotes": "'",
 	"npm-intellisense.importLinebreak": ";\r\n",
 	"npm-intellisense.importDeclarationType": "const",
-    "emmet.syntaxProfiles": { "javascript": "jsx" }
+    "files.associations": {
+        "*.vue": "vue",
+        "*.wpy": "vue",
+        "*.wxml": "html",
+        "*.wxss": "css"
+    },
+    "emmet.syntaxProfiles": {
+        "vue-html": "html",
+        "vue": "html",
+        "javascript": "jsx"
+    }
 }

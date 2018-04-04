@@ -1,10 +1,10 @@
 
 //环境
-const env = 'production';//'development' or 'production'
+const env = 'development';//'development' or 'production'
 const version = 2.0
 
 const hosts = {
-  development: 'https://192.168.1.128:3000',
+  development: 'http://localhost:3001/api',
   production: 'https://api.yizo.exvu.vip'
 }
 

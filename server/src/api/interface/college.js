@@ -26,7 +26,16 @@ module.exports = {
             method: "post",
             action: "add",
             rules: {
-                name: Dvm.string().require()
+                name: Dvm.string().require(),
+                logo:Dvm.file().require()
+            }
+        },
+        // 学校logo
+        {
+            path: "/logo/:id.png",
+            method: "get",
+            action: "logo",
+            rules: {
             }
         },
         /**

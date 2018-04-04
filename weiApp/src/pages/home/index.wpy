@@ -6,7 +6,7 @@ import WantHelpOrder from '../../components/order/list/wantHelp/index'
 export default class Home extends wepy.page {
   config = {
     'enablePullDownRefresh': true,
-    'backgroundColor': '#3385ff'
+    'backgroundColor': '#F1A468'
   }
   data = {
     college: null

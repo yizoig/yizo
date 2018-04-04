@@ -3,8 +3,75 @@ const { Dvm } = JikeJs;
 //定义路由
 module.exports = {
     controller: 'post',//默认controller
-    path: '/post',
+    path: '/posts',
     routers: [
+        /**
+        *  获取类型
+        */
+        {
+            path: '/types',
+            method: 'get',
+            action: 'typeList',
+            middle: [],
+            rules: {
+                search: Dvm.string(),
+                page: Dvm.number().min(1, true).default(1),
+                pageSize: Dvm.number().default(5),
+                type:Dvm.string().in(["list","tree"]).default("list"),
+                use: Dvm.number().in([0, 1]),
+                del: Dvm.number().in([0, 1]).default(0)
+            },
+        },
+        /**
+         * 添加类型
+         */
+        {
+            path: '/types',
+            method: 'post',
+            action: 'typeAdd',
+            middle: [],
+            rules: {
+                name: Dvm.string().require(),
+            },
+        },
+        /**
+        * 禁用类型
+        */
+        {
+            path: '/types/use',
+            method: 'put',
+            action: 'typeUse',
+            middle: [],
+            rules: {
+                ids: Dvm.array().require(),
+                use: Dvm.number().in([0, 1]).default(1)
+            }
+        },
+        /**
+         * 修改类型
+         */
+        {
+            path: '/types/:id',
+            method: 'put',
+            action: 'typeUpdate',
+            middle: [],
+            rules: {
+                name: Dvm.string(),
+            }
+        },
+        /**
+         * 删除类型
+         */
+        {
+            path: '/types',
+            method: 'delete',
+            action: 'typeDel',
+            middle: [],
+            rules: {
+                ids: Dvm.array().require(),
+                del: Dvm.number().in([0, 1]).default(0)
+            }
+        },
         /**
          *  获取评论列表
          */
@@ -17,7 +84,7 @@ module.exports = {
                 search: Dvm.string(),
                 creater: Dvm.string(),
                 postId: Dvm.string(),
-                page: Dvm.number().min(1,true).default(1),
+                page: Dvm.number().min(1, true).default(1),
                 pageSize: Dvm.number().default(5),
                 _d: Dvm.number().in([0, 1])
             },

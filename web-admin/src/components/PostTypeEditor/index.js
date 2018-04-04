@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import ReactDom from 'react-dom';
 import { Modal, Form, Input, Button, notification, Icon } from 'antd';
-import task from '../../api/task';
-class TaskTypeEditor extends React.Component {
+import posts from '../../api/post';
+class PostTypeEditor extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -31,11 +31,11 @@ class TaskTypeEditor extends React.Component {
 
                     let result;
                     if (type == "add") {
-                        result = await task.addType({
+                        result = await posts.addType({
                             name
                         });
                     } else {
-                        result = await task.updateType({
+                        result = await posts.updateType({
                             name,
                             id: this.props.data.tid
                         });
@@ -90,4 +90,4 @@ class TaskTypeEditor extends React.Component {
     }
 }
 
-export default Form.create()(TaskTypeEditor);
+export default Form.create()(PostTypeEditor);

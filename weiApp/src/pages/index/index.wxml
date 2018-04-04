@@ -2,13 +2,13 @@
   <view class="title">附近的学校</view>
   <view class="list">
     <view wx:for="{{colleges}}" wx:key="unique">
-      <view class="item" hover-class="item-active" @tap="onSelect" data-id="{{item.college_id}}">
+      <view class="item" hover-class="item-active" @tap="onSelect" data-id="{{item.cid}}">
         <image src="{{item.logo}}" class="logo" />
         <view class="info">
-          <view class="name">{{item.college_name}}</view>
+          <view class="name">{{item.cname}}</view>
           <view class="mes">
-            <text>人气:{{item.count}}</text>
-            <text>昨日新增:{{item.oldcount}}</text>
+            <text>人气:{{item.liveness}}</text>
+            <text>昨日新增:{{item.yest_live}}</text>
           </view>
         </view>
       </view>

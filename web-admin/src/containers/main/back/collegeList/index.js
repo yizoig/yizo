@@ -4,14 +4,16 @@ import ReactDom from 'react-dom';
 import { Alert, Table, Icon, Divider, Button, Popconfirm } from 'antd';
 import { connect } from 'react-redux'
 import './index.less';
+import college from '../../../../api/college';
 import { get_list, trigger_editor, del_items, use_items,select_row } from '../../../../redux/actions/college'
 import CollegeEditor from '../../../../components/CollegeEditor';
 class CollegeList extends React.Component {
-    columns = [{
-        title: '序号',
+    columns = [ {
+        title: 'logo',
         dataIndex: 'cid',
-        key: 'cid',
-        width: 120
+        key: 'logo',
+        width: 80,
+        render:(id)=><img width="60" height="60" src={college.logo(id)}/>
     }, {
         title: '学校名',
         dataIndex: 'cname',
@@ -22,6 +24,16 @@ class CollegeList extends React.Component {
         dataIndex: 'c_c',
         key: 'c_c',
         width: 180
+    },{
+        title: '人气',
+        dataIndex: 'liveness',
+        key: 'liveness',
+        width: 100
+    },{
+        title: '昨日人气',
+        dataIndex: 'yest_live',
+        key: 'yest_live',
+        width: 100
     }, {
         title: '操作',
         key: 'action',

@@ -7,10 +7,10 @@
         <view class="college">
             <image src="{{college.logo}}" class="logo" />
             <view class="info">
-              <view class="name">{{college.college_name}}</view>
+              <view class="name">{{college.cname}}</view>
               <view class="mes">
-                <text>人气:{{college.count}}</text>
-                <text>昨日新增:{{college.oldcount}}</text>
+                <text>人气:{{college.liveness}}</text>
+                <text>昨日新增:{{college.yest_live}}</text>
               </view>
             </view>
           </view>

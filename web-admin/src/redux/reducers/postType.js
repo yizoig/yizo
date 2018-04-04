@@ -1,5 +1,5 @@
 
-import { GT_GT_SAVE_TO_MEMORY, GT_SAVE_TO_MEMORY } from '../actions/goodType';
+import { PT_SAVE_TO_CACHE, PT_SAVE_TO_MEMORY } from '../actions/postType';
 //获取用户基本信息
 const stateInit = {
     //会缓存的数据
@@ -21,7 +21,7 @@ const stateInit = {
 }
 export default (state = stateInit, action) => {
     switch (action.type) {
-        case GT_GT_SAVE_TO_MEMORY: {
+        case PT_SAVE_TO_CACHE: {
             return {
                 ...state,
                 cache: {
@@ -30,7 +30,7 @@ export default (state = stateInit, action) => {
                 }
             }
         }
-        case GT_SAVE_TO_MEMORY: {
+        case PT_SAVE_TO_MEMORY: {
             return {
                 ...state,
                 memory: {

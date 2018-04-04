@@ -10,7 +10,7 @@ import User from '../../lib/services/user'
 export default class Mine extends wepy.page {
   config = {
     'enablePullDownRefresh': true,
-    'backgroundColor': '#3385ff'
+    'backgroundColor': '#F1A468'
   }
   data = {
     id: null,

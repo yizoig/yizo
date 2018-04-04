@@ -1,7 +1,6 @@
 import UserList from '../../containers/main/home/userList'
 import TaskList from '../../containers/main/home/taskList'
-import TaskTypeList from '../../containers/main/home/taskTypeList'
-import GoodTypeList from '../../containers/main/home/goodTypeList'
+import PostTypeList from '../../containers/main/home/postTypeList'
 import GoodList from '../../containers/main/home/goodList'
 export default [
     {
@@ -19,43 +18,35 @@ export default [
         ]
     },
     {
-        key: 'task',
-        name: "任务管理",
-        path: '/task',
+        key: 'post',
+        name: "动态管理",
+        path: '/post',
         icon: "solution",
         children: [
             {
-                name: "任务类型",
+                name: "动态类型",
                 key: 'type',
-                path: '/typelist',
-                component:TaskTypeList
+                path: '/type',
+                component:PostTypeList
+            },
+            {
+                name: "评论列表",
+                key: 'comment',
+                path: '/comment',
+                component:GoodList
             },
             {
                 name: "任务列表",
-                key: 'list',
-                path: '/list',
+                key: 'task',
+                path: '/task',
                 component:TaskList
-            }
-        ]
-    },
-    {
-        key: 'good',
-        name: "物品管理",
-        icon: "shop",
-        path: '/good',
-        children: [
-            {
-                name: "物品类型",
-                key: 'type',
-                path: '/typelist',
-                component:GoodTypeList
             },
             {
                 name: "物品列表",
-                key: 'list',
-                path: '/list',
+                key: 'good',
+                path: '/good',
                 component:GoodList
             }
         ]
-    }
+    },
 ]
