@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "jikejs": "^1.0.1"
+    "jikejs": "^1.0.1",
+    "request-promise": "^4.2.2"
   }
 }

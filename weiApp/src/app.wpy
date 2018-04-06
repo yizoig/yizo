@@ -9,19 +9,19 @@ import User from './lib/services/user'
 export default class extends wepy.app {
   config = {
     pages: [
-      'pages/mine/index',
       'pages/index/index',
+      'pages/release/good/index',
+      'pages/release/task/index',
+      'pages/release/index',
+      'pages/mine/index',
       'pages/home/index',
-      'pages/release/wantHelp/index',
       'pages/account/signIn/index',
       'pages/order/details/wantHelp/index',
-      'pages/release/index',
       'pages/order/result/index',
       'pages/mine/setting/baseinfo/index',
       'pages/mine/setting/account/index',
       'pages/account/changePwd/index',
       'pages/account/changeTel/index',
-      'pages/release/offerHelp/index',
       'pages/account/forgotPwd/index'
     ],
     window: {
@@ -68,7 +68,8 @@ export default class extends wepy.app {
     this.use('requestfix')
   }
   async onLaunch() {
-    await User.autoSignIn()
+    let userInfo = await User.autoSignIn();
+    this.globalData.userInfo = userInfo;
   }
 }
 </script>

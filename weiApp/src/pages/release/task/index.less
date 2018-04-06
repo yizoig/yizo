@@ -1,12 +1,12 @@
-
+@import "../../../var.less";
 #releaseList{
   margin-bottom: 80rpx;
   .title{
     display: flex;
     flex-direction: row;
     justify-content: center;
-    line-height: 150rpx;
     align-items: center;
+    line-height: 150rpx;
     background: #fff;
     .icon{
       width: 60rpx;
@@ -28,6 +28,14 @@
 
       }
       .form-widget{
+        color:#808080;
+        position: static;     
+        font-size: 28rpx;
+        margin: 0;
+        padding: 0;
+        background: none;
+        border:none;
+        position: none;
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -49,7 +57,7 @@
         &.active{
           border:1px solid transparent;
           color: #fff;
-          background: #3385ff;
+          background: @primaryColor;
         }
       }
     }
@@ -60,7 +68,7 @@
     left: 0;
     right:0;
     color: #fff;
-    background: #3385ff;
+    background: @primaryColor;
     line-height: 80rpx;
     text-align: center;
     z-index: 10;

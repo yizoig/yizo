@@ -13,13 +13,14 @@ function replace(source, target) {
 }
 const User = {
   autoSignIn: async () => {
-    try {
-      let { code } = await wepy.login()
-      let { rawData, signature, encryptedData, iv } = await wepy.getUserInfo();
-      let { data: result, header } = await UserApi.weixinSignin({ rawData, signature, encryptedData, iv, code })
-    } catch (e) {
-      console.log(e)
-    }
+    let { code } = await wepy.login()
+    let { rawData, signature, encryptedData, iv } = await wepy.getUserInfo();
+    let { data, header } = await UserApi.weixinSignin({ rawData, signature, encryptedData, iv, code });
+    wepy.setStorage({
+      key: 'userInfo',
+      data
+    });
+    return data;
   },
   setUserInfo: (data) => {
     let userInfo = wepy.getStorageSync('userInfo')
@@ -34,7 +35,7 @@ const User = {
     if (remember) {
       remember = replace(remember, data)
       wepy.setStorage({
-        key:'remember',
+        key: 'remember',
         data: remember
       })
     }

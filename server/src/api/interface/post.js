@@ -115,7 +115,8 @@ module.exports = {
             }
         },
         /**
-         * 删除评论         */
+         * 删除评论        
+         */
         {
             path: '/comment/:id',
             method: 'delete',

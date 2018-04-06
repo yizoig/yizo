@@ -14,8 +14,7 @@ export default class Mine extends wepy.page {
   }
   data = {
     id: null,
-    userInfo: null,
-    weiInfo: null
+    userInfo:null
   }
   components = {
     avatar: Avatar,
@@ -66,17 +65,9 @@ export default class Mine extends wepy.page {
   }
   async onShow() {
     try {
-      /**
-       * 获取用户信息
-       */
-      let { data: weiInfo } = await wepy.getStorage({
-        key: 'weiInfo'
-      })
-      this.weiInfo = weiInfo
-      this.userInfo = wepy.getStorageSync('userInfo')
-      this.id = this.userInfo['id']
-      this.$apply()
-      console.log(this)
+      this.userInfo = this.$parent.globalData.userInfo;
+      this.id = this.$parent.globalData.userInfo.uid;
+     this.$apply();
     } catch (e) {
       console.log(e)
     }

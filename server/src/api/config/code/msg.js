@@ -9,5 +9,6 @@ module.exports = {
     ACCOUNT_NOT_EXISTS: "账号不存在",
     NO_AUTH: "没有权限",
     TOKEN_ERR: "token验证失败",
-    COLLEGE_NAME_USED: "学校名被占用"
+    COLLEGE_NAME_USED: "学校名被占用",
+    SIGNIN_ERR:"登录失败"
 }

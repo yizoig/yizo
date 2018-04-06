@@ -1,5 +1,5 @@
 <template lang="wxml">
-  <image src="{{url?url:(avatarPath+id+'.png')}}" class="avatar"></image>
+  <image src="{{url?url:(avatarPath+id+'.ava')}}" class="avatar"></image>
 </template>
 <script>
 import wepy from 'wepy'

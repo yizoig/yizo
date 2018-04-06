@@ -5,7 +5,7 @@ import Toast from '../../../components/toast/index'
 import Alert from '../../../components/alert/index'
 import { Validate } from '../../../lib/utils/index'
 import WanHelpOrderApi from '../../../lib/apis/wantHelpOrder'
-export default class ReleaseWantHelp extends wepy.page {
+export default class ReleaseTask extends wepy.page {
   data = {
     startDate: null,
     endDate: null,

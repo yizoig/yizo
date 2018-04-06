@@ -22,6 +22,16 @@ module.exports = {
                 del: Dvm.number().in([0, 1]).default(0)
             },
         },
+        /**
+         * 获取用户头像
+         */
+        {
+            path: "/avatar/:id.ava",
+            method: "get",
+            action: "avatar",
+            rules: {
+            }
+        },
         //修改用户基本信息
         {
             path: "/:id",
@@ -41,15 +51,15 @@ module.exports = {
             action: "wxSignIn",
             rules: {
                 code: Dvm.string().require(),
-                rawData: Dvm.string(),
-                signature: Dvm.string(),
-                encryptedData: Dvm.string(),
-                iv: Dvm.string()
+                rawData: Dvm.string().require(),
+                signature: Dvm.string().require(),
+                encryptedData: Dvm.string().require(),
+                iv: Dvm.string().require()
             }
         },
-         /**
-         * 禁用用户
-         */
+        /**
+        * 禁用用户
+        */
         {
             path: '/use',
             method: 'put',

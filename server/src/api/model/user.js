@@ -93,4 +93,26 @@ module.exports = class Admin extends JikeJs.Model {
         }).update();
         return affectedRows > 0;
     }
+    /**
+     * 微信登录
+     */
+    async wxSignIn(openid, data) {
+        //判断时候存在用户
+        let [user = null] = await this
+            .field('user_id as uid,nick_name as nickName,user_tel as tel,user_gender as ugender,college as cid,users._c as u_c')
+            .join("LEFT JOIN colleges on colleges.college_id = users.college")
+            .where({ wx_id: openid }).select();
+        if (user) return user;
+        //在用户表中添加用户基本信息
+        let { insertId:uid = null } = await this.data({
+            wx_id:openid,
+            nick_name:data.nickName,
+            user_gender:data.gender,
+            user_pwd:"124"
+        }).insert();
+        if (!uid) {
+            this.fail(this.codes.UN_KNOWN_ERROR);
+        }
+        return await this.where({user_id:uid}).select();
+    }
 }

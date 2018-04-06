@@ -15,7 +15,10 @@
             </view>
           </view>
           <view class="bulletin-box">
-            <view class="iconfont icon-setting bulletin">欢迎加入yizo校园</view>
+            
+            <view class="bulletin">
+              <view class="iconfont icon-gonggao"></view>欢迎加入yizo校园
+            </view>
           </view>
     </view>
     <menu :menu="{{navs.nav[navs.current]}}"></menu>

@@ -5,7 +5,7 @@ import collegeApi from '../../lib/apis/college'
 export default class Index extends wepy.page {
   config = {
     'enablePullDownRefresh': true,
-    'backgroundColor': '#58B3BB'
+    'backgroundColor': '#F1A468'
   }
   data = {
     colleges: []

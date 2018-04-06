@@ -1,4 +1,9 @@
-let UserModel = require("../model/user")
+let { weixinVerifry,saveWeixinAvatar } = require("../common/weixin")
+let UserModel = require("../model/user");
+const { makeToken } = require('../common/jwt')
+const fs = require('fs')
+const path = require('path')
+
 //控制器
 module.exports = class User extends JikeJs.Controller {
     /**
@@ -43,5 +48,35 @@ module.exports = class User extends JikeJs.Controller {
      */
     async wxSignIn({ code, rawData, signature, encryptedData, iv }) {
 
+        rawData = JSON.parse(rawData);
+        try {
+            let openid = await weixinVerifry({ code, rawData, signature, encryptedData, iv });
+            if (!openid) {
+                throw new JikeJs.BaseError(this.codes.SIGNIN_ERR);
+            }
+            let info = await new UserModel().wxSignIn(openid, rawData);
+            if (!fs.existsSync(path.join(__dirname, `../static/user/avatar/${info['uid']}.png`))) {
+                saveWeixinAvatar(info['uid'], rawData['avatarUrl']);
+            }
+            //判断头像是否存在
+            this.response.set('access-token', makeToken({
+                sub: info['uid'],
+                type: 'admin'
+            }));
+            return info;
+        } catch (e) {
+            console.log(e)
+        }
+    }
+    async avatar({id}){
+        let pathname =path.join(__dirname,`../static/user/avatar/`);
+        if(fs.existsSync(pathname+`${id}.png`)){
+            pathname += `${id}.png`;
+        }else{
+            pathname +=`_0.png`
+        }
+        this.ctx.type="image/png"
+        this.ctx.status = 200;
+        this.ctx.body = fs.readFileSync(pathname);
     }
 }

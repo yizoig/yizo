@@ -17,7 +17,6 @@ let sha256 = (value, key) => {
   return hmac.digest();
 }
 let sha1 = (value) => {
-  console.log(value)
   let sha1Crypto = crypto.createHash('sha1');
   sha1Crypto.update(value);
   return sha1Crypto.digest('hex');
