@@ -1,4 +1,5 @@
 const { Dvm } = JikeJs;
+const { tokenVerify, adminCheck } = require("../config/middleware")
 //定义路由
 module.exports = {
     controller: 'user',//默认controller
@@ -11,7 +12,7 @@ module.exports = {
             path: '/',
             method: 'get',
             action: 'list',
-            middle: [],
+            middle: [tokenVerify],
             rules: {
                 search: Dvm.string(),
                 college: Dvm.string(),
@@ -37,6 +38,7 @@ module.exports = {
             path: "/:id",
             method: "put",
             action: "updateInfo",
+            middle: [tokenVerify],
             rules: {
                 gender: Dvm.string(),
                 nickname: Dvm.string()
@@ -64,7 +66,7 @@ module.exports = {
             path: '/use',
             method: 'put',
             action: 'use',
-            middle: [],
+            middle: [tokenVerify, adminCheck],
             rules: {
                 ids: Dvm.array().require(),
                 use: Dvm.number().in([0, 1]).default(1)
@@ -76,6 +78,7 @@ module.exports = {
         {
             path: "/:id",
             method: "get",
+            middle: [tokenVerify],
             action: "getInfo"
         },
         /**
@@ -85,6 +88,7 @@ module.exports = {
             path: "/",
             method: "delete",
             action: "del",
+            middle: [tokenVerify, adminCheck],
             rules: {
                 ids: Dvm.array().require(),
                 del: Dvm.number().in([0, 1]).default(0)

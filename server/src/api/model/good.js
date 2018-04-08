@@ -67,11 +67,11 @@ module.exports = class Good extends JikeJs.Model {
     /**
      * 添加商品
      */
-    async add({ title, content, concat, concat_tel, images, type, price, oprice, number }) {
+    async add({ title, content, contact, contact_tel, images, type, price, oprice, number }) {
 
 
         let { insertId } = await this.data({
-            title, content, concat, concat_tel, images, type, price, oprice, number
+            title, content, contact, contact_tel, images, type, price, oprice, number
         }).insert();
         return insertId;
     }
@@ -115,7 +115,7 @@ module.exports = class Good extends JikeJs.Model {
     }
     async info(id) {
         let list = await this
-            .field('goods.good_id as id,title,content,concat,concat_tel,creater_by as creater,nickname as createrName,user_gender as createrGender,images,types.type_id as type,types.type_name typeName,state,good_price as price,original_price as oprice,good_number as number,_d')
+            .field('goods.good_id as id,title,content,contact,contact_tel,creater_by as creater,nickname as createrName,user_gender as createrGender,images,types.type_id as type,types.type_name typeName,state,good_price as price,original_price as oprice,good_number as number,_d')
             .join('inner join posts on goods.post_id=posts.post_id')
             .join('inner join users on users.user_id=posts.creater_by')
             .join('inner join good_types on good_types.type_id=goods.type_id')

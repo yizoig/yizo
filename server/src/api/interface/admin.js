@@ -1,5 +1,5 @@
 const { Dvm } = JikeJs;
-const { adminCheck } = require("../config/middleware")
+const { adminCheck, tokenVerify } = require("../config/middleware")
 //定义路由
 module.exports = {
     controller: 'admin',//默认controller
@@ -12,7 +12,7 @@ module.exports = {
             path: '/groups',
             method: 'get',
             action: 'groupList',
-            middle: [adminCheck],
+            middle: [tokenVerify, adminCheck],
             rules: {
                 search: Dvm.string(),
                 page: Dvm.number().min(1, true).default(1),
@@ -28,7 +28,7 @@ module.exports = {
             path: '/groups',
             method: 'post',
             action: 'groupAdd',
-            middle: [adminCheck],
+            middle: [tokenVerify, adminCheck],
             rules: {
                 name: Dvm.string().require()
             },
@@ -40,7 +40,7 @@ module.exports = {
             path: '/groups',
             method: 'delete',
             action: 'groupDel',
-            middle: [adminCheck],
+            middle: [tokenVerify, adminCheck],
             rules: {
                 ids: Dvm.array().require(),
                 del: Dvm.number().in([0, 1]).default(0)
@@ -53,7 +53,7 @@ module.exports = {
             path: '/groups/use',
             method: 'put',
             action: 'groupUsed',
-            middle: [adminCheck],
+            middle: [tokenVerify, adminCheck],
             rules: {
                 ids: Dvm.array().require(),
                 use: Dvm.number().in([0, 1]).default(1)
@@ -66,7 +66,7 @@ module.exports = {
             path: '/groups/:id',
             method: 'put',
             action: 'groupUpdate',
-            middle: [adminCheck],
+            middle: [tokenVerify, adminCheck],
             rules: {
                 name: Dvm.string()
             }
@@ -78,7 +78,7 @@ module.exports = {
             path: '/',
             method: 'get',
             action: 'list',
-            middle: [adminCheck],
+            middle: [tokenVerify, adminCheck],
             rules: {
                 search: Dvm.string(),
                 group: Dvm.string(),
@@ -95,7 +95,7 @@ module.exports = {
             path: '/',
             method: 'post',
             action: 'add',
-            middle: [adminCheck],
+            middle: [tokenVerify, adminCheck],
             rules: {
                 name: Dvm.string().require(),
                 group: Dvm.string().require(),
@@ -110,7 +110,7 @@ module.exports = {
             path: '/',
             method: 'delete',
             action: 'del',
-            middle: [adminCheck],
+            middle: [tokenVerify, adminCheck],
             rules: {
                 ids: Dvm.array().require(),
                 del: Dvm.number().in([0, 1]).default(0)
@@ -123,7 +123,7 @@ module.exports = {
             path: '/use',
             method: 'put',
             action: 'use',
-            middle: [adminCheck],
+            middle: [tokenVerify, adminCheck],
             rules: {
                 ids: Dvm.array().require(),
                 use: Dvm.number().in([0, 1]).default(1)
@@ -136,7 +136,7 @@ module.exports = {
             path: '/:id',
             method: 'put',
             action: 'update',
-            middle: [adminCheck],
+            middle: [tokenVerify, adminCheck],
             rules: {
                 name: Dvm.string(),
                 group: Dvm.string()
@@ -149,7 +149,7 @@ module.exports = {
             path: '/pwd/:id',
             method: 'put',
             action: 'del',
-            middle: [adminCheck],
+            middle: [tokenVerify, adminCheck],
             rules: {
                 password: Dvm.string()
             }

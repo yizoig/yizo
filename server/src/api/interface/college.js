@@ -1,4 +1,6 @@
 const { Dvm } = JikeJs;
+const { tokenVerify, adminCheck } = require("../config/middleware")
+
 //定义路由
 module.exports = {
     controller: 'college',//默认controller
@@ -11,7 +13,6 @@ module.exports = {
             path: '/',
             method: 'get',
             action: 'list',
-            middle: [],
             rules: {
                 search: Dvm.string(),
                 page: Dvm.number().min(1, true).default(1),
@@ -25,9 +26,10 @@ module.exports = {
             path: "/",
             method: "post",
             action: "add",
+            middle: [tokenVerify, adminCheck],
             rules: {
                 name: Dvm.string().require(),
-                logo:Dvm.file().require()
+                logo: Dvm.file().require()
             }
         },
         // 学校logo
@@ -39,13 +41,13 @@ module.exports = {
             }
         },
         /**
-       * 删除/禁用
+       * 删除/恢复
        */
         {
             path: '/',
             method: 'delete',
             action: 'del',
-            middle: [],
+            middle: [tokenVerify, adminCheck],
             rules: {
                 ids: Dvm.array().require(),
                 del: Dvm.number().in([0, 1]).default(0)
@@ -58,7 +60,7 @@ module.exports = {
             path: '/use',
             method: 'put',
             action: 'use',
-            middle: [],
+            middle: [tokenVerify, adminCheck],
             rules: {
                 ids: Dvm.array().require(),
                 use: Dvm.number().in([0, 1]).default(1)
@@ -69,6 +71,7 @@ module.exports = {
             path: "/:id",
             method: "put",
             action: "updateInfo",
+            middle: [tokenVerify, adminCheck],
             rules: {
                 name: Dvm.string()
             }

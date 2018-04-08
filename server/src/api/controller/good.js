@@ -10,14 +10,14 @@ module.exports = class Good extends JikeJs.Controller {
     }
     async add() {
         let model = new GoodModel();
-        return await model.add({ title, content, concat, concat_tel, images, type, price, oprice, number });
+        return await model.add({ title, content, contact, contact_tel, images, type, price, oprice, number });
     }
     /**
      * 添加
      */
-    async update({ id, title, content, concat, concat_tel, images, type, price, oprice, number }) {
+    async update({ id, title, content, contact, contact_tel, images, type, price, oprice, number }) {
         let model = new GoodModel();
-        return await model.updateInfo(id, { title, content, concat, concat_tel, images, type, price, oprice, number })
+        return await model.updateInfo(id, { title, content, contact, contact_tel, images, type, price, oprice, number })
     }
     /**
      * 删除

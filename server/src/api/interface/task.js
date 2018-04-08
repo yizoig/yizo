@@ -1,5 +1,7 @@
 
 const { Dvm } = JikeJs;
+const { userCheck,tokenVerify,adminCheck } = require("../config/middleware")
+
 //定义路由
 module.exports = {
     controller: 'task',//默认controller
@@ -12,13 +14,16 @@ module.exports = {
             path: "/",
             method: "get",
             action: "list",
-            middle: [],
-            rule: {
+            middle: [tokenVerify],
+            rules: {
                 search: Dvm.string(),
                 page: Dvm.number().min(1, true).default(1),
                 pageSize: Dvm.number().default(5),
-                use: Dvm.number().in([0, 1]),
-                del: Dvm.number().in([0, 1]).default(0)
+                creater: Dvm.string(),
+                partner: Dvm.string(),
+                college: Dvm.string(),
+                type: Dvm.string(),
+                state: Dvm.number().in([0, 1, 2, 3]),
             }
         },
         /**
@@ -28,11 +33,11 @@ module.exports = {
             path: '/',
             method: 'post',
             action: 'add',
-            middle: [],
+            middle: [tokenVerify,userCheck],
             rules: {
                 title: Dvm.string().require(),
                 content: Dvm.string().require(),
-                concat: Dvm.string().require(),
+                contact: Dvm.string().require(),
                 tel: Dvm.string().require(),
                 college: Dvm.string().require(),
                 type: Dvm.string().require(),
@@ -40,9 +45,9 @@ module.exports = {
                 endTime: Dvm.string().require(),
                 //默认金钱酬劳
                 rewardType: Dvm.number().in([0, 1]).default(0),
-                reward: Dvm.string(),
-                money: Dvm.number().min(1, true),
-                number: Dvm.number().min(1, true)
+                reward: Dvm.string().require(),
+                //0 不限制 1男 2女
+                gender: Dvm.number().in([0, 1, 2]).require()
             }
         },
         /**
@@ -52,10 +57,9 @@ module.exports = {
             path: '/',
             method: 'delete',
             action: 'del',
-            middle: [],
+            middle: [tokenVerify],
             rules: {
-                ids: Dvm.array().require(),
-                del: Dvm.number().in([0, 1]).default(0),
+                ids: Dvm.array().require()
             }
         },
         /**
@@ -65,11 +69,11 @@ module.exports = {
             path: '/:id',
             method: 'put',
             action: 'updateInfo',
-            middle: [],
+            middle: [tokenVerify,userCheck],
             rules: {
                 title: Dvm.string(),
                 content: Dvm.string(),
-                concat: Dvm.string(),
+                contact: Dvm.string(),
                 tel: Dvm.string(),
                 college: Dvm.string(),
                 type: Dvm.string(),
@@ -89,7 +93,7 @@ module.exports = {
             path: '/:id',
             method: 'get',
             action: 'info',
-            middle: [],
+            middle: [tokenVerify],
             rule: []
         },
         /**
@@ -99,7 +103,7 @@ module.exports = {
             path: '/join/:id',
             method: 'put',
             action: 'join',
-            middle: [],
+            middle: [tokenVerify,userCheck],
             rules: {
                 //0表示报名 1表示取消报名
                 type: Dvm.number().in([0, 1]).default(0)
@@ -112,7 +116,7 @@ module.exports = {
             path: '/state/:id',
             method: 'putState',
             action: 'join',
-            middle: [],
+            middle: [tokenVerify,userCheck],
             rules: {
                 //-1表示结束 1完成
                 type: Dvm.number().in([-1, 1]).require()
@@ -125,7 +129,7 @@ module.exports = {
             path: '/record/:id',
             method: 'get',
             action: 'recordList',
-            middle: [],
+            middle: [tokenVerify],
             rules: {
             }
         },

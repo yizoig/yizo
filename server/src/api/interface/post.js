@@ -1,5 +1,7 @@
 
 const { Dvm } = JikeJs;
+const { tokenVerify, adminCheck, userCheck } = require("../config/middleware")
+
 //定义路由
 module.exports = {
     controller: 'post',//默认controller
@@ -12,12 +14,12 @@ module.exports = {
             path: '/types',
             method: 'get',
             action: 'typeList',
-            middle: [],
+            middle: [tokenVerify],
             rules: {
                 search: Dvm.string(),
                 page: Dvm.number().min(1, true).default(1),
                 pageSize: Dvm.number().default(5),
-                type:Dvm.string().in(["list","tree"]).default("list"),
+                type: Dvm.string().in(["list", "tree"]).default("list"),
                 use: Dvm.number().in([0, 1]),
                 del: Dvm.number().in([0, 1]).default(0)
             },
@@ -29,7 +31,7 @@ module.exports = {
             path: '/types',
             method: 'post',
             action: 'typeAdd',
-            middle: [],
+            middle: [tokenVerify, adminCheck],
             rules: {
                 name: Dvm.string().require(),
             },
@@ -41,7 +43,7 @@ module.exports = {
             path: '/types/use',
             method: 'put',
             action: 'typeUse',
-            middle: [],
+            middle: [tokenVerify, adminCheck],
             rules: {
                 ids: Dvm.array().require(),
                 use: Dvm.number().in([0, 1]).default(1)
@@ -54,7 +56,7 @@ module.exports = {
             path: '/types/:id',
             method: 'put',
             action: 'typeUpdate',
-            middle: [],
+            middle: [tokenVerify, adminCheck],
             rules: {
                 name: Dvm.string(),
             }
@@ -66,7 +68,7 @@ module.exports = {
             path: '/types',
             method: 'delete',
             action: 'typeDel',
-            middle: [],
+            middle: [tokenVerify, adminCheck],
             rules: {
                 ids: Dvm.array().require(),
                 del: Dvm.number().in([0, 1]).default(0)
@@ -79,7 +81,7 @@ module.exports = {
             path: '/comments/:id',
             method: 'get',
             action: 'commentList',
-            middle: [],
+            middle: [tokenVerify],
             rules: {
                 search: Dvm.string(),
                 creater: Dvm.string(),
@@ -96,7 +98,7 @@ module.exports = {
             path: '/comments/:id',
             method: 'post',
             action: 'commentAdd',
-            middle: [],
+            middle: [tokenVerify, userCheck],
             rules: {
                 content: Dvm.string().require()
             },
@@ -108,7 +110,7 @@ module.exports = {
             path: '/comments/:id',
             method: 'put',
             action: 'commentUpdate',
-            middle: [],
+            middle: [tokenVerify, userCheck],
             rules: {
                 content: Dvm.string(),
                 cid: Dvm.string(),
@@ -121,7 +123,7 @@ module.exports = {
             path: '/comment/:id',
             method: 'delete',
             action: 'commentDel',
-            middle: [],
+            middle: [tokenVerify],
             rules: {
                 cids: Dvm.array().require(),
                 real: Dvm.number().in([0, 1])
