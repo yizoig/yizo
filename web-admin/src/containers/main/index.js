@@ -112,7 +112,7 @@ class Home extends React.Component {
                     <Menu mode="horizontal" onClick={this.switchMenu.bind(this)} selectedKeys={[this.props.currentModule]}>
                         <Menu.Item key="home" ><Icon type="mail" />前台管理</Menu.Item>
                         <Menu.Item key="back" ><Icon type="appstore-o" />后台管理</Menu.Item>
-                        <Menu.Item key="setting" ><Icon type="setting" />系统设置</Menu.Item>
+                        {/* <Menu.Item key="setting" ><Icon type="setting" />系统设置</Menu.Item> */}
                     </Menu>
                 </div>
 

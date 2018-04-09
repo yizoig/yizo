@@ -17,7 +17,7 @@ module.exports = class Admin extends JikeJs.Model {
     async signIn({ account, password }) {
 
         let info = await this
-            .field('admin_id as aid,admin_name as aname,admin_account as account,admins.group as gid,admin_groups.group_name as gname,admins._c as a_c,admins._d as a_d,admin_groups._d as g_d')
+            .field('admin_id as aid,admin_name as aname,admin_account as account,admins.group as gid,admin_groups.group_name as gname,admins._c as a_c,admins.is_del,admins.is_use,admin_groups.is_del as g_is_del')
             .join('left join admin_groups on admin_groups.group_id=admins.group')
             .where({
                 admin_account: account,

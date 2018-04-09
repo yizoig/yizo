@@ -6,7 +6,7 @@ module.exports = {
     /**
      * 管理员验证
      */
-    adminCheck: async function () {
+    adminCheck: async function (ctx) {
         let { type, sub } = ctx.request.user;
         if (type != 'admin' || !sub) {
             throw new Error("no auth")
@@ -20,7 +20,7 @@ module.exports = {
     /**
      * 用户验证
      */
-    userCheck: function (ctx, next) {
+    userCheck: function (ctx) {
         let { type, sub } = ctx.request.user;
         if (type != 'user' || !sub) {
             throw new Error("no auth")
@@ -32,6 +32,7 @@ module.exports = {
         }
     },
     tokenVerify(ctx) {
+        console.log(ctx)
         let token = ctx.request.get('access-token');
         let payload = verifyToken.call(ctx, token);
         ctx.request.user = payload;
