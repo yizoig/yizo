@@ -20,13 +20,14 @@ module.exports = {
     /**
      * 用户验证
      */
-    userCheck: function (ctx) {
+    userCheck:async  function (ctx) {
         let { type, sub } = ctx.request.user;
         if (type != 'user' || !sub) {
+            console.log(type,sub)
             throw new Error("no auth")
             this.fail(this.codes.NO_AUTH);
         }
-        let data = await(new UserModel()).info(sub);
+        let data = await (new UserModel()).info(sub);
         if (!data) {
             this.fail(this.codes.ACCOUNT_NOT_EXISTS);
         }

@@ -61,7 +61,7 @@ module.exports = class User extends JikeJs.Controller {
             //判断头像是否存在
             this.response.set('access-token', makeToken({
                 sub: info['uid'],
-                type: 'admin'
+                type: 'user'
             }));
             return info;
         } catch (e) {

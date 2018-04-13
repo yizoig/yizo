@@ -60,7 +60,7 @@ module.exports = {
             }
         },
         /**
-         * 修改管理组
+         * 修改管理组信息
          */
         {
             path: '/groups/:id',
@@ -104,7 +104,7 @@ module.exports = {
             }
         },
         /**
-        * 删除/禁用管理员
+        * 删除/恢复 管理员
         */
         {
             path: '/',
@@ -117,7 +117,7 @@ module.exports = {
             }
         },
         /**
-        * 禁用/启用管理员
+        * 禁用/启用 管理员
         */
         {
             path: '/use',
@@ -148,7 +148,7 @@ module.exports = {
         {
             path: '/pwd/:id',
             method: 'put',
-            action: 'del',
+            action: 'putPwd',
             middle: [tokenVerify, adminCheck],
             rules: {
                 password: Dvm.string()

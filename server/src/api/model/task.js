@@ -48,10 +48,10 @@ module.exports = class TaskModel extends JikeJs.Model {
             .where(_where).count();
         //获取列表
         let list = await this
-            .field("posts.post_id as pid,post_title as title,post_content as content,create_by as createId,users.nick_name as createName,users.user_gender as createGender,posts.type as tid,post_types.type_name as tName,posts.college as cid,colleges.college_name as cname,reward_type,if(reward_type=0,money,reward) as reward,number,tasks.state,gender,tasks._c")
+            .field("posts.post_id as pid,post_title as title,post_content as content,create_by as createId,users.nick_name as createName,users.user_gender as createGender,posts.type as tid,post_types.type_name as tName,posts.college as cid,colleges.college_name as cName,reward_type AS rewardType,if(reward_type=0,money,reward) as reward,number,tasks.state,gender,tasks._c")
             .join('inner join posts on posts.post_id=tasks.post_id')
             .join('left join task_records on task_records.task_id=tasks.task_id')
-            .join('inner join users on users.user_id=task_records.user')
+            .join('inner join users on users.user_id=posts.create_by')
             .join('inner join post_types on posts.type=post_types.type_id')
             .join('inner join colleges on colleges.college_id=posts.college')
             .where(_where).select();
@@ -64,7 +64,7 @@ module.exports = class TaskModel extends JikeJs.Model {
         }
     }
 
-    async add({ title, content, contact, tel, college, type, startTime, endTime, rewardType, reward, money, number, gender }) {
+    async add({ title, content, contact, tel, college, type, dueDate, rewardType, reward, money, number, gender }) {
 
         //开启事务
         await this.startTrans();
@@ -79,8 +79,7 @@ module.exports = class TaskModel extends JikeJs.Model {
         }).insert();
         let { insertId: tid = null } = await this.table("tasks").data({
             post_id: pid,
-            start_time: startTime,
-            end_time: endTime,
+            due_date: dueDate,
             reward_type: rewardType,
             reward,
             [rewardType == 0 ? 'money' : "reward"]: reward,
@@ -109,7 +108,7 @@ module.exports = class TaskModel extends JikeJs.Model {
         }
     }
 
-    async updateInfo(id, { title, content, contact, tel, college, type, startTime, endTime, rewardType, reward, money, number }) {
+    async updateInfo(id, { title, content, contact, tel, college, type, dueDate, rewardType, reward, money, number }) {
         try {
             await this.startTrans();
             let { affectedRows: affectedRows1 } = this.table("posts").where({ post_id: id }).data({
@@ -121,8 +120,7 @@ module.exports = class TaskModel extends JikeJs.Model {
                 type
             }).update();
             let { affectedRows: affectedRows2 } = this.table("tasks").where({ post_id: id }).data({
-                start_time: startTime,
-                end_time: endTime,
+                due_time: dueDate,
                 reward_type: rewardType,
                 reward, money,
                 number

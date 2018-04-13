@@ -17,16 +17,16 @@ module.exports = class Post extends JikeJs.Controller {
     /**
      * 添加商品类型
      */
-    async typeAdd({ name }) {
+    async typeAdd({ name,parent }) {
         let model = new PostTypeModel();
-        return await model.add({ name })
+        return await model.add({ name ,parent})
     }
     /**
-     * 添加商品类型
+     * 修改商品类型
      */
-    async typeUpdate({ id, name }) {
+    async typeUpdate({ id, name,parent }) {
         let model = new PostTypeModel();
-        return await model.updateInfo(id, { type_name: name })
+        return await model.updateInfo(id, { type_name: name,parent })
     }
     /**
      * 删除商品类型

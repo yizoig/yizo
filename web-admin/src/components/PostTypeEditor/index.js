@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import ReactDom from 'react-dom';
-import { Modal, Form, Input, Button, notification, Icon } from 'antd';
+import { Modal, Form, Input, Button, notification, Icon, Radio } from 'antd';
 import posts from '../../api/post';
+
+const RadioGroup = Radio.Group;
+
 class PostTypeEditor extends React.Component {
     constructor(props) {
         super(props);
@@ -25,18 +28,20 @@ class PostTypeEditor extends React.Component {
     }
     handleSubmit = (e) => {
         const { data: { type } } = this.props;
-        this.props.form.validateFieldsAndScroll(async (err, { name = '' }) => {
+        this.props.form.validateFieldsAndScroll(async (err, { name = '', parent }) => {
             if (!err) {
                 try {
 
                     let result;
                     if (type == "add") {
                         result = await posts.addType({
-                            name
+                            name,
+                            parent
                         });
                     } else {
                         result = await posts.updateType({
                             name,
+                            parent,
                             id: this.props.data.tid
                         });
                     }
@@ -59,7 +64,7 @@ class PostTypeEditor extends React.Component {
         });
     }
     render() {
-        const { data: { type, tname } } = this.props;
+        const { data: { type, tname, parent }, types } = this.props;
         const { getFieldDecorator, getFieldProps } = this.props.form;
         return (
             <Modal
@@ -73,12 +78,27 @@ class PostTypeEditor extends React.Component {
                     <Button type="primary" htmlType="submit" key="submit" onClick={this.handleSubmit}>{type == "add" ? "添加" : "修改"}</Button>
                 ]}
             >
+                {type == "add" && (<Form >
+                    <Form.Item
+                        {...this.formItemLayout}
+                        label="分组"
+                    >{getFieldDecorator('parent', {
+                        rules: [{ required: true, message: '请填写分组' }],
+                        initialValue: parent
+                    })(
+
+                        <RadioGroup>
+                            {types.map(({ tid, tname, t_c }) => <Radio key={tid} value={tid}>{tname}</Radio>)}
+                        </RadioGroup>
+                    )}
+                    </Form.Item>
+                </Form>)}
                 <Form >
                     <Form.Item
                         {...this.formItemLayout}
                         label="类型名"
                     >{getFieldDecorator('name', {
-                        rules: [{ required: true, message: '请填写昵称' }],
+                        rules: [{ required: true, message: '请填写名称' }],
                         initialValue: tname
                     })(
                         <Input placeholder="必填" />

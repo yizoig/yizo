@@ -1,75 +1,91 @@
-#home{
+#home {
     overflow: hidden;
     display: flex;
-    .side-menu{
+    .side-menu {
         width: 250px;
-        border-right:1px solid #ccc;
+        border-right: 1px solid #ccc;
     }
-    .user-info{
+    .user-info {
         padding: 20px;
         display: flex;
         align-items: center;
         flex-direction: column;
-        img{
+        img {
             width: 64px;
             height: 64px;
             border-radius: 100%;
-            margin: 10px; 
+            margin: 10px;
             box-shadow: 1px 2px 4px #ccc;
             padding: 3px;
-            border:1px solid #ccc; 
+            border: 1px solid #ccc;
             overflow: hidden;
         }
     }
-    .main{
-        flex:1;
+    .main {
+        flex: 1;
         display: flex;
         flex-direction: column;
-        &>.content{
+        &>.content {
             padding: 10px;
-            flex:1;
+            flex: 1;
             overflow: scroll;
         }
     }
-    .header{
+    .header {
         border-bottom: 1px solid #ccc;
         display: flex;
         justify-content: space-between;
-        .left,.right{
+        .left,
+        .right {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
-        .left{
-            align-items:flex-start;
-            padding-left:20px; 
-            .title{
+        .left {
+            align-items: flex-start;
+            padding-left: 20px;
+            .title {
                 color: #f98a05;
                 font-size: 18px;
             }
-            .logo{
+            .logo {
                 line-height: 40px;
             }
-        }  
-        .right{
+        }
+        .right {
             align-items: flex-end;
-            .time{
+            .time {
                 margin-right: 20px;
                 line-height: 40px;
                 height: 40px;
             }
-        }  
+        }
     }
     /*修改side menu */
-    .ant-menu-inline,.ant-menu-horizontal{
+    .ant-menu-inline,
+    .ant-menu-horizontal {
         border: none;
     }
-    .list{
-        .table-btns{
-            margin-top: 10px;
-            &>.ant-btn{
-                margin-right: 5px;
-            }
+}
+.table-btns {
+    margin-top: 10px;
+    &>.ant-btn {
+        margin-right: 5px;
+    }
+}
+.user-list {
+    .ant-table-tbody>tr>td {
+        padding: 0 10px;
+    }
+    tr.ant-table-expanded-row, tr.ant-table-expanded-row:hover{
+        background: #fff;
+    }
+    .avatar {
+        &>img {
+            width: 50px;
+            height: 50px;
+            border-radius: 100%;
+            margin:10px 5px;
         }
     }
 }

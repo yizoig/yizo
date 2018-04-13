@@ -5,19 +5,19 @@
 import wepy from 'wepy'
 import Avatar from '../../../users/avatar/index'
 import Toast from '../../../toast/index'
-import WanHelpOrderApi from '../../../../lib/apis/wantHelpOrder'
-export default class WantHelpOrder extends wepy.component {
+import taskApi from '../../../../lib/apis/task'
+export default class task extends wepy.component {
   data = {
-    orderList: [],
-    limit: {
-      size: 5,
+    taskList: [],
+    pagination: {
+      pageSize: 5,
       page: 1
     }
   }
   methods = {
     onView: function(e) {
       wepy.navigateTo({
-        url: '/pages/order/details/wantHelp/index?id=' + e.currentTarget.dataset.id
+        url: '/pages/post/details/task/index?id=' + e.currentTarget.dataset.id
       })
     }
   }
@@ -27,44 +27,43 @@ export default class WantHelpOrder extends wepy.component {
   }
   events = {
     'request-refresh': (componentName, $event) => {
-      if (componentName === 'wantHelpOrder') {
+      if (componentName === 'task') {
         this.loadMore({
           refresh: true
         })
       }
     },
     'request-loadMre': (componentName, $event) => {
-      if (componentName === 'wantHelpOrder') {
-        if (!this.limit.count || (this.limit.count > this.orderList.length)) {
+      if (componentName === 'task') {
+        if (!this.pagination.count || (this.pagination.count > this.orderList.length)) {
           this.loadMore()
         }
       }
     }
   }
   /**
-   * 获取求组信息
+   * 获取数据信息
    */
   async loadMore({ refresh = false } = {}) {
     try {
-      let { college_id } = wepy.getStorageSync('college') || {}
-      let { data } = await WanHelpOrderApi.list({ needPage: true, ...this.limit, college: college_id })
-      let { orders = [] } = data
+      let { cid } = wepy.getStorageSync('college') || {}
+      let { data:{list:tasks=[],pagination} } = await taskApi.list({ ...this.pagination, college: cid })
       /**
        * 先进行数据处理
        */
       let time
-      for (let i = 0; i < orders.length; i++) {
-        time = new Date(orders[i]['_c'])
-        orders[i]['_c'] = time.getDateDiff(time)
+      for (let i = 0; i < tasks.length; i++) {
+        time = new Date(tasks[i]['_c'])
+        tasks[i]['_c'] = time.getDateDiff(time)
       }
-      this.limit['count'] = data.count
+      this.pagination = pagination
       if (refresh) {
-        this.orderList = orders
-        this.limit['page'] = 1
+        this.taskList = tasks
+        this.pagination['page'] = 1
         this.$emit('response-refresh', 'home')
       } else {
-        this.limit['page']++
-        this.orderList.push.apply(this.orderList, orders)
+        this.pagination['page']++
+        this.taskList.push.apply(this.taskList, tasks)
       }
       this.$invoke('toast', 'hiddenToast')
       this.$apply()

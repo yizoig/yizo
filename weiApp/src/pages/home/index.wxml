@@ -4,26 +4,27 @@
   </view>
   <view class="main">
     <view class="top">
-        <view class="college">
-            <image src="{{college.logo}}" class="logo" />
-            <view class="info">
-              <view class="name">{{college.cname}}</view>
-              <view class="mes">
-                <text>人气:{{college.liveness}}</text>
-                <text>昨日新增:{{college.yest_live}}</text>
-              </view>
-            </view>
+      <view class="college">
+        <image src="{{college.logo}}" class="logo" />
+        <view class="info">
+          <view class="name">{{college.cname}}</view>
+          <view class="mes">
+            <text>人气:{{college.liveness}}</text>
+            <text>昨日新增:{{college.yest_live}}</text>
           </view>
-          <view class="bulletin-box">
-            
-            <view class="bulletin">
-              <view class="iconfont icon-gonggao"></view>欢迎加入yizo校园
-            </view>
-          </view>
+        </view>
+      </view>
+      <view class="bulletin-box">
+        <view class="iconfont icon-gonggao"></view>
+        <view class="bulletin">欢迎加入yizo校园</view>
+      </view>
     </view>
-    <menu :menu="{{navs.nav[navs.current]}}"></menu>
+    <menu :current="{{nav}}"></menu>
     <view class="list">
-        <wantHelpOrder />
+      <block if="{{nav==0}}">
+        <task />
+      </block>
     </view>
   </view>
+</view>
 </view>

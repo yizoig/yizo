@@ -1,4 +1,4 @@
-<view class="run-order-detail">
+<view class="task-detail">
   <toast></toast>
   
   <view class="detail-top">

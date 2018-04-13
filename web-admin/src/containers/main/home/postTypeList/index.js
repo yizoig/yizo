@@ -1,18 +1,15 @@
 
 import React, { Component } from 'react';
 import ReactDom from 'react-dom';
-import { Alert, Table, Icon, Divider, Button, Popconfirm } from 'antd';
+import { Alert, Table, Icon, Divider, Button, Popconfirm, Radio } from 'antd';
 import { connect } from 'react-redux'
 // import './index.less';
-import { get_list, trigger_editor, del_items, use_items, select_row } from '../../../../redux/actions/postType'
+import { get_list, trigger_editor, del_items, use_items, select_row, select_type } from '../../../../redux/actions/postType'
 import PostTypeEditor from '../../../../components/PostTypeEditor';
+
+const RadioGroup = Radio.Group;
 class PostTypeList extends React.Component {
     columns = [{
-        title: '序号',
-        dataIndex: 'tid',
-        key: 'tid',
-        width: 120
-    }, {
         title: '类型名',
         dataIndex: 'tname',
         key: 'tname',
@@ -25,7 +22,7 @@ class PostTypeList extends React.Component {
     }, {
         title: '操作',
         key: 'action',
-        render: (text, record) => (
+        render: (parent, record) => (
             <span>
                 <Popconfirm title={"你确认要" + (record['is_use'] == 1 ? "禁用" : "启用") + "该数据吗?"} onConfirm={() => {
                     this.props.dispatch(use_items({
@@ -58,16 +55,9 @@ class PostTypeList extends React.Component {
 
         this.props.dispatch(get_list())
     }
-    handleTableChange = (pagination, filters, sorter) => {
-        const pager = { ...this.props.memory.pagination };
-        pager.current = pagination.current;
-        this.props.dispatch(get_list({
-            pagination: pager
-        }))
-    }
     render() {
 
-        const { list, loading, pagination, editorData ,selectedRowKeys} = this.props.memory;
+        const { list, loading, editorData, selectedRowKeys, type } = this.props.memory;
         const { dispatch } = this.props;
         return (
             <div className="list">
@@ -109,23 +99,30 @@ class PostTypeList extends React.Component {
                         <Button type="primary" >删除</Button>
                     </Popconfirm>
                 </div>
+                <div style={{ margin: "20px 0" }}>
+                    <RadioGroup value={type} onChange={(e) => {
+                        this.props.dispatch(select_type(e.target.value))
+                    }}>
+                        {list.map(({ tid, tname, t_c }) => <Radio key={tid} value={tid}>{tname}</Radio>)}
+                    </RadioGroup>
+                </div>
                 <Table
                     columns={this.columns}
-                    dataSource={list}
+                    dataSource={list.filter(({ tid }) => type == -1 || tid == type).reduce((arr, item) => { return [...arr, ...item.children] }, [])}
                     bordered
+                    rowKey={({ tid }) => tid}
                     style={{ marginTop: 10 }}
                     loading={loading}
-                    pagination={pagination}
-                    onChange={this.handleTableChange}
-
                     rowSelection={{
                         fixed: true,
                         onChange: (selectedRowKeys) => { dispatch(select_row(selectedRowKeys)) },
                         selectedRowKeys
-                    }} />
+                    }}
+                />
                 {editorData && (
-                    <GoodTypeEditor
+                    <PostTypeEditor
                         data={editorData}
+                        types={list}
                         onOk={() => {
                             dispatch(trigger_editor())
                             dispatch(get_list())

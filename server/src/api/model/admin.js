@@ -46,7 +46,7 @@ module.exports = class Admin extends JikeJs.Model {
     /**
      * 获取管理员列表
      */
-    async list({ search, group, pageable, page, pageSize, use,del, sort }) {
+    async list({ search, group, pageable, page, pageSize, use, del, sort }) {
         let total;
         let _where = [];
         if (!this.isUndefined(search)) {
@@ -66,11 +66,11 @@ module.exports = class Admin extends JikeJs.Model {
         }
         if (!this.isUndefined(use)) {
             _where.push({
-                "admins.is_use":use
-            },"AND")
+                "admins.is_use": use
+            }, "AND")
         }
         _where.push({
-            "admins.is_del":del
+            "admins.is_del": del
         })
         total = await this.where(_where).join("inner join admin_groups on admin_groups.group_id=admins.group").count();
         // if (sort) {
@@ -130,6 +130,10 @@ module.exports = class Admin extends JikeJs.Model {
      */
     async del(ids, is_del) {
         let { affectedRows = 0 } = await this.where({ admin_id: ['in', ids] }).data({ is_del }).update();
+        return affectedRows > 0;
+    }
+    async putPwd(id, password) {
+        let { affectedRows = 0 } = await this.where({ admin_id: id }).data({ admin_pwd: md5(password) }).update()
         return affectedRows > 0;
     }
     /**

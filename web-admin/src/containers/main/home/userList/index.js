@@ -5,8 +5,16 @@ import { Alert, Table, Icon, Divider, Button } from 'antd';
 import { connect } from 'react-redux'
 import './index.less';
 import { get_list } from '../../../../redux/actions/user'
+import user from '../../../../redux/reducers/user';
+import users from '../../../../api/user';
 class UserList extends React.Component {
     columns = [{
+        title: '头像',
+        dataIndex: 'uid',
+        key: 'avatar',
+        width: 160,
+        render: id => <div ><img width="50" height="50" src={users.avatar(id)} /></div>
+    }, {
         title: '昵称',
         dataIndex: 'nickname',
         key: 'nickname',

@@ -24,7 +24,7 @@ export default [
         icon: "solution",
         children: [
             {
-                name: "动态类型",
+                name: "动态分类",
                 key: 'type',
                 path: '/type',
                 component:PostTypeList

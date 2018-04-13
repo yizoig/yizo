@@ -2,7 +2,7 @@ const { Dvm } = JikeJs;
 const { tokenVerify, adminCheck } = require("../config/middleware")
 //定义路由
 module.exports = {
-    controller: 'user',//默认controller
+    controller: 'user',
     path: '/users',
     routers: [
         /**

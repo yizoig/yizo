@@ -2,7 +2,7 @@
 <script>
 import wepy from 'wepy'
 import Menus from '../../components/menus/index'
-import WantHelpOrder from '../../components/order/list/wantHelp/index'
+import task from '../../components/post/list/task/index'
 export default class Home extends wepy.page {
   config = {
     'enablePullDownRefresh': true,
@@ -13,7 +13,8 @@ export default class Home extends wepy.page {
   }
   components = {
     menu: Menus,
-    wantHelpOrder: WantHelpOrder
+    task: task,
+    nav:0
   }
   events = {
     'response-refresh': (componentName, $event) => {
@@ -24,20 +25,20 @@ export default class Home extends wepy.page {
     /**
     * 与指定的组件通信
     */
-    this.$broadcast('request-loadMre', 'wantHelpOrder')
+    this.$broadcast('request-loadMre', 'task')
   }
   onShow() {
     this.college = wepy.getStorageSync('college')
     this.$apply()
   }
   onLoad() {
-    this.$broadcast('request-loadMre', 'wantHelpOrder')
+    this.$broadcast('request-loadMre', 'task')
   }
   onPullDownRefresh() {
     /**
      * 与指定的组件通信
      */
-    this.$broadcast('request-refresh', 'wantHelpOrder')
+    this.$broadcast('request-refresh', 'task')
   }
 }
 </script>

@@ -4,7 +4,7 @@
 import wepy from 'wepy'
 import Avatar from '../../users/avatar/index'
 import Alert from '../../alert/index'
-import OrderCommentApi from '../../../lib/apis/orderComment'
+import postApi from '../../../lib/apis/post'
 export default class Comment extends wepy.component {
   data = {
     detail: null,

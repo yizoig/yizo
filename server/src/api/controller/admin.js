@@ -83,11 +83,14 @@ module.exports = class Admin extends JikeJs.Controller {
         let model = new AdminModel();
         return await model.del(ids, del);
     }
+    async putPwd({id,password}){
+        let model = new AdminModel();
+        return await model.putPwd(id,password)
+    }
     /**
      * 删除管理员
      */
     async use({ ids, use }) {
-
         let model = new AdminModel();
         return await model.use(ids,use);
     }

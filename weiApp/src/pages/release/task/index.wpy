@@ -4,7 +4,7 @@ import wepy from 'wepy'
 import Toast from '../../../components/toast/index'
 import Alert from '../../../components/alert/index'
 import { Validate } from '../../../lib/utils/index'
-import WanHelpOrderApi from '../../../lib/apis/wantHelpOrder'
+import taskApi from '../../../lib/apis/task'
 export default class ReleaseTask extends wepy.page {
   data = {
     startDate: null,
@@ -12,9 +12,13 @@ export default class ReleaseTask extends wepy.page {
     otherReward: [
       '请你吃饭', '你开价'
     ],
+    tindex:null;
     form: {
-      rewardType: 'money'
-    }
+      rewardType: 0,
+      number:1,
+      type:null,
+    },
+    types:[]
   }
   components = {
     toast: Toast,
@@ -30,8 +34,13 @@ export default class ReleaseTask extends wepy.page {
       this.form.rewardType = type
       this.$apply()
     },
+    selectTypes:function(e){
+       this.tindex = e.detail.value;
+       this.form['type'] = this.types[e.detail.value]['tid'];
+      this.$apply()
+    },
     selectGender: function(value) {
-      this.form['gender_constraint'] = value
+      this.form['gender'] = value
       this.$apply()
     },
     switchReward: function(value) {
@@ -54,24 +63,23 @@ export default class ReleaseTask extends wepy.page {
       try {
         params = Validate.check(params, [
           ['title', 'require', '请填写标题', Validate.MUST_VALIDATE],
-          ['address', 'require', '请填写地址', Validate.MUST_VALIDATE],
-          ['gender_constraint', 'require', '请设置性别约束', Validate.MUST_VALIDATE],
+          ['gender', 'require', '请设置性别约束', Validate.MUST_VALIDATE],
           ['dueDate', 'require', '请选择截至日期', Validate.MUST_VALIDATE],
           ['dueTime', 'require', '请选择截至时间', Validate.MUST_VALIDATE],
           ['reward', 'require', '请填写酬劳', Validate.MUST_VALIDATE],
-          ['phoneNumber', 'tel', '联系电话格式不正确', Validate.MUST_VALIDATE],
-          ['weixin', 'require', '微信号不能为空', Validate.MUST_VALIDATE]
+          ['tel', 'tel', '联系电话格式不正确', Validate.MUST_VALIDATE],
+          ['contact', 'require', '联系人不能为空', Validate.MUST_VALIDATE],
+          ['type','require',"请选择类型",Validate.MUST_VALIDATE]
         ])
-        let { college_id: collegeId } = wepy.getStorageSync('college') || {}
-        params['deadline'] = params['dueDate'] + ' ' + params['dueTime']
-        params['college'] = collegeId
-        delete params['dueDate']
+        let { cid } = wepy.getStorageSync('college') || {}
+        params['dueDate'] = params['dueDate'] + ' ' + params['dueTime']
+        params['college'] = cid
         delete params['dueTime']
         this.$invoke('toast', 'showToast', {
           title: '创建中',
           icon: 'loading'
         })
-        let { data } = await WanHelpOrderApi.add(params)
+        let { data } = await taskApi.add(params)
         if (data) {
           this.$invoke('toast', 'showToast', {
             title: '创建成功',
@@ -79,7 +87,7 @@ export default class ReleaseTask extends wepy.page {
           })
           setTimeout(() => {
             wepy.navigateTo({
-              url: '/pages/order/result/index?type=add'
+              url: '/pages/post/result/index?type=add'
             })
           }, 3000)
         } else {
@@ -111,6 +119,12 @@ export default class ReleaseTask extends wepy.page {
     date.setYear(date.getFullYear() + 1)
     this.endDate = {
       date: date.format('yyyy-MM-dd')
+    }
+    let menus = wepy.getStorageSync('menus') || [];
+    for(let item of menus){
+      if(item.tid==1){
+        this.types =item['children']
+      }
     }
     this.$apply()
   }

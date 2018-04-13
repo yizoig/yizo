@@ -33,6 +33,7 @@ module.exports = {
             action: 'typeAdd',
             middle: [tokenVerify, adminCheck],
             rules: {
+                parent:Dvm.string().require(),
                 name: Dvm.string().require(),
             },
         },
@@ -58,6 +59,7 @@ module.exports = {
             action: 'typeUpdate',
             middle: [tokenVerify, adminCheck],
             rules: {
+                parent:Dvm.string(),
                 name: Dvm.string(),
             }
         },

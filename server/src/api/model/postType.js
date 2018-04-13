@@ -39,24 +39,25 @@ module.exports = class PostType extends JikeJs.Model {
             this.page(page - 1, pageSize);
         }
         let list = await this.field('type_id as tid,type_name as tname,_c as t_c,is_use,is_del,parent').where(_where).select();
-        if(type=="list"){
+        if (type == "list") {
             return {
                 list,
                 pagination: {
                     total, pageSize
                 }
             }
-        }else{
+        } else {
             return this.listToTree(list)
         }
     }
     /**
      * 添加类型
      */
-    async add({ name, }) {
+    async add({ name, parent }) {
 
         let { insertId } = await this.data({
             type_name: name,
+            parent
         }).insert();
         return insertId;
     }
@@ -66,7 +67,7 @@ module.exports = class PostType extends JikeJs.Model {
     async updateInfo(id, data) {
 
         //过滤字段
-        data = this.filter_handle(data, ['type_name']);
+        data = this.filter_handle(data, ['type_name', 'parent']);
         if (Object.keys(data).length == 0) {
             return 0;
         }
@@ -80,7 +81,8 @@ module.exports = class PostType extends JikeJs.Model {
      */
     async del(ids, is_del) {
         let { affectedRows = 0 } = await this.where({
-            type_id: ['in', ids]
+            type_id: ['in', ids],
+            parent: ['not in', ids]
         }).data({
             is_del
         }).update();

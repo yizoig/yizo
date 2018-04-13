@@ -6,10 +6,10 @@ module.exports = class Task extends JikeJs.Controller {
         let model = new TaskModel();
         return await model.list(({ search, page, pageSize, creater, partner, state, college, type }));
     }
-    async add({ title, content, contact, tel, college, type, startTime, endTime, rewardType, reward, number, gender }) {
+    async add({ title, content, contact, tel, college, type,dueDate, rewardType, reward, number, gender }) {
 
         let model = new TaskModel();
-        return await model.add({ title, content, contact, tel, college, type, startTime, endTime, rewardType, reward, number, gender });
+        return await model.add({ title, content, contact, tel, college, type,dueDate, rewardType, reward, number, gender });
     }
     async del({ ids }) {
 

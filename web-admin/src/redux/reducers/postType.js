@@ -10,11 +10,7 @@ const stateInit = {
     memory: {
         loading: true,
         list: [],
-        pagination: {
-            current:1,
-            pageSize: 5,
-            total: 0
-        },
+        type:1,
         editorData: null,
         selectedRowKeys:[]
     }

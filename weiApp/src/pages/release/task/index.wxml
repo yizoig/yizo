@@ -8,14 +8,22 @@
     <view class="form">
         <view class="form-row">
             <label class="form-label">标题</label>
-            <input class="form-widget" placeholder="请填写标题" bindinput="formValueChange" data-name="title" />
+            <input class="form-widget" placeholder="请填写标题" bindinput="formValueChange" data-name="title" type="number"/>
+        </view>
+        <view class="form-row">
+            <label class="form-label">类型</label>
+            <picker bindchange="selectTypes" value="{{tindex}}" range="{{types}}" range-key="tname">
+                <view class="picker">
+                  {{types[form.type]['tname']}}
+                </view>
+              </picker>
         </view>
         <view class="form-row">
             <label class="form-label">性别限制</label>
             <view class="form-widget radio">
-                <view class="radio-item {{form.gender_constraint==-1?'active':''}}" @tap="selectGender(-1)">不限</view>
-                <view class="radio-item {{form.gender_constraint==0?'active':''}}" @tap="selectGender(0)">女</view>
-                <view class="radio-item {{form.gender_constraint==1?'active':''}}" @tap="selectGender(1)">男</view>
+                <view class="radio-item {{form.gender==-1?'active':''}}" @tap="selectGender(-1)">不限</view>
+                <view class="radio-item {{form.gender==0?'active':''}}" @tap="selectGender(0)">女</view>
+                <view class="radio-item {{form.gender==1?'active':''}}" @tap="selectGender(1)">男</view>
             </view>
         </view>
         <view class="form-row">
@@ -43,8 +51,8 @@
         <view class="form-row">
             <label class="form-label">酬劳类型</label>
             <view class="form-widget radio">
-                <view class="radio-item {{form.rewardType==='other'?'active':''}}" @tap="switchType({{'other'}})">其他</view>
-                <view class="radio-item {{form.rewardType==='money'?'active':''}}" @tap="switchType({{'money'}})">现金</view>
+                <view class="radio-item {{form.rewardType===1?'active':''}}" @tap="switchType({{1}})">其他</view>
+                <view class="radio-item {{form.rewardType===0?'active':''}}" @tap="switchType({{0}})">现金</view>
             </view>
         </view>
         <view class="form-row" wx:if="{{form.rewardType==='money'}}">
@@ -63,13 +71,6 @@
             <view style="font-size:25rpx;color:#808080;padding:0 0 10rpx 20rpx;">"我的酬劳是{{form.reward}}"</view>
         </view>
         <view class="form-row">
-            <label class="form-label">是否需要审核</label>
-            <view class="form-widget radio">
-                <view class="radio-item">是</view>
-                <view class="radio-item" >否</view>
-            </view>
-        </view>
-        <view class="form-row">
             <textarea placeholder="请填写具体信息(选填)" bindinput="formValueChange" data-name="content" style="width:100%;text-align:left;height:150rpx;padding:10rpx;line-height:37rpx;">
         </textarea>
         </view>
@@ -80,7 +81,7 @@
         </view>
         <view class="form-row">
             <label class="form-label">联系人</label>
-            <input class="form-widget" placeholder="请填写联系人" bindinput="formValueChange" data-name="concat" />
+            <input class="form-widget" placeholder="请填写联系人" bindinput="formValueChange" data-name="contact" />
         </view>
     </view>
     <view class="release" @tap="release">发起求助</view>
