@@ -1,45 +1,84 @@
 <template lang="wxml" src="./index.wxml"></template>
 <script>
-import wepy from 'wepy'
-import Menus from '../../components/menus/index'
-import task from '../../components/post/list/task/index'
-export default class Home extends wepy.page {
-  config = {
-    'enablePullDownRefresh': true,
-    'backgroundColor': '#F1A468'
-  }
-  data = {
-    college: null
-  }
-  components = {
-    menu: Menus,
-    task: task,
-    nav:0
-  }
-  events = {
-    'response-refresh': (componentName, $event) => {
-      wepy.stopPullDownRefresh()
+    import wepy from 'wepy'
+    import task from '../../components/post/list/task/index'
+    export default class Home extends wepy.page {
+        config = {
+            'enablePullDownRefresh': true,
+            'backgroundColor': '#F1A468'
+        }
+        data = {
+            college: null,
+            current: 0,
+            menus: [],
+        }
+        components = {
+            task: task,
+
+        }
+        events = {
+            'loadMoreOk': (componentName, $event) => {
+                wepy.stopPullDownRefresh()
+            }
+        }
+        methods = {
+            onSwitch: function (e) {
+                let { index, type } = e.currentTarget.dataset
+                switch (type) {
+                    case 'menu': {
+                        this.current = index
+                        break
+                    }
+                    case 'sub': {
+                        this.menus[this.current]['current'] = index
+                        break
+                    }
+                    default: {
+                        return
+                    }
+                }
+                this.$apply()
+            }
+        }
+        async fetchMenu() {
+            let { data } = await posts.listType({ type: "tree" })
+            return data;
+        }
+        onReachBottom() {
+            /**
+            * 与指定的组件通信
+            */
+            this.$broadcast('loadMore', 'task')
+        }
+        onShow() {
+            this.college = wepy.getStorageSync('college')
+            this.$apply()
+        }
+        async onLoad() {
+            this.components={}
+            console.log(this.components)
+            let menus = wepy.getStorageSync("menus");
+            if (!menus) {
+                menus = await this.fetchMenu();
+                wepy.setStorage({
+                    key: "menus",
+                    data: menus
+                })
+            }
+            this.current = 0;
+            if(menus.length!=0){
+                menus[0]['current'] = 0;
+            }
+            this.menus = menus;
+            this.$apply();
+            this.$broadcast('loadMore', 'task')
+        }
+        onPullDownRefresh() {
+            /**
+             * 与指定的组件通信
+             */
+            this.$broadcast('refresh', 'task')
+        }
     }
-  }
-  onReachBottom() {
-    /**
-    * 与指定的组件通信
-    */
-    this.$broadcast('request-loadMre', 'task')
-  }
-  onShow() {
-    this.college = wepy.getStorageSync('college')
-    this.$apply()
-  }
-  onLoad() {
-    this.$broadcast('request-loadMre', 'task')
-  }
-  onPullDownRefresh() {
-    /**
-     * 与指定的组件通信
-     */
-    this.$broadcast('request-refresh', 'task')
-  }
-}
 </script>
 <style src="./index.less" lang="less"></style>

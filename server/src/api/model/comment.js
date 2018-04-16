@@ -6,7 +6,7 @@ module.exports = class GoodType extends JikeJs.Model {
         this.table("post_comments");
     }
     /**
-     * 获取评论类型
+     * 获取评论列表
      */
     async list({ search, creater, partner, postId, pageable, page, pageSize, _d }) {
 
@@ -32,8 +32,11 @@ module.exports = class GoodType extends JikeJs.Model {
                 _d
             })
         }
-        total = await this.where(_where).count();
-        let list = await this.field('comment_id as id,user,_d,parent,_c,postId').where(_where).page(page - 1, pageSize).select();
+        total = await this.where(_where).join("join users on post_comments.user=users.user_id").count();
+        let list = await this
+            .field("comment_id as cid,user as uid,users.nick_name uname,content,post_id as pid,post_comments._c")
+            .join("join users on post_comments.user=users.user_id")
+            .where(_where).page(page - 1, pageSize).select();
         return {
             list,
             pagination: {
@@ -44,24 +47,26 @@ module.exports = class GoodType extends JikeJs.Model {
     /**
      * 添加评论
      */
-    async add({ content }) {
+    async add(post_id, { content }, user) {
 
         let { insertId } = await this.data({
-            content: name,
-            parent
+            content,
+            post_id,
+            user
         }).insert();
         return insertId;
     }
     /**
      * 修改评论
      */
-    async updateInfo(cid, { id, content }) {
+    async updateInfo({ id, cid, content }) {
 
         let { affectedRows = 0 } = await this.data({
             content
         }).where({
             post_id: id,
             comment_id: cid,
+            content
         }).update();
         return affectedRows > 0;
     }
@@ -73,18 +78,6 @@ module.exports = class GoodType extends JikeJs.Model {
             comment_id: ['in', cids],
             post_id: id
         }).delete();
-        return affectedRows > 0;
-    }
-    /**
-     * 禁用商品类型
-     */
-    async disabled(id, cids) {
-        let { affectedRows = 0 } = await this.where({
-            comment_id: ['in', cids],
-            post_id: id
-        }).data({
-            _d: 1
-        }).update();
         return affectedRows > 0;
     }
 }

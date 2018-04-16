@@ -1,80 +1,39 @@
 .task-detail {
-    .detail-top {
+    .creater-info {
+        padding: 8px 10px;
         display: flex;
-        flex-direction: row;
-        padding: 20rpx;
-        justify-content: space-around;
-        .creater,
-        .runner {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            .avatar {
-                width: 90rpx;
-                height: 90rpx;
-            }
-            .username {
-                margin-top: 5rpx;
-                font-size: 25rpx;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                text-align: center;
-                overflow: hidden;            
-                max-width: 200rpx;
-                width: 200rpx;
-                min-width: 200rpx;
-            }
-            .order-task {
-                background: #1C79FF;
-                color: #fff;
-                font-size: 30rpx;
-                padding: 5rpx 10rpx;
-            }
+        .avatar {
+            width: 90rpx;
+            height: 90rpx;
         }
-        .center {
-            flex: 1;
-            margin: 0 20rpx;
-            font-size: 25rpx;
-            text-align: center;
-            min-width: 250rpx;
-            .college {
-                font-size: 25rpx;
-                background: #7BC3FD;
-                line-height: 40rpx;
-                color: #fff;
-                padding: 10rpx;
-                display: inline-block;
-                max-width: 140px;
-                overflow: hidden;
-                white-space: nowrap;
-            }
-            .line {
-                width: 100%;
-                height: 5rpx;
-                background: #1C79FF;
-                margin: 10px 0px;
-            }
+        .info {
+            display: flex;
+            margin-left: 10px;
+            align-items: center;
+        }
+        .username {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
         }
     }
-    .order-status{
-      border-bottom: 6rpx solid #f8f8f8;
-      font-size: 28rpx;
-      color: #BFBFBF;
-      display: flex;
-      flex-direction: row;
-      .iconfont{
-        padding: 15rpx 0;
-        flex:1;
-        text-align: center;
-      }
-      .active{
-        color: #1C79FF;
-      }
-      .error{
-        color: #f00;
-      }
+    .order-status {
+        border-bottom: 6rpx solid #f8f8f8;
+        font-size: 35rpx;
+        color: #BFBFBF;
+        display: flex;
+        flex-direction: row;
+        .iconfont {
+            padding: 15rpx 0;
+            flex: 1;
+            text-align: center;
+        }
+        .active {
+            color: #1C79FF;
+        }
+        .error {
+            color: #f00;
+        }
     }
     .detail-content {
         font-size: 25rpx;
@@ -83,7 +42,6 @@
         position: relative;
         padding: 0 10rpx;
         border-bottom: 6rpx solid #f8f8f8;
-        
         .title {
             font-size: 42rpx;
             line-height: 45rpx;
@@ -91,7 +49,7 @@
             margin-left: 10rpx;
         }
         .items {
-            border-top:1px solid #fcfcfc; 
+            border-top: 1px solid #fcfcfc;
             .item {
                 display: flex;
                 flex-direction: row;
@@ -109,14 +67,14 @@
                     margin: 0 5rpx;
                 }
                 .reward {
-                  margin-right: 12rpx;
-                  color: #FF5164;
-                  font-size: 25rpx;
-                  font-weight: bold;
-                  float: right;
-                  &-money{
-                    font-size: 32rpx;
-                  }
+                    margin-right: 12rpx;
+                    color: #FF5164;
+                    font-size: 25rpx;
+                    font-weight: bold;
+                    float: right;
+                    &-money {
+                        font-size: 32rpx;
+                    }
                 }
             }
         }
@@ -136,6 +94,7 @@
     }
     margin-bottom:110rpx;
 }
+
 .fix-btn {
     position: fixed;
     left: 0;
@@ -145,11 +104,11 @@
     flex-direction: row;
     background: #f5f5f5;
     align-items: center;
-    border-top:1px solid #f8f8f8;
+    border-top: 1px solid #f8f8f8;
     height: 90rpx;
     .btn {
         height: 100%;
-        border:none;
+        border: none;
         text-align: center;
         color: #808080;
         display: flex;

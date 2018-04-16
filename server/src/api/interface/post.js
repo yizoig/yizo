@@ -87,7 +87,6 @@ module.exports = {
             rules: {
                 search: Dvm.string(),
                 creater: Dvm.string(),
-                postId: Dvm.string(),
                 page: Dvm.number().min(1, true).default(1),
                 pageSize: Dvm.number().default(5),
                 _d: Dvm.number().in([0, 1])
@@ -128,7 +127,6 @@ module.exports = {
             middle: [tokenVerify],
             rules: {
                 cids: Dvm.array().require(),
-                real: Dvm.number().in([0, 1])
             }
         },
 

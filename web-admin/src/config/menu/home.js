@@ -30,12 +30,6 @@ export default [
                 component:PostTypeList
             },
             {
-                name: "评论列表",
-                key: 'comment',
-                path: '/comment',
-                component:GoodList
-            },
-            {
                 name: "任务列表",
                 key: 'task',
                 path: '/task',

@@ -23,7 +23,8 @@ class UserList extends React.Component {
         title: '手机号',
         dataIndex: 'utel',
         key: 'utel',
-        width: 120
+        width: 120,
+        render: text => text || "无"
     }, {
         title: '性别',
         dataIndex: 'ugender',
@@ -34,7 +35,8 @@ class UserList extends React.Component {
         title: '学校',
         dataIndex: 'cname',
         key: 'cname',
-        width: 180
+        width: 180,
+        render: text => text || "暂无"
     }, {
         title: '创建时间',
         dataIndex: 'u_c',
@@ -45,7 +47,12 @@ class UserList extends React.Component {
         key: 'action',
         render: (text, record) => (
             <span>
-                {record['is_use'] == 1 ? (<a href="#" style={{ color: '#F00' }}>禁用</a>) : (<a href="#" style={{ color: '#50B233' }}>启用</a>)}
+                <a href="#"
+                    style={{ color: record['is_use'] == 1 ? '#F00' : "#50B233" }}
+                    onClick={() => {
+
+                    }}
+                >{record['is_use'] == 0 ? "启用" : "禁用"}</a>
                 <Divider type="vertical" />
                 <a href="#" >删除</a>
                 <Divider type="vertical" />
@@ -56,8 +63,9 @@ class UserList extends React.Component {
         ),
     }];
     componentWillMount() {
-
-        this.props.dispatch(get_list())
+        if(this.props.memory.list.length==0){
+            this.props.dispatch(get_list())
+        }
     }
     handleTableChange = (pagination, filters, sorter) => {
         const pager = { ...this.props.memory.pagination };
@@ -86,10 +94,7 @@ class UserList extends React.Component {
                     showIcon
                 />
                 <div className="table-btns">
-                    <Button type="primary">添加</Button>
-                    <Button className="btn-danger">禁用</Button>
-                    <Button className="btn-success">启用</Button>
-                    <Button type="primary">删除</Button>
+
                 </div>
                 <Table
                     columns={this.columns}

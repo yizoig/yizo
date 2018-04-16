@@ -4,6 +4,6 @@ export default {
   listType: Apis.get(host + '/posts/types'),
 
   //获取评论
-  list: Apis.get(host + '/posts/comment/'),
-  add: Apis.post(host + '/posts/comment/')
+  commentList: Apis.get(host + '/posts/comments/:id'),
+  commentAdd: Apis.post(host + '/posts/comments/:id')
 }

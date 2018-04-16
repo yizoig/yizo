@@ -59,7 +59,8 @@ module.exports = {
             action: 'del',
             middle: [tokenVerify],
             rules: {
-                ids: Dvm.array().require()
+                ids: Dvm.array().require(),
+                del: Dvm.number().in([0, 1]).default(0)
             }
         },
         /**
@@ -93,7 +94,7 @@ module.exports = {
             method: 'get',
             action: 'info',
             middle: [tokenVerify],
-            rule: []
+            rules: []
         },
         /**
          * 报名
@@ -119,17 +120,6 @@ module.exports = {
             rules: {
                 //-1表示结束 1完成
                 type: Dvm.number().in([-1, 1]).require()
-            }
-        },
-        /**
-         * 查看任务详情
-         */
-        {
-            path: '/record/:id',
-            method: 'get',
-            action: 'recordList',
-            middle: [tokenVerify],
-            rules: {
             }
         },
     ]

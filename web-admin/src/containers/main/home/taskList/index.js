@@ -1,22 +1,26 @@
 
 import React, { Component } from 'react';
 import ReactDom from 'react-dom';
-import { Alert, Table, Icon, Divider, Button, message } from 'antd';
+import { Alert, Table, Icon, Divider, Button, message, Badge } from 'antd';
 import { connect } from 'react-redux'
 import tasks from '../../../../api/task';
 import users from '../../../../api/user';
+import './index.less';
+import TaskInfo from '../../../../components/TaskInfo';
+import TaskRecord from '../../../../components/TaskRecord';
+import Comment from '../../../../components/Comment';
 class TaskList extends React.Component {
     columns = [{
         title: '头像',
         dataIndex: 'createId',
         key: 'avatar',
         width: 160,
-        render: (id, { createName }) => <div className="avatar"><img  src={users.avatar(id)} />{createName}</div>
+        render: (id, { createName }) => <div className="avatar"><img src={users.avatar(id)} />{createName}</div>
     }, {
         title: '任务类型',
         dataIndex: 'tName',
         key: 'tname',
-        width: 160
+        width: 120
     }, {
         title: "标题",
         dataIndex: 'title',
@@ -28,23 +32,64 @@ class TaskList extends React.Component {
         key: 'p_c',
         width: 180
     }, {
+        title: '状态',
+        dataIndex: 'state',
+        key: 'state',
+        width: 80,
+        render: state => this.taskstates[state]
+    }, {
         title: '操作',
         key: 'action',
-        render: (text, record) => (
+        render: (text, record, index) => (
             <span>
-                <a href="#" >删除</a>
+                <a onClick={() => {
+                    this.settype(record, index, "info")
+                }}>详情</a>
                 <Divider type="vertical" />
+                <a onClick={() => {
+                    this.settype(record, index, "record")
+                }}>任务记录</a>
+                <Divider type="vertical" />
+                <a onClick={() => {
+                    this.settype(record, index, "comment")
+                }}>查看评论</a>
+                <Divider type="vertical" />
+                <a href="#" >删除</a>
             </span>
         ),
     }];
+    settype(record, index, type) {
+        let { expandedRowKeys: keys, list } = this.state;
+        if (keys.indexOf(record.pid) != -1) {
+            if (list[index]['_type'] == type)
+                keys = keys.filter(i => i != record.pid)
+        } else {
+            keys.push(record.pid);
+        }
+        list[index] = {
+            ...record,
+            _type: type
+        }
+
+        this.setState({
+            expandedRowKeys: keys,
+            list
+        })
+    }
     componentWillMount() {
 
         this.loadData()
     }
+    taskstates = {
+        "-1": <Badge status="error" text="已结束" />,
+        "0": <Badge status="processing" text="进行中" />,
+        "1": <Badge status="success" text="已完成" />,
+    }
     state = {
         list: [],
         loading: true,
-        editorData: null
+        editorData: null,
+        expandedRowKeys: []
     }
     async loadData(data = {}) {
         try {
@@ -72,7 +117,7 @@ class TaskList extends React.Component {
     }
     render() {
 
-        const { list, loading, pagination, editorData } = this.state;
+        const { list, loading, pagination, editorData, expandedRowKeys } = this.state;
         const { dispatch } = this.props;
         return (
             <div className="user-list">
@@ -97,17 +142,15 @@ class TaskList extends React.Component {
                     pagination={pagination}
                     onChange={this.handleTableChange}
                     rowKey={({ pid }) => pid}
-                    expandedRowRender={({ title,content,cName,tName,gender,number,rewardType,reward }) => (
-                        <div>
-                            <div>标题:{title}</div>
-                            <div>内容:{content}</div>
-                            <div>学校:{cName}</div>
-                            <div>类型:{tName}</div>
-                            <div>性别限制:{gender==-1?"不限":(gender==0?"男":"女")}</div>
-                            <div>人数:{number}</div>
-                            <div>酬劳:{reward+(rewardType==0?"元":"")}</div>
-                        </div>
-                    )}
+                    expandedRowKeys={expandedRowKeys}
+                    onExpandedRowsChange={expandedRows => {
+                        this.setState({
+                            expandedRowKeys: expandedRows
+                        })
+                    }}
+                    expandedRowRender={data => {
+                        return data._type == "info" ? <TaskInfo data={data} /> : (data._type == "record" ? <TaskRecord id={data.pid} /> : <Comment id={data.pid} />)
+                    }}
                 // rowSelection={{
                 //     fixed: true
                 // }}

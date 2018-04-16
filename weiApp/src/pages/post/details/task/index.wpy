@@ -59,18 +59,24 @@ export default class Task extends wepy.page {
   }
   async loadData() {
     try {
-      let { data } = await taskApi.info({ id: this.id })
-
-      this.detail = data.info
+       this.$invoke('toast', 'showToast', {
+        title: "获取信息中",
+        icon:"loading",
+        mask:true
+      })
+      let { data } = await taskApi.info({ id:5|| this.id })
+      this.detail = data
       let time = new Date(this.detail['_c'])
-      this.orderId = this.detail['order_id']
       this.detail['_c'] = time.getDateDiff(time)
-      this.creater = data.info['creater']
-      this.runner = data.info['runner']
       this.$apply()
       wepy.stopPullDownRefresh()
     } catch (e) {
       console.log(e)
+       this.$invoke('toast', 'showToast', {
+        title: e.message,
+        icon:"error",
+        mask:true
+      })
     }
   }
 }

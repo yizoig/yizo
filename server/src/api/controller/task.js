@@ -9,12 +9,12 @@ module.exports = class Task extends JikeJs.Controller {
     async add({ title, content, contact, tel, college, type,dueDate, rewardType, reward, number, gender }) {
 
         let model = new TaskModel();
-        return await model.add({ title, content, contact, tel, college, type,dueDate, rewardType, reward, number, gender });
+        return await model.add(this.user.id,{ title, content, contact, tel, college, type,dueDate, rewardType, reward, number, gender });
     }
-    async del({ ids }) {
+    async del({ ids,del }) {
 
         let model = new TaskModel();
-        return await model.del(ids);
+        return await model.del(ids,del);
     }
     async updateInfo({ id, ...data }) {
         let model = new TaskModel();
@@ -24,14 +24,12 @@ module.exports = class Task extends JikeJs.Controller {
         let model = new TaskModel();
         return await model.info(id)
     }
-    async joinTask({id,type}){
+    //报名
+    async joinTask({id}){
         let model = new TaskModel();
-        return await model.join(id,type)
+        return await model.join(id,this.user.id)
     }
-    async recordList({id}){
-        let model = new TaskModel();
-        return await model.recordList(id)
-    }
+    //完成  或结束
     async putState({id,type}){
         let model = new TaskModel();
         return await model.putState(id,type)

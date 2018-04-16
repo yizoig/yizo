@@ -12,7 +12,7 @@ export default class ReleaseTask extends wepy.page {
     otherReward: [
       '请你吃饭', '你开价'
     ],
-    tindex:null;
+    tindex:null,
     form: {
       rewardType: 0,
       number:1,

@@ -1,80 +1,99 @@
-
-<template src="./index.wxml" ></template>
+<template src="./index.wxml">
+</template>
 
 <script>
-import wepy from 'wepy'
-import Avatar from '../../../users/avatar/index'
-import Toast from '../../../toast/index'
-import taskApi from '../../../../lib/apis/task'
-export default class task extends wepy.component {
-  data = {
-    taskList: [],
-    pagination: {
-      pageSize: 5,
-      page: 1
-    }
-  }
-  methods = {
-    onView: function(e) {
-      wepy.navigateTo({
-        url: '/pages/post/details/task/index?id=' + e.currentTarget.dataset.id
-      })
-    }
-  }
-  components = {
-    avatar: Avatar,
-    toast: Toast
-  }
-  events = {
-    'request-refresh': (componentName, $event) => {
-      if (componentName === 'task') {
-        this.loadMore({
-          refresh: true
-        })
-      }
-    },
-    'request-loadMre': (componentName, $event) => {
-      if (componentName === 'task') {
-        if (!this.pagination.count || (this.pagination.count > this.orderList.length)) {
-          this.loadMore()
+    import wepy from 'wepy'
+    import Avatar from '../../../users/avatar/index'
+    import Toast from '../../../toast/index'
+    import taskApi from '../../../../lib/apis/task'
+    export default class task extends wepy.component {
+        data = {
+            items: [],
+            pageSize: 5
         }
-      }
+        methods = {
+            onView: function (e) {
+                wepy.navigateTo({
+                    url: '/pages/post/details/task/index?id=' + e.currentTarget.dataset.id
+                })
+            }
+        }
+        components = {
+            avatar: Avatar,
+            toast: Toast
+        }
+        events = {
+            'refresh': (componentName, $event) => {
+                if (componentName === 'task') {
+                    this.loadMore({
+                        refresh: true
+                    })
+                }
+            },
+            'loadMore': (componentName, $event) => {
+                if (componentName === 'task') {
+                    this.loadMore()
+                }
+            }
+        }
+        /**
+         * 获取数据信息
+         */
+        async loadMore({ refresh = false } = {}) {
+            try {
+
+                let { items, } = this.data;
+                this.$invoke('toast', 'showToast', {
+                    title: "获取列表中",
+                    icon: "loading",
+                    mask: true
+                })
+                let { cid } = wepy.getStorageSync('college') || {}
+                let { data: { list: tasks = [], pagination: { total = 0 } } } = await taskApi.list({ ...this.pagination, college: cid, tid: this.type })
+                /**
+                 * 先进行数据处理
+                 */
+                let time
+                for (let i = 0; i < tasks.length; i++) {
+                    time = new Date(tasks[i]['_c'])
+                    tasks[i]['_c'] = time.getDateDiff(time)
+                }
+                this.pagination['total'] = total
+                if (refresh) {
+                    this.taskList = tasks
+                    this.pagination['page'] = 1
+                    this.$emit('loadMoreOk', 'home')
+                } else {
+                    this.pagination['page']++
+                    this.taskList.push.apply(this.taskList, tasks)
+                }
+                this.$invoke('toast', 'hiddenToast')
+                this.$apply()
+            } catch (e) {
+                this.$invoke('toast', 'showToast', {
+                    title: e.message,
+                    icon: 'error',
+                    mask: true
+                })
+            }
+        }
+        onLoad() {
+
+            console.log(this.menus)
+            let { children, current } = this.menus;
+            // for (let item of this.menus) {
+            //     this.items.push({
+            //         id:item.pid,
+            //         taskList: [],
+            //         page:1,
+            //         total:0
+            //     })
+            // }
+            // this.$apply();
+            // thsi.loadMore();
+            console.log(children)
+            console.log(current)
+        }
     }
-  }
-  /**
-   * 获取数据信息
-   */
-  async loadMore({ refresh = false } = {}) {
-    try {
-      let { cid } = wepy.getStorageSync('college') || {}
-      let { data:{list:tasks=[],pagination} } = await taskApi.list({ ...this.pagination, college: cid })
-      /**
-       * 先进行数据处理
-       */
-      let time
-      for (let i = 0; i < tasks.length; i++) {
-        time = new Date(tasks[i]['_c'])
-        tasks[i]['_c'] = time.getDateDiff(time)
-      }
-      this.pagination = pagination
-      if (refresh) {
-        this.taskList = tasks
-        this.pagination['page'] = 1
-        this.$emit('response-refresh', 'home')
-      } else {
-        this.pagination['page']++
-        this.taskList.push.apply(this.taskList, tasks)
-      }
-      this.$invoke('toast', 'hiddenToast')
-      this.$apply()
-    } catch (e) {
-      this.$invoke('toast', 'showToast', {
-        title: e.message,
-        icon: 'error',
-        mask: true
-      })
-    }
-  }
-}
 </script>
-<style lang="less" src="./index.less" ></style>
+<style lang="less" src="./index.less"></style>

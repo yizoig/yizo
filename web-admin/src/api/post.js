@@ -4,5 +4,6 @@ export default {
   addType: Api.post("/posts/types"),
   updateType: Api.put("/posts/types/:id"),
   delType: Api.delete("/posts/types"),
-  useType: Api.delete("/posts/types/use")
+  useType: Api.put("/posts/types/use"),
+  commentList: Api.get('/posts/comments/:id')
 }

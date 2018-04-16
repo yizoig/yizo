@@ -10,13 +10,13 @@ export default class extends wepy.app {
   config = {
     pages: [
       'pages/index/index',
+      'pages/home/index',
+      'pages/post/details/task/index',
       'pages/release/good/index',
       'pages/release/task/index',
       'pages/release/index',
       'pages/mine/index',
-      'pages/home/index',
       'pages/account/signIn/index',
-      'pages/post/details/task/index',
       'pages/post/result/index',
       'pages/mine/setting/baseinfo/index',
       'pages/mine/setting/account/index',

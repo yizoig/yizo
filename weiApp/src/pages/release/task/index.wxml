@@ -86,4 +86,3 @@
     </view>
     <view class="release" @tap="release">发起求助</view>
 </view>
-</view>

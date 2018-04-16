@@ -19,11 +19,29 @@
         <view class="bulletin">欢迎加入yizo校园</view>
       </view>
     </view>
-    <menu :current="{{nav}}"></menu>
+    <view class="menu">
+      <view class="menus">
+        <repeat for="{{menus}}" item="menu" index="menuIndex" key="unique">
+          <view class="nav-item {{current==menuIndex?'active':''}}" bindtap="onSwitch" data-type="menu" data-key="{{menu.tid}}" data-index="{{menuIndex}}">
+            <text class="title">{{menu.tname}}</text>
+          </view>
+        </repeat>
+      </view>
+      <view class="sub-menus">
+        <repeat for="{{menus[current].children}}" item="subMenu" index="subIndex" key="unique">
+          <view class="sub-nav-item {{menus[current].current==subIndex?'active':''}}" bindtap="onSwitch" data-key="{{subMenu.tid}}"
+            data-type="sub" data-index="{{subIndex}}">
+            <text class="title">{{subMenu.tname}}</text>
+          </view>
+        </repeat>
+      </view>
+    </view>
     <view class="list">
-      <block if="{{nav==0}}">
-        <task />
-      </block>
+      <repeat for="{{menus}}" item="menu" index="menuIndex" key="unique">
+        <view style="display:{{menuIndex==current?'block':'none'}}" wx:if="{{menu.tid==1}}">
+          <task :menus="menu"/>
+        </view>
+      </repeat>
     </view>
   </view>
 </view>

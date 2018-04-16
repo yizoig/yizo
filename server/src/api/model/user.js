@@ -42,8 +42,6 @@ module.exports = class Admin extends JikeJs.Model {
         })
         total = await this
             .where(_where).join('inner join colleges on colleges.college_id=users.college').count();
-
-
         let list = await this
             .field('user_id as uid,wx_id as wxid,nick_name as nickname,user_tel as utel,user_gender as ugender,users.college as cid,college_name as cname,users._c as u_c,users.is_del as is_del,users.is_use as is_use')
             .where(_where)

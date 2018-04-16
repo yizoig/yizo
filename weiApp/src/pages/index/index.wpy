@@ -1,54 +1,69 @@
 <template lang="wxml" src="./index.wxml"></template>
 <script>
-import wepy from 'wepy'
-import collegeApi from '../../lib/apis/college'
-export default class Index extends wepy.page {
-  config = {
-    'enablePullDownRefresh': true,
-    'backgroundColor': '#F1A468'
-  }
-  data = {
-    colleges: []
-  }
-  methods = {
-    onSelect: function(e) {
-      let { id = null } = e.currentTarget.dataset
-      let college = this.getCollege(id)
-      wepy.setStorageSync('college', college)
-      wepy.switchTab({
-        url: `/pages/home/index`
-      })
+    import wepy from 'wepy'
+    import collegeApi from '../../lib/apis/college'
+    import Toast from '../../components/toast/index'
+
+    export default class Index extends wepy.page {
+        config = {
+            'enablePullDownRefresh': true,
+            'backgroundColor': '#F1A468'
+        }
+        data = {
+            colleges: []
+        }
+        components = {
+            toast: Toast
+        }
+        methods = {
+            onSelect: function (e) {
+                let { id = null } = e.currentTarget.dataset
+                let college = this.getCollege(id)
+                wepy.setStorageSync('college', college)
+                wepy.switchTab({
+                    url: `/pages/home/index`
+                })
+            }
+        }
+        getCollege(id) {
+            for (let i = 0; i < this.colleges.length; i++) {
+                if (this.colleges[i]['cid'] === id) {
+                    return this.colleges[i]
+                }
+            }
+            return null
+        }
+        onPullDownRefresh() {
+            this.loadData()
+            wepy.stopPullDownRefresh()
+        }
+        onLoad() {
+            this.loadData()
+        }
+        async loadData() {
+            try {
+                this.$invoke('toast', 'showToast', {
+                    title: "正在查找附近的学校中",
+                    icon: "loading",
+                    mask: true
+                })
+                let { data } = await collegeApi.list()
+                let { list: colleges } = data
+                console.log(data)
+                for (let i = 0; i < colleges.length; i++) {
+                    colleges[i]['logo'] = collegeApi.logo(colleges[i]['cid']);
+                }
+                this.colleges = colleges || []
+                this.$apply()
+                this.$invoke('toast', 'hiddenToast')
+            } catch (e) {
+                this.$invoke('toast', 'showToast', {
+                    title: e.message,
+                    icon: "error",
+                    mask: true
+                })
+            }
+        }
     }
-  }
-  getCollege(id) {
-    for (let i = 0; i < this.colleges.length; i++) {
-      if (this.colleges[i]['cid'] === id) {
-        return this.colleges[i]
-      }
-    }
-    return null
-  }
-  onPullDownRefresh() {
-    this.loadData()
-    wepy.stopPullDownRefresh()
-  }
-  onLoad() {
-    this.loadData()
-  }
-  async loadData() {
-    try {
-      let { data } = await collegeApi.list()
-      let { list: colleges } = data
-      console.log(data)
-      for (let i = 0; i < colleges.length; i++) {
-        colleges[i]['logo'] = collegeApi.logo(colleges[i]['cid']);
-      }
-      this.colleges = colleges || []
-      this.$apply()
-    } catch (e) {
-      console.log(e)
-    }
-  }
-}
 </script>
 <style src="./index.less" lang="less"></style>

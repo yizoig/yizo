@@ -1,45 +1,47 @@
-
 <view class="task-list">
-  <toast></toast>
-  <repeat for="{{taskList}}" item="task" key="index">
-    <view class="order-item" hover-class="order-item-active" bindtap="onView" data-id="{{task.tid}}">
-      <block wx:if="{{task.gender !== null}}">
-        <view class="gender-constraint">
-          <block wx:if="{{task.gender == 0}}">
-            <view class="ribbon-wrapper">
-              <view class="ribbon" style="background-color: #FF0852;">限女生</view>
+    <toast></toast>
+    <repeat for="{{taskList}}" item="task" key="index">
+        <view class="order-item" hover-class="order-item-active" bindtap="onView" data-id="{{task.pid}}">
+            <view class="gender-constraint">
+                <block wx:if="{{task.gender == 0}}">
+                    <view class="ribbon-wrapper">
+                        <view class="ribbon" style="background-color: #FF0852;">限女生</view>
+                    </view>
+                </block>
+                <block wx:elif="{{task.gender == 1}}">
+                    <view class="ribbon-wrapper">
+                        <view class="ribbon" style="background-color: #1C79FF;">限男生</view>
+                    </view>
+                </block>
+                <block wx:else>
+                    <view class="ribbon-wrapper">
+                        <view class="ribbon" style="background-color: rgb(2, 154, 96);">不限</view>
+                    </view>
+                </block>
             </view>
-          </block>
-          <block wx:elif="{{task.gender == 1}}">
-            <view class="ribbon-wrapper">
-              <view class="ribbon" style="background-color: #1C79FF;">限男生</view>
+            <view class="item-top">
+                <avatar :id="task.createId" />
+                <view class="info">
+                    <view>
+                        <text class="username">{{task.createName}}</text>
+                        <view class="iconfont icon-{{task.createGender==0?'female':'male'}}"></view>
+                    </view>
+                    <view>
+                        <text class="time">{{task._c}}</text>
+                    </view>
+                </view>
             </view>
-          </block>
+            <view class="item-content">
+
+                <text class="reward" wx:if="{{task['rewardType']==1}}">{{task.reward}}</text>
+                <text class="reward reward-money" wx:else>￥{{task.reward}}</text>
+                <view class="title ">{{task.title}}</view>
+                <view class="address">
+                    <view class="iconfont icon-point"></view>
+                    {{task.content}}
+                </view>
+            </view>
         </view>
-      </block>
-      <view class="item-top">
-        <avatar :id="task.createrId"/>
-        <view class="info">
-          <view>
-            <text class="username">{{task.createrName}}</text>
-            <view class="iconfont icon-{{task.createrGender==0?'female':'male'}}"></view>
-          </view>
-          <view>
-            <text class="time">{{task._c}}</text>
-          </view>
-        </view>
-      </view>
-      <view class="item-content">
-        
-        <text class="reward" wx:if="{{task['rewardType']==1}}">{{task.reward}}</text>
-        <text class="reward reward-money" wx:else>￥{{task.reward}}</text>
-        <view class="title ">{{task.title}}</view>
-        <view class="address">
-          <view class="iconfont icon-point"></view>
-          {{task.content}}
-        </view>
-      </view>
-    </view>
-  </repeat>
-  <view class="load-more">{{limit.count > orderList.length?'努力加载中...':"没有更多了"}}</view>
+    </repeat>
+    <view class="load-more">{{limit.count > orderList.length?'努力加载中...':"没有更多了"}}</view>
 </view>

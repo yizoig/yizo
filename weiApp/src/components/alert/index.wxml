@@ -6,7 +6,6 @@
      </view>
      <view class="alert-content">
         <textarea placeholder="{{placeholder}}" bindinput="textChange" bindfocus="focus" bindblur="blur">
-            {{message}}
         </textarea>
      </view>
      <view class="alert-footer">

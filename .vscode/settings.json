@@ -8,7 +8,7 @@
 	"npm-intellisense.importDeclarationType": "const",
     "files.associations": {
         "*.vue": "vue",
-        "*.wpy": "vue",
+        "*.wpy": "html",
         "*.wxml": "html",
         "*.wxss": "css"
     },

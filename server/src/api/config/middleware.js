@@ -36,7 +36,10 @@ module.exports = {
         console.log(ctx)
         let token = ctx.request.get('access-token');
         let payload = verifyToken.call(ctx, token);
-        ctx.request.user = payload;
+        ctx.request.user = {
+            ...payload,
+            id:payload.sub
+        };
         return payload;
     }
 }

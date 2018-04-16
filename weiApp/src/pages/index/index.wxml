@@ -1,4 +1,5 @@
 <view id="colleges">
+  <toast/>
   <view class="title">附近的学校</view>
   <view class="list">
     <view wx:for="{{colleges}}" wx:key="unique">
