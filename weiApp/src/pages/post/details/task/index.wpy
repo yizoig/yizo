@@ -64,14 +64,21 @@ export default class Task extends wepy.page {
         icon:"loading",
         mask:true
       })
-      let { data } = await taskApi.info({ id:5|| this.id })
+      let { data } = await taskApi.info({ id:this.id })
+      for(let item of data['records']){
+        //代表参与了
+        if(item.uid==this.userInfo['uid']){
+          data['flag'] ='join';
+        }
+      }
       this.detail = data
       let time = new Date(this.detail['_c'])
       this.detail['_c'] = time.getDateDiff(time)
+      
       this.$apply()
+      this.$invoke('toast', 'hiddenToast')
       wepy.stopPullDownRefresh()
     } catch (e) {
-      console.log(e)
        this.$invoke('toast', 'showToast', {
         title: e.message,
         icon:"error",

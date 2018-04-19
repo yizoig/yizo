@@ -1,19 +1,19 @@
 <view id="baseinfo">
   <toast></toast>
   <view class="avatar">
-    <image src="../../../../public/image/male-avatar.png" style="width:150rpx;height:150rpx;border-radius:100%;border:5px solid #ddd;"></image>
+    <image src="{{userInfo['avatar']}}" style="width:150rpx;height:150rpx;border-radius:100%;border:5px solid #ddd;"></image>
   </view>
   <view class="form">
     <view class="form-row">
       <label>昵称</label>
-      <input class="form-widget" value="{{cache['nickname'] || userInfo['nickname']}}" bindinput="edit" data-name="nickname"/>
+      <input class="form-widget" value="{{userInfo['nickName']}}" bindinput="edit" data-name="nickname"/>
     </view>
 
     <radio-group class="form-row" bindchange="edit" data-name="gender">
       <label>姓名</label>
       <view class="form-widget">
-        <radio value="0" checked="{{cache['gender']==0 || userInfo['gender']==0}}" />女
-        <radio value="1" checked="{{cache['gender']==1 ||userInfo['gender']==1}}" />男
+        <radio value="0" checked="{{userInfo['ugender']==0}}" />女
+        <radio value="1" checked="{{userInfo['ugender']==1}}" />男
       </view>
     </radio-group>
   </view>

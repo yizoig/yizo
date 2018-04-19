@@ -2,6 +2,7 @@
 <script>
     import wepy from 'wepy'
     import task from '../../components/post/list/task/index'
+    import posts from '../../lib/apis/post'
     export default class Home extends wepy.page {
         config = {
             'enablePullDownRefresh': true,
@@ -10,11 +11,10 @@
         data = {
             college: null,
             current: 0,
-            menus: [],
+            menus: []
         }
         components = {
             task: task,
-
         }
         events = {
             'loadMoreOk': (componentName, $event) => {
@@ -38,6 +38,7 @@
                     }
                 }
                 this.$apply()
+                this.$broadcast('swiMenus',this.menus[this.current]['tid']);
             }
         }
         async fetchMenu() {
@@ -54,9 +55,7 @@
             this.college = wepy.getStorageSync('college')
             this.$apply()
         }
-        async onLoad() {
-            this.components={}
-            console.log(this.components)
+        async getMenus() {
             let menus = wepy.getStorageSync("menus");
             if (!menus) {
                 menus = await this.fetchMenu();
@@ -65,13 +64,18 @@
                     data: menus
                 })
             }
-            this.current = 0;
-            if(menus.length!=0){
-                menus[0]['current'] = 0;
+            this.current = menus.length > 0 ? 0:null;
+            for(let key in menus){
+                menus[key]['current'] = 0;
             }
             this.menus = menus;
             this.$apply();
-            this.$broadcast('loadMore', 'task')
+            this.$broadcast('setMenus')
+        }
+        async onLoad() {
+            this.components = {}
+            await this.getMenus();
+
         }
         onPullDownRefresh() {
             /**

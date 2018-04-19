@@ -41,9 +41,8 @@ export default class Comment extends wepy.component {
   async loadData() {
     let { detail } = this
     let { data:{list}={} } = await postApi.commentList({ id: detail['pid'], want: 'tree' })
-    let time = new Date()
     for (let k in list) {
-      list[k]['_c'] = time.getDateDiff(list[k]['_c'])
+      list[k]['_c'] = new Date(list[k]['_c']).getDateDiff(list[k]['_c'])
     }
     this.list = list
     this.$apply()

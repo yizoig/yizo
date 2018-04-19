@@ -12,11 +12,10 @@ export default class ReleaseTask extends wepy.page {
     otherReward: [
       '请你吃饭', '你开价'
     ],
-    tindex:null,
     form: {
       rewardType: 0,
       number:1,
-      type:null,
+      type:0,
     },
     types:[]
   }
@@ -30,13 +29,12 @@ export default class ReleaseTask extends wepy.page {
       this.$apply()
     },
     switchType: function(type) {
-      delete this.form.reward
+      // delete this.form.reward
       this.form.rewardType = type
       this.$apply()
     },
     selectTypes:function(e){
-       this.tindex = e.detail.value;
-       this.form['type'] = this.types[e.detail.value]['tid'];
+       this.form['type'] = e.detail.value;
       this.$apply()
     },
     selectGender: function(value) {
@@ -61,6 +59,7 @@ export default class ReleaseTask extends wepy.page {
     release: async function() {
       let params = this.form
       try {
+        params['type'] = this.types[this.form['type']]['tid'];
         params = Validate.check(params, [
           ['title', 'require', '请填写标题', Validate.MUST_VALIDATE],
           ['gender', 'require', '请设置性别约束', Validate.MUST_VALIDATE],
@@ -79,6 +78,8 @@ export default class ReleaseTask extends wepy.page {
           title: '创建中',
           icon: 'loading'
         })
+        //设置type
+        
         let { data } = await taskApi.add(params)
         if (data) {
           this.$invoke('toast', 'showToast', {

@@ -12,7 +12,7 @@
         </view>
         <view class="form-row">
             <label class="form-label">类型</label>
-            <picker bindchange="selectTypes" value="{{tindex}}" range="{{types}}" range-key="tname">
+            <picker bindchange="selectTypes" value="{{form.type}}" range="{{types}}" range-key="tname">
                 <view class="picker">
                   {{types[form.type]['tname']}}
                 </view>
@@ -55,7 +55,7 @@
                 <view class="radio-item {{form.rewardType===0?'active':''}}" @tap="switchType({{0}})">现金</view>
             </view>
         </view>
-        <view class="form-row" wx:if="{{form.rewardType==='money'}}">
+        <view class="form-row" wx:if="{{form.rewardType==0}}">
             <label class="form-label">酬劳</label>
             <view class="form-widget">
                 <input placeholder="请输入酬劳" bindinput="formValueChange" data-name="reward" style="margin-right:5rpx;" type="number" />元
@@ -84,5 +84,5 @@
             <input class="form-widget" placeholder="请填写联系人" bindinput="formValueChange" data-name="contact" />
         </view>
     </view>
-    <view class="release" @tap="release">发起求助</view>
+    <view class="release" @tap="release">发布任务</view>
 </view>

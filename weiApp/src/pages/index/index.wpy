@@ -49,7 +49,6 @@
                 })
                 let { data } = await collegeApi.list()
                 let { list: colleges } = data
-                console.log(data)
                 for (let i = 0; i < colleges.length; i++) {
                     colleges[i]['logo'] = collegeApi.logo(colleges[i]['cid']);
                 }

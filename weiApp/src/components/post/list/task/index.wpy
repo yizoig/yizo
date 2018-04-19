@@ -7,8 +7,12 @@
     import Toast from '../../../toast/index'
     import taskApi from '../../../../lib/apis/task'
     export default class task extends wepy.component {
+        props = {
+            menus: []
+        }
         data = {
-            items: [],
+            items: {},
+            current: null,
             pageSize: 5
         }
         methods = {
@@ -34,6 +38,27 @@
                 if (componentName === 'task') {
                     this.loadMore()
                 }
+            },
+            "setMenus": (componentName, $event) => {
+                let { children = [], current } = this.menus || {};
+                this.current =this.menus['current'];
+                for (let key in children) {
+                    this.items[key] = {
+                        id: children[key]['tid'],
+                        list: [],
+                        page: 1,
+                        total: 0
+                    };
+                }
+                this.$apply();
+                this.loadMore()
+            },
+            "swiMenus": (id, $event) => {
+                if (id === 1) {
+                    this.current =this.menus['current'];
+                    this.$apply();
+                    this.loadMore()
+                }
             }
         }
         /**
@@ -42,14 +67,17 @@
         async loadMore({ refresh = false } = {}) {
             try {
 
-                let { items, } = this.data;
+                let { items, pageSize } = this.data;
+                let {  current } = this.menus;
                 this.$invoke('toast', 'showToast', {
                     title: "获取列表中",
                     icon: "loading",
                     mask: true
-                })
+                });
+                console.log(current,items[current])
+                let { id, list, page } = items[current];
                 let { cid } = wepy.getStorageSync('college') || {}
-                let { data: { list: tasks = [], pagination: { total = 0 } } } = await taskApi.list({ ...this.pagination, college: cid, tid: this.type })
+                let { data: { list: tasks, pagination: { total = 0 } } } = await taskApi.list({ pageSize, college: cid, type:id, page })
                 /**
                  * 先进行数据处理
                  */
@@ -58,15 +86,24 @@
                     time = new Date(tasks[i]['_c'])
                     tasks[i]['_c'] = time.getDateDiff(time)
                 }
-                this.pagination['total'] = total
                 if (refresh) {
-                    this.taskList = tasks
-                    this.pagination['page'] = 1
+
+                    items[current] = {
+                        list: tasks,
+                        page: 1,
+                        total,
+                        id
+                    }
                     this.$emit('loadMoreOk', 'home')
                 } else {
-                    this.pagination['page']++
-                    this.taskList.push.apply(this.taskList, tasks)
+                    items[current] = {
+                        list: [...tasks, ...list],
+                        page:++page,
+                        total,
+                        id
+                    }
                 }
+                this.items = { ...items };
                 this.$invoke('toast', 'hiddenToast')
                 this.$apply()
             } catch (e) {
@@ -78,21 +115,6 @@
             }
         }
         onLoad() {
-
-            console.log(this.menus)
-            let { children, current } = this.menus;
-            // for (let item of this.menus) {
-            //     this.items.push({
-            //         id:item.pid,
-            //         taskList: [],
-            //         page:1,
-            //         total:0
-            //     })
-            // }
-            // this.$apply();
-            // thsi.loadMore();
-            console.log(children)
-            console.log(current)
         }
     }
 </script>

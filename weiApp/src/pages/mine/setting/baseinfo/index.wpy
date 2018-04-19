@@ -3,7 +3,6 @@
 import wepy from 'wepy'
 import 'wepy-async-function'
 import UserApi from '../../../../lib/apis/user'
-import Avatar from '../../../../components/users/avatar/index'
 import Toast from '../../../../components/toast/index'
 import User from '../../../../lib/services/user'
 import { Validate } from '../../../../lib/utils/index'
@@ -14,7 +13,6 @@ export default class BaseInfoSettting extends wepy.page {
     edit: false
   }
   components = {
-    avatar: Avatar,
     toast: Toast
   }
   methods = {
@@ -76,9 +74,10 @@ export default class BaseInfoSettting extends wepy.page {
     }
   }
   async onShow() {
-    let userInfo = wepy.getStorageSync('userInfo')
-    this.cache['id'] = userInfo['id']
-    this.userInfo = userInfo
+
+    this.userInfo = this.$parent.globalData.userInfo
+    this.userInfo['avatar'] =  UserApi.avatar+this.userInfo['uid']+'.ava'
+    
     this.$apply()
   }
 }

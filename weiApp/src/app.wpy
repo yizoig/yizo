@@ -9,16 +9,16 @@ import User from './lib/services/user'
 export default class extends wepy.app {
   config = {
     pages: [
+      'pages/mine/index',
+      'pages/mine/setting/baseinfo/index',
       'pages/index/index',
       'pages/home/index',
       'pages/post/details/task/index',
       'pages/release/good/index',
       'pages/release/task/index',
       'pages/release/index',
-      'pages/mine/index',
       'pages/account/signIn/index',
       'pages/post/result/index',
-      'pages/mine/setting/baseinfo/index',
       'pages/mine/setting/account/index',
       'pages/account/changePwd/index',
       'pages/account/changeTel/index',

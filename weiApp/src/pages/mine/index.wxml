@@ -24,7 +24,7 @@
             </view>
             <block wx:if="{{userInfo}}">
                 <view class="items">
-                    <view class="item">
+                    <view class="item"  @tap="navigateTo({{'/pages/mine/setting/baseinfo/index'}})">
                         <i class="iconfont icon-wode" style="color:#F1A468;"></i>
                         <text>我的信息</text>
                     </view>
