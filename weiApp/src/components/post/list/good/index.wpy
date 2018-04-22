@@ -1,0 +1,125 @@
+<template src="./index.wxml">
+</template>
+
+<script>
+    import wepy from 'wepy'
+    import Avatar from '../../../users/avatar/index'
+    import Toast from '../../../toast/index'
+    import goodApi from '../../../../lib/apis/good'
+    export default class good extends wepy.component {
+        props = {
+            menus: []
+        }
+        data = {
+            items: {},
+            current: null,
+            pageSize: 5,
+            imagePath: goodApi.uploadImage
+        }
+        methods = {
+            onView: function (e) {
+                wepy.navigateTo({
+                    url: '/pages/post/details/good/index?id=' + e.currentTarget.dataset.id
+                })
+            }
+        }
+        components = {
+            avatar: Avatar,
+            toast: Toast
+        }
+        events = {
+            'refresh': (componentName, $event) => {
+                if (componentName === 'good') {
+                    this.loadMore({
+                        refresh: true
+                    })
+                }
+            },
+            'loadMore': (componentName, $event) => {
+                if (componentName === 'good') {
+                    this.loadMore()
+                }
+            },
+            "setMenus": (componentName, $event) => {
+                let { children = {}, current } = this.menus["2"];
+                this.current = current;
+                for (let key in children) {
+                    this.items[key] = {
+                        id: children[key]['tid'],
+                        list: [],
+                        page: 1,
+                        total: 0
+                    };
+                }
+                this.$apply();
+                this.loadMore()
+            },
+            "swiMenus": (id, $event) => {
+                if (id in this.items) {
+                    this.current = id;
+                    this.$apply();
+                    this.loadMore()
+                }
+            }
+        }
+        /**
+         * 获取数据信息
+         */
+        async loadMore({ refresh = false } = {}) {
+            try {
+
+                let { items, pageSize } = this.data;
+                let { current } = this.data;
+                if (items.length == 0 || !(current in items)) {
+                    return;
+                }
+                this.$invoke('toast', 'showToast', {
+                    title: "获取列表中",
+                    icon: "loading",
+                    mask: true
+                });
+                let { id, list, page } = items[current];
+                let { cid } = wepy.getStorageSync('college') || {}
+                let { data: { list: goods, pagination: { total = 0 } } } = await goodApi.list({ pageSize, college: cid, type: id, page })
+                /**
+                 * 先进行数据处理
+                 */
+                let time
+                for (let i = 0; i < goods.length; i++) {
+                    time = new Date(goods[i]['_c'])
+                    goods[i]['_c'] = time.getDateDiff(time)
+                    goods[i]['images'] = goods[i]['images'].split(',')
+                }
+                if (refresh) {
+                    items[current] = {
+                        list: goods,
+                        page: 1,
+                        total,
+                        id
+                    }
+                    this.$emit('loadMoreOk', 'home')
+                } else {
+                    items[current] = {
+                        list: [...goods, ...list],
+                        page: ++page,
+                        total,
+                        id
+                    }
+                }
+                this.items = { ...items };
+                this.$invoke('toast', 'hiddenToast')
+                this.$apply()
+            } catch (e) {
+                console.error(e)
+                this.$invoke('toast', 'showToast', {
+                    title: e.message,
+                    icon: 'error',
+                    mask: true
+                })
+            }
+        }
+        onLoad() {
+        }
+    }
+</script>
+<style lang="less" src="./index.less"></style>

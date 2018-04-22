@@ -6,7 +6,7 @@
       <view class="desc">让全校的学生帮你完成任务</view>
     </view>
   </view>
-  <view class="item" @tap="navigateTo('/pages/release/offerHelp/index')">
+  <view class="item" @tap="navigateTo('/pages/release/good/index')">
     <image src="../../public/image/good.png" class="icon"></image>
     <view class="mes">
       <view class="name">发布闲置物品</view>

@@ -1,18 +1,42 @@
 <view id="colleges">
-  <toast/>
-  <view class="title">附近的学校</view>
-  <view class="list">
-    <view wx:for="{{colleges}}" wx:key="unique">
-      <view class="item" hover-class="item-active" @tap="onSelect" data-id="{{item.cid}}">
-        <image src="{{item.logo}}" class="logo" />
-        <view class="info">
-          <view class="name">{{item.cname}}</view>
-          <view class="mes">
-            <text>人气:{{item.liveness}}</text>
-            <text>昨日新增:{{item.yest_live}}</text>
-          </view>
+    <toast/>
+    <view wx:if="{{visitCollege}}">
+        <view class="title">访问过的学校</view>
+        <view class="list">
+            <view wx:for="{{visitCollege}}" wx:key="unique">
+                <view class="item" hover-class="item-active" @tap="onSelect" data-id="{{item.cid}}">
+                    <image src="{{item.logo}}" class="logo" />
+                    <view class="info">
+                        <view class="top">
+                            <view class="name">{{item.cname}}</view>
+                            <view class="time">{{item._c}}</view>
+                        </view>
+                        <view class="mes">
+                            <text>人气:{{item.liveness}}</text>
+                            <text>昨日新增:{{item.yest_live}}</text>
+                        </view>
+                    </view>
+                </view>
+            </view>
         </view>
-      </view>
     </view>
-  </view>
+    <view >
+        <view class="title">附近的学校</view>
+        <view class="list">
+            <view wx:for="{{colleges}}" wx:key="unique">
+                <view class="item" hover-class="item-active" @tap="onSelect" data-id="{{item.cid}}">
+                    <image src="{{item.logo}}" class="logo" />
+                    <view class="info">
+                            <view class="top">
+                                <view class="name">{{item.cname}}</view>
+                            </view>
+                            <view class="mes">
+                                <text>人气:{{item.liveness}}</text>
+                                <text>昨日新增:{{item.yest_live}}</text>
+                            </view>
+                        </view>
+                </view>
+            </view>
+        </view>
+    </view>
 </view>

@@ -10,7 +10,8 @@
             'backgroundColor': '#F1A468'
         }
         data = {
-            colleges: []
+            colleges: [],
+            visitCollege: null
         }
         components = {
             toast: Toast
@@ -18,20 +19,24 @@
         methods = {
             onSelect: function (e) {
                 let { id = null } = e.currentTarget.dataset
-                let college = this.getCollege(id)
+                let college = this.colleges[id];
+
+                let { visitCollege = {} } = this.data;
+                //保存浏览的学校
+                wepy.setStorageSync("colleges", {
+                    [id]: {
+                        ...college,
+                        _c: new Date().getTime()
+                    },
+                    ...visitCollege
+                });
+                //保存当前点击的学校
                 wepy.setStorageSync('college', college)
+                this.$parent.globalData.college = college;
                 wepy.switchTab({
                     url: `/pages/home/index`
                 })
             }
-        }
-        getCollege(id) {
-            for (let i = 0; i < this.colleges.length; i++) {
-                if (this.colleges[i]['cid'] === id) {
-                    return this.colleges[i]
-                }
-            }
-            return null
         }
         onPullDownRefresh() {
             this.loadData()
@@ -48,20 +53,40 @@
                     mask: true
                 })
                 let { data } = await collegeApi.list()
-                let { list: colleges } = data
-                for (let i = 0; i < colleges.length; i++) {
-                    colleges[i]['logo'] = collegeApi.logo(colleges[i]['cid']);
+                let { list } = data
+                let colleges = {};
+                //转换成数组
+                for (let item of list) {
+                    colleges[item['cid']] = {
+                        ...item,
+                        logo: collegeApi.logo(item['cid'])
+                    }
                 }
-                this.colleges = colleges || []
+                this.colleges = colleges;
+
+                //获取浏览过的学校
+                let visitCollege = wepy.getStorageSync('colleges');
+                if (visitCollege) {
+                    for (let key in visitCollege) {
+                        let time = new Date(visitCollege[key]['_c'])
+                        visitCollege[key]['_c'] = time.getDateDiff(time)
+                    }
+                }
+                this.visitCollege = visitCollege;
                 this.$apply()
                 this.$invoke('toast', 'hiddenToast')
             } catch (e) {
+                console.error(e)
                 this.$invoke('toast', 'showToast', {
                     title: e.message,
                     icon: "error",
                     mask: true
                 })
             }
+        }
+        golbalData = {
+            userInfo: null,
+            college: null
         }
     }
 </script>

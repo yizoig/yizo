@@ -2,6 +2,7 @@
 <script>
     import wepy from 'wepy'
     import task from '../../components/post/list/task/index'
+    import good from '../../components/post/list/good/index'
     import posts from '../../lib/apis/post'
     export default class Home extends wepy.page {
         config = {
@@ -15,6 +16,7 @@
         }
         components = {
             task: task,
+            good: good,
         }
         events = {
             'loadMoreOk': (componentName, $event) => {
@@ -38,7 +40,7 @@
                     }
                 }
                 this.$apply()
-                this.$broadcast('swiMenus',this.menus[this.current]['tid']);
+                this.$broadcast('swiMenus', index);
             }
         }
         async fetchMenu() {
@@ -56,19 +58,31 @@
             this.$apply()
         }
         async getMenus() {
-            let menus = wepy.getStorageSync("menus");
-            if (!menus) {
-                menus = await this.fetchMenu();
-                wepy.setStorage({
-                    key: "menus",
-                    data: menus
-                })
+
+
+            let menus = await this.fetchMenu();
+            wepy.setStorage({
+                key: "menus",
+                data: menus
+            })
+
+            let newMenus = {}
+            for (let key in menus) {
+                if (key == 0)
+                    this.current = menus[key]['tid']
+                let obj = {};
+                for (let k in menus[key]['children']) {
+                    if (k == 0) {
+                        menus[key]['current'] = menus[key]['children'][k]['tid'];
+                    }
+                    obj[menus[key]['children'][k]['tid']] = menus[key]['children'][k];
+                }
+                newMenus[menus[key]['tid']] = {
+                    ...menus[key],
+                    children: obj,
+                };
             }
-            this.current = menus.length > 0 ? 0:null;
-            for(let key in menus){
-                menus[key]['current'] = 0;
-            }
-            this.menus = menus;
+            this.menus = newMenus;
             this.$apply();
             this.$broadcast('setMenus')
         }

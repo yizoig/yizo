@@ -1,6 +1,6 @@
 
 const { Dvm } = JikeJs;
-const { tokenVerify ,userCheck} = require("../config/middleware")
+const { tokenVerify, userCheck } = require("../config/middleware")
 //定义路由
 module.exports = {
     controller: 'good',//默认controller
@@ -13,7 +13,7 @@ module.exports = {
             path: '/',
             method: 'get',
             action: 'list',
-            middle: [ tokenVerify],
+            middle: [tokenVerify],
             rules: {
                 search: Dvm.string(),
                 creater: Dvm.string(),
@@ -27,25 +27,49 @@ module.exports = {
             }
         },
         /**
+       * 上传图片
+       */
+        {
+            path: '/images',
+            method: 'post',
+            action: 'uploadImage',
+            middle: [tokenVerify, userCheck],
+            rules: {
+                images: Dvm.array().require()
+            }
+        },
+        /**
+       * 上传图片
+       */
+        {
+            path: '/images/:name.png',
+            method: 'get',
+            action: 'image',
+            rules: {
+            }
+        },
+        /**
          * 发布商品
          */
         {
             path: '/',
             method: 'post',
             action: 'add',
-            middle: [ tokenVerify,userCheck],
+            middle: [tokenVerify, userCheck],
             rules: {
                 title: Dvm.string().require(),
                 content: Dvm.string().require(),
                 contact: Dvm.string().require(),
-                contact_tel: Dvm.string().require(),
-                images: Dvm.string().require(),
+                tel: Dvm.string().require(),
+                images: Dvm.array(),
+                college: Dvm.string().require(),
                 type: Dvm.string().require(),
                 price: Dvm.number().require(),
                 oprice: Dvm.number().require(),
                 number: Dvm.number().require()
             }
         },
+
         /**
          * 获取商品信息
          */
@@ -53,7 +77,7 @@ module.exports = {
             path: '/:id',
             method: 'get',
             action: 'info',
-            middle: [ tokenVerify],
+            middle: [tokenVerify],
             rules: {
             }
         },
@@ -64,7 +88,7 @@ module.exports = {
             path: '/:id',
             method: 'put',
             action: 'update',
-            middle: [ tokenVerify],
+            middle: [tokenVerify],
             rules: {
                 title: Dvm.string(),
                 content: Dvm.string(),
@@ -84,7 +108,7 @@ module.exports = {
             path: '/',
             method: 'delete',
             action: 'del',
-            middle: [ tokenVerify],
+            middle: [tokenVerify],
             rules: {
                 ids: Dvm.object(),
                 real: Dvm.number().in([0, 1])
@@ -97,7 +121,7 @@ module.exports = {
             path: '/buy/:id',
             method: 'put',
             action: 'buy',
-            middle: [ tokenVerify,userCheck],
+            middle: [tokenVerify, userCheck],
             rules: {
                 number: Dvm.number()
             }

@@ -1,52 +1,164 @@
 <template lang="wxml" src="./index.wxml"></template>
 <script>
-import wepy from 'wepy'
-// import request from '../../utils/api'
-// import { host } from '../../config/api'
-export default class ReleaseGood extends wepy.page {
-  data = {
-    startDate: null,
-    endDate: null,
-    form: {
-      rewardType: 'money',
-      userLimit: 1
+    import wepy from 'wepy'
+    import GoodApi from '../../../lib/apis/good'
+    import Toast from '../../../components/toast/index'
+    import Alert from '../../../components/alert/index'
+    import { Validate } from '../../../lib/utils/index'
+    export default class ReleaseGood extends wepy.page {
+        data = {
+            form: {
+                rewardType: 'money',
+                number: 1,
+                type: 0
+            },
+            images: [],
+            url: GoodApi.tempImage,
+            types: []
+        }
+        components = {
+            toast: Toast,
+            alert: Alert
+        }
+        methods = {
+            formValueChange: function (e) {
+                this.form[e.currentTarget.dataset.name] = e.detail.value
+                this.$apply()
+            },
+            selectGender: function (value) {
+                this.form['gender_contrainer'] = value
+                this.$apply()
+            },
+            changnumber: function (value) {
+                console.log(value)
+                if (value > 0 && value <= 100) {
+                    this.form['number'] = value
+                    this.$apply()
+                }
+            },
+            selectTypes: function (e) {
+                this.form['type'] = e.detail.value;
+                console.log(e.detail.value)
+                this.$apply()
+            },
+            selectImages: function () {
+                wx.chooseImage({
+                    success: (res) => {
+                        let tempFilePaths = res.tempFilePaths
+                        let length1 = this.images.length;
+                        let length2 = tempFilePaths.length;
+                        for (let key in tempFilePaths) {
+                            this.images.push({
+                                url: tempFilePaths[key],
+                                status: 0//0上传中 1上传完成 -1上传失败
+                            })
+                        }
+                        this.$apply();
+                        this.uploadImage(length1, length2 + length1 - 1)
+                    }
+                })
+            },
+            release: async function () {
+                let params = { ...this.form };
+                try {
+                    params['type'] = this.types[this.form['type']]['tid'];
+                    params = Validate.check(params, [
+                        ['title', 'require', '请填写标题', Validate.MUST_VALIDATE],
+                        ['price', 'require', '请填写价格', Validate.MUST_VALIDATE],
+                        ['oprice', 'require', '请填写原价', Validate.MUST_VALIDATE],
+                        ['tel', 'tel', '联系电话格式不正确', Validate.MUST_VALIDATE],
+                        ['contact', 'require', '联系人不能为空', Validate.MUST_VALIDATE],
+                        ['type', 'require', "请选择类型", Validate.MUST_VALIDATE]
+                    ])
+                    if (!this.$parent.globalData.college) {
+                        console.log("没有学校");
+                        return;
+                    }
+                    let { cid } = this.$parent.globalData.college;
+                    params['college'] = cid
+                    params['images'] = [];
+                    for (let { url, status } of this.images) {
+                        if (status == 1) {
+                            params['images'].push(url)
+                        }
+                    }
+                    this.$invoke('toast', 'showToast', {
+                        title: '发布中',
+                        icon: 'loading'
+                    })
+                    //设置type
+                    let { data } = await GoodApi.add(params)
+                    if (data) {
+                        this.$invoke('toast', 'showToast', {
+                            title: '发布成功',
+                            icon: 'success'
+                        })
+                        setTimeout(() => {
+                            wepy.navigateTo({
+                                url: '/pages/post/details/task/index?id=' + data
+                            })
+                        }, 1000)
+                    } else {
+                        this.$invoke('toast', 'showToast', {
+                            title: '创建失败',
+                            icon: 'error'
+                        })
+                    }
+                } catch (e) {
+                    console.error(e);
+                    this.$invoke('toast', 'showToast', {
+                        title: e.message,
+                        icon: 'error'
+                    })
+                }
+            }
+        }
+        //递归上传文件
+        uploadImage(length1, length2) {
+            if (length1 > length2) {
+                return;
+            }
+            console.log(this.images, length1)
+            wx.uploadFile({
+                url: GoodApi.uploadImage, //仅为示例，非真实的接口地址
+                filePath: this.images[length1]['url'],
+                name: 'images[]',
+                header: {
+                    'access-token': wepy.getStorageSync("access-token")
+                },
+                success: (res) => {
+                    try {
+                        let { code, data: [_url] } = JSON.parse(res.data);
+                        if (code == 0) {
+                            this.images[length1] = {
+                                ...this.images[length1],
+                                url: _url,
+                                status: 1
+                            }
+                        }
+                    } catch (e) {
+                        this.images[length1] = {
+                            ...this.images[length1],
+                            status: -1
+                        }
+                        console.error(e)
+                    } finally {
+                        this.$apply();
+                        console.log(length1 + ":上传结束")
+                        this.uploadImage(length1 + 1, length2)
+                    }
+                }
+            })
+        }
+        onShow() {
+            let menus = wepy.getStorageSync('menus') || [];
+            for (let item of menus) {
+                if (item.tid == 2) {
+                    this.types = item['children']
+                }
+            }
+            this.$apply()
+        }
     }
-  }
-  methods = {
-    formValueChange: function(e) {
-      this.form[e.currentTarget.dataset.name] = e.detail.value
-      this.$apply()
-    },
-    selectGender: function(value) {
-      this.form['gender_contrainer'] = value
-      this.$apply()
-    },
-    changuserLimit: function(value) {
-      console.log(value)
-      if (value > 0 && value <= 10) {
-        this.form['userLimit'] = value
-        this.$apply()
-      }
-    }
-  }
-  onShow() {
-    let date = new Date()
-    /**
-     * 开始时间
-     */
-    this.startDate = {
-      date: date.format('yyyy-MM-dd'),
-      time: date.format('hh:mm')
-    }
-    /**
-     * 结束时间
-     */
-    date.setYear(date.getFullYear() + 1)
-    this.endDate = {
-      date: date.format('yyyy-MM-dd')
-    }
-    this.$apply()
-  }
-}
 </script>
 <style src="./index.less" lang="less"></style>

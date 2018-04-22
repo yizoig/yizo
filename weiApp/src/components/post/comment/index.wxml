@@ -11,33 +11,36 @@
       <view class="comment-item">
         <avatar :id="commentItem.uid"></avatar>
         <view class="content">
-            <view class="item">
-                <view class="info">
-                    <view>
-                      <text>{{commentItem.uname}}</text>
-                      <block wx:if="{{detail['createId']==commentItem.uid}}">
-                        <text style="color:#f00;">(主人)</text>
-                      </block>
-                    </view>
-                    <view>{{commentItem._c}}</view>
-                  </view>
-                  <view class="comment-text">
-                      {{commentItem.content}}
-                  </view>
+          <view class="item">
+            <view class="info">
+              <view>
+                <text>{{commentItem.uname}}</text>
+                <block wx:if="{{detail['createId']==commentItem.uid}}">
+                  <text style="color:#f00;">(主人)</text>
+                </block>
+              </view>
+              <view>{{commentItem._c}}</view>
             </view>
-            <repeat for="{{commentItem.child}}" item="childItem">
-                <view class="item">
-                    <view class="info">
-                        <view style="color:#f00">主儿回复:</view>
-                        <view>{{childItem._c}}</view>
-                      </view>
-                      <view class="comment-text">
-                          {{childItem.content}}
-                      </view>
-                </view>
-            </repeat>
+            <view class="comment-text">
+              {{commentItem.content}}
+            </view>
+          </view>
+          <repeat for="{{commentItem.child}}" item="childItem">
+            <view class="item">
+              <view class="info">
+                <view style="color:#f00">主儿回复:</view>
+                <view>{{childItem._c}}</view>
+              </view>
+              <view class="comment-text">
+                {{childItem.content}}
+              </view>
+            </view>
+          </repeat>
         </view>
       </view>
     </repeat>
+    <view class="empty" wx:if="{{list.length==0}}">
+      暂时无数据
+    </view>
   </view>
 </view>

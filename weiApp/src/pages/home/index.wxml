@@ -1,51 +1,49 @@
 <view id="home">
-  <view class="background">
-    <view class="top"></view>
-  </view>
-  <view class="main">
-    <view class="top">
-      <view class="college">
-        <image src="{{college.logo}}" class="logo" />
-        <view class="info">
-          <view class="name">{{college.cname}}</view>
-          <view class="mes">
-            <text>人气:{{college.liveness}}</text>
-            <text>昨日新增:{{college.yest_live}}</text>
-          </view>
+    <view class="background">
+        <view class="top"></view>
+    </view>
+    <view class="main">
+        <view class="top">
+            <view class="college">
+                <image src="{{college.logo}}" class="logo" />
+                <view class="info">
+                    <view class="name">{{college.cname}}</view>
+                    <view class="mes">
+                        <text>人气:{{college.liveness}}</text>
+                        <text>昨日新增:{{college.yest_live}}</text>
+                    </view>
+                </view>
+            </view>
+            <view class="bulletin-box">
+                <view class="iconfont icon-gonggao"></view>
+                <view class="bulletin">欢迎加入yizo校园</view>
+            </view>
         </view>
-      </view>
-      <view class="bulletin-box">
-        <view class="iconfont icon-gonggao"></view>
-        <view class="bulletin">欢迎加入yizo校园</view>
-      </view>
-    </view>
-    <view class="menu">
-      <view class="menus">
-        <repeat for="{{menus}}" item="menu" index="menuIndex" key="unique">
-          <view class="nav-item {{current==menuIndex?'active':''}}" bindtap="onSwitch" data-type="menu" data-index="{{menuIndex}}">
-            <text class="title">{{menu.tname}}</text>
-          </view>
-        </repeat>
-      </view>
-      <view class="sub-menus">
-        <repeat for="{{menus}}" item="menu" key="unique" index="menuIndex">
-            <repeat for="{{menu.children}}" index="index" item="subMenu" key="unique" wx:if="{{menuIndex==current}}">
-              <view class="sub-nav-item {{menu.current==index?'active':''}}" bindtap="onSwitch" data-index="{{index}}"
-                data-type="sub">
-                <text class="title">{{subMenu.tname}}</text>
-              </view>
-            </repeat>
-
-        </repeat>
-      </view>
-    </view>
-    <view class="list">
-      <repeat for="{{menus}}" item="menu" index="menuIndex" key="unique">
-        <view style="display:{{menuIndex==current?'block':'none'}}" wx:if="{{menu.tid==1}}">
-          <task :menus="menu"></task>
+        <view class="menu">
+            <view class="menus">
+                <repeat for="{{menus}}" item="menu" index="menuIndex" key="unique">
+                    <view class="nav-item {{current==menuIndex?'active':''}}" bindtap="onSwitch" data-type="menu" data-index="{{menuIndex}}">
+                        <text class="title">{{menu.tname}}</text>
+                    </view>
+                </repeat>
+            </view>
+            <view class="sub-menus">
+                <repeat for="{{menus}}" item="menu" key="unique" index="menuIndex">
+                    <repeat for="{{menu.children}}" index="index" item="subMenu" key="unique" wx:if="{{menuIndex==current}}">
+                        <view class="sub-nav-item {{menu.current==index?'active':''}}" bindtap="onSwitch" data-index="{{index}}" data-type="sub">
+                            <text class="title">{{subMenu.tname}}</text>
+                        </view>
+                    </repeat>
+                </repeat>
+            </view>
         </view>
-      </repeat>
+        <view class="list">
+            <view style="display:{{current==1?'block':'none'}}">
+                <task :menus.sync="menus"></task>
+            </view>
+            <view style="display:{{current==2?'block':'none'}}">
+                <good :menus.sync="menus"></good>
+            </view>
+        </view>
     </view>
-  </view>
-</view>
 </view>

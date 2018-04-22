@@ -1,0 +1,94 @@
+@import '../../../../var.less';
+.good-list {
+    .order-item-active {
+        background: #f9f9f9;
+    }
+    .order-item {
+        background: #fff; // border-left: 4px solid #438EFC;
+        // box-shadow: 0px 10px 13px -6px rgba(0, 0, 0, 0.08);
+        margin-top: 15rpx;
+        position: relative;
+        padding: 15rpx;
+        .item-top {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin: 15rpx 0;
+            .avatar {
+                border-radius: 50%;
+                width: 90rpx;
+                height: 90rpx;
+            }
+            .info {
+                padding: 0 10rpx;
+                font-size: 28rpx;
+                .gender {
+                    width: 28rpx;
+                    height: 28rpx;
+                }
+                .time,
+                .college {
+                    font-size: 22rpx;
+                    color: #8B8989;
+                }
+            }
+        }
+        .item-content {
+            font-size: 22rpx;
+            color: #000;
+            margin: 10rpx 0;
+            padding: 25rpx 0;
+            position: relative;
+            .title {
+                padding: 0rpx 20rpx;
+                line-height: 40rpx;
+                margin: 20rpx 0;
+                font-size: 30rpx; 
+                border-left: 3px solid @primaryColor;
+            }
+            .price {
+                position: absolute;
+                top: 5px;
+                right: 10px;
+            }
+        }
+        .images {
+            overflow-x: scroll;
+            overflow-y: hidden;
+            width: 100%;
+            display: flex;
+            display: -webkit-box;
+            .item {
+                width: 130px;
+                height: 130px;
+                flex: 1;
+                border-radius: 8px;
+                margin-right: 10px;
+                overflow: hidden;
+            }
+            &>image {
+                width: 130px;
+                height: 130px;
+            }
+        }
+        .footer {
+            padding: 10rpx 0;
+            .content {
+                font-size: 24rpx;
+            }
+        }
+    }
+    .load-more {
+        font-size: 25rpx;
+        text-align: center;
+        padding: 15rpx;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        color: #808080;
+        .loading {
+            margin-right: 5px;
+        }
+    }
+}

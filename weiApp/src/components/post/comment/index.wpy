@@ -1,52 +1,54 @@
-
-<template src="./index.wxml" ></template>
+<template src="./index.wxml">
+</template>
 <script>
-import wepy from 'wepy'
-import Avatar from '../../users/avatar/index'
-import Alert from '../../alert/index'
-import postApi from '../../../lib/apis/post'
-export default class Comment extends wepy.component {
-  data = {
-    detail: null,
-    list: []
-  }
-  components = {
-    avatar: Avatar,
-    alert: Alert
-  }
-  watch = {
-    async detail(newValue, oldValue) {
-      if (newValue) {
-        this.detail = newValue
-        this.$apply()
-        await this.loadData()
+  import wepy from 'wepy'
+  import Avatar from '../../users/avatar/index'
+  import Alert from '../../alert/index'
+  import postApi from '../../../lib/apis/post'
+  export default class Comment extends wepy.component {
+    data = {
+      detail: null,
+      list: []
+    }
+    components = {
+      avatar: Avatar,
+      alert: Alert
+    }
+    watch = {
+      async detail(newValue, oldValue) {
+        if (newValue) {
+          this.detail = newValue
+          this.$apply()
+          await this.loadData()
+        }
       }
     }
-  }
-  methods = {
-    addComment:async function(parent) {
-      let { data: userInfo } = await wepy.getStorage({
-        key: 'userInfo'
-      })
-      this.$invoke('alert', 'showAlert', {
-        title: '写评论',
-        placeholder: '请输入你想说的话',
-        okText: '评论',
-        onOK: async (content) => {
-          let result = await postApi.commentAdd({ id: this.detail['pid'], content});
-        }
-      })
+    methods = {
+      addComment: async function (parent) {
+        let { data: userInfo } = await wepy.getStorage({
+          key: 'userInfo'
+        })
+        console.log(this.detail)
+        this.$invoke('alert', 'showAlert', {
+          title: '写评论',
+          placeholder: '请输入你想说的话',
+          okText: '评论',
+          onOK: async (content) => {
+            let result = await postApi.commentAdd({ id: this.detail['pid'], content });
+          }
+        })
+      }
+    }
+    async loadData() {
+      let { detail } = this
+      let { data: { list } = {} } = await postApi.commentList({ id: detail['pid'], want: 'tree' })
+      for (let k in list) {
+        let time = new Date(list[k]['_c'])
+        list[k]['_c'] = time.getDateDiff(time)
+      }
+      this.list = list
+      this.$apply()
     }
   }
-  async loadData() {
-    let { detail } = this
-    let { data:{list}={} } = await postApi.commentList({ id: detail['pid'], want: 'tree' })
-    for (let k in list) {
-      list[k]['_c'] = new Date(list[k]['_c']).getDateDiff(list[k]['_c'])
-    }
-    this.list = list
-    this.$apply()
-  }
-}
 </script>
-<style lang="less" src="./index.less" ></style>
+<style lang="less" src="./index.less"></style>

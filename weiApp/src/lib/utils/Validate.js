@@ -10,6 +10,8 @@ var Validate = (function () {
   Validate.VALUE_VALIDATE = 2; //或者2 值不为空的时候验证验证时间：
 
   Validate.check = function (data, validates) {
+
+    data = { ...data };
     this.error = null;
     this.validationData = {};
     if (!validates) {

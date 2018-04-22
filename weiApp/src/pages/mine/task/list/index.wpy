@@ -1,0 +1,123 @@
+<template src="./index.wxml">
+</template>
+
+<script>
+    import wepy from 'wepy'
+    import Avatar from '../../../../components/users/avatar/index'
+    import Toast from '../../../../components/toast/index'
+    import taskApi from '../../../../lib/apis/task'
+    export default class taskList extends wepy.page {
+        data = {
+            menus: {},
+            current: null,
+            items: {},
+            pageSize: 5
+        }
+        methods = {
+            onView: function (e) {
+                wepy.navigateTo({
+                    url: '/pages/post/details/task/index?id=' + e.currentTarget.dataset.id
+                })
+            },
+            onSwitch: function (e) {
+                let { index, type } = e.currentTarget.dataset
+                this.current = index
+                this.$apply()
+                this.loadMore({ id: index });
+            }
+        }
+        components = {
+            avatar: Avatar,
+            toast: Toast
+        }
+        events = {
+            
+        }
+        /**
+         * 获取数据信息
+         */
+        async loadMore({ id }, { refresh = false } = {}) {
+            try {
+                let { items, pageSize } = this.data;
+                console.log(this.data)
+                if (items.length == 0 || !(id in items)) {
+                    return;
+                }
+                this.$invoke('toast', 'showToast', {
+                    title: "获取列表中",
+                    icon: "loading",
+                    mask: true
+                });
+                let { page, list } = items[id]
+                let { cid } = wepy.getStorageSync('college') || {}
+                let { data: { list: tasks, pagination: { total = 0 } } } = await taskApi.list({ pageSize, college: cid, type: id, page })
+                /**
+                 * 先进行数据处理
+                 */
+                let time
+                for (let i = 0; i < tasks.length; i++) {
+                    time = new Date(tasks[i]['_c'])
+                    tasks[i]['_c'] = time.getDateDiff(time)
+                }
+                if (refresh) {
+
+                    items[id] = {
+                        list: tasks,
+                        page: 1,
+                        total,
+                        id
+                    }
+                    this.$emit('loadMoreOk', 'home')
+                } else {
+                    items[id] = {
+                        list: [...tasks, ...list],
+                        page: ++page,
+                        total,
+                        id
+                    }
+                }
+                this.items = { ...items };
+                this.$invoke('toast', 'hiddenToast')
+                this.$apply()
+            } catch (e) {
+                console.error(e)
+                this.$invoke('toast', 'showToast', {
+                    title: e.message,
+                    icon: 'error',
+                    mask: true
+                })
+            }
+        }
+        async onLoad() {
+            let menus = wepy.getStorageSync("menus");
+            if (!menus) {
+                menus = await this.fetchMenu();
+                wepy.setStorage({
+                    key: "menus",
+                    data: menus
+                })
+            }
+            let newMenus = {}
+            for (let key in menus) {
+                if (menus[key]['tid'] == 1) {
+                    for (let k in menus[key]['children']) {
+                        if (k == 0) {
+                            this.current = menus[key]['children'][k]['tid'];
+                        }
+                        newMenus[menus[key]['children'][k]['tid']] = menus[key]['children'][k];
+                        this.items[menus[key]['children'][k]['tid']] = {
+                            id: menus[key]['children'][k]['tid'],
+                            list: [],
+                            page: 1,
+                            total: 0
+                        }
+                    }
+                }
+            }
+            this.menus = newMenus;
+            await this.loadMore({ id: this.current });
+            this.$apply();
+        }
+    }
+</script>
+<style lang="less" src="./index.less"></style>

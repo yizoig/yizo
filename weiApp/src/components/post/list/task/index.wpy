@@ -40,11 +40,11 @@
                 }
             },
             "setMenus": (componentName, $event) => {
-                let { children = [], current } = this.menus || {};
-                this.current =this.menus['current'];
+                let { children = {}, current } = this.menus["1"];
+                this.current = current;
                 for (let key in children) {
                     this.items[key] = {
-                        id: children[key]['tid'],
+                        id: key,
                         list: [],
                         page: 1,
                         total: 0
@@ -54,8 +54,8 @@
                 this.loadMore()
             },
             "swiMenus": (id, $event) => {
-                if (id === 1) {
-                    this.current =this.menus['current'];
+                if (id in this.items) {
+                    this.current = id;
                     this.$apply();
                     this.loadMore()
                 }
@@ -68,16 +68,19 @@
             try {
 
                 let { items, pageSize } = this.data;
-                let {  current } = this.menus;
+                let { current } = this.data;
+                if(items.length==0 || !(current in items)){
+                    return;
+                }
                 this.$invoke('toast', 'showToast', {
                     title: "获取列表中",
                     icon: "loading",
                     mask: true
                 });
-                console.log(current,items[current])
+                console.log(current, items[current])
                 let { id, list, page } = items[current];
                 let { cid } = wepy.getStorageSync('college') || {}
-                let { data: { list: tasks, pagination: { total = 0 } } } = await taskApi.list({ pageSize, college: cid, type:id, page })
+                let { data: { list: tasks, pagination: { total = 0 } } } = await taskApi.list({ pageSize, college: cid, type: id, page })
                 /**
                  * 先进行数据处理
                  */
@@ -98,7 +101,7 @@
                 } else {
                     items[current] = {
                         list: [...tasks, ...list],
-                        page:++page,
+                        page: ++page,
                         total,
                         id
                     }
@@ -107,6 +110,7 @@
                 this.$invoke('toast', 'hiddenToast')
                 this.$apply()
             } catch (e) {
+                console.error(e)
                 this.$invoke('toast', 'showToast', {
                     title: e.message,
                     icon: 'error',

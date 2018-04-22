@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "jikejs": "^1.0.1",
+    "md5-file": "^4.0.0",
     "request-promise": "^4.2.2"
   }
 }

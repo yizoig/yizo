@@ -40,7 +40,7 @@
                 <view class="menu-group">
                     <view class="menu-title">任务</view>
                     <view class="menu-list">
-                        <view class="menu-item">
+                        <view class="menu-item" @tap="navigateTo({{'/pages/mine/task/create/index'}})">
                             <i class="iconfont icon-title" style="color:#F1A468;"></i>
                             <text>我发布的</text>
                         </view>
@@ -63,7 +63,7 @@
                         </view>
                     </view>
                 </view>
-                <view class="menu-group">
+                <!-- <view class="menu-group">
                     <view class="menu-title">帮助中心</view>
                     <view class="menu-list">
                         <view class="menu-item">
@@ -79,7 +79,7 @@
                             <text>退出登录</text>
                         </view>
                     </view>
-                </view>
+                </view> -->
             </view>
         </block>
     </view>

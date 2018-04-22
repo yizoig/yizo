@@ -1,4 +1,6 @@
 <view id="releaseList">
+    <toast></toast>
+    <alert></alert>
     <view class="title">
         <image src="../../../public/image/good.png" class="icon"></image>
         <view>发布闲置物品</view>
@@ -8,48 +10,48 @@
             <label class="form-label">标题</label>
             <input class="form-widget" placeholder="请填写标题" bindinput="formValueChange" data-name="title" />
         </view>
-
+        <view class="form-row">
+            <label class="form-label">类型</label>
+            <picker bindchange="selectTypes" value="{{form.type}}" range="{{types}}" range-key="tname">
+                <view class="picker">
+                    {{types[form.type]['tname']}}
+                </view>
+            </picker>
+        </view>
         <view class="form-row">
             <label class="form-label">数量</label>
             <view class="form-widget">
-                <view style="border:1px solid #ccc;line-height:40rpx;height:40rpx;width:40rpx;text-align:center;border-radius:5rpx;" @tap="changuserLimit({{form.userLimit-1}})">-</view>
-                <view style="margin: 0 30rpx;">{{form.userLimit}}</view>
-                <view style="border:1px solid #ccc;line-height:40rpx;height:40rpx;width:40rpx;text-align:center;border-radius:5rpx;" @tap="changuserLimit({{form.userLimit+1}})">+</view>
+                <view style="border:1px solid #ccc;line-height:40rpx;height:40rpx;width:40rpx;text-align:center;border-radius:5rpx;" @tap="changnumber({{form.number-1}})">-</view>
+                <view style="margin: 0 30rpx;">{{form.number}}</view>
+                <view style="border:1px solid #ccc;line-height:40rpx;height:40rpx;width:40rpx;text-align:center;border-radius:5rpx;" @tap="changnumber({{form.number+1}})">+</view>
             </view>
         </view>
-        <view class="form-row">
-            <label class="form-label">图片</label>
-            <input class="form-widget" placeholder="请填写原价" type="number" bindinput="formValueChange" data-name="address" />
+        <view style="display:flex;">
+            <view class="form-row">
+                <label class="form-label">原价</label>
+                <input class="form-widget" placeholder="原价" type="number" bindinput="formValueChange" data-name="oprice" />
+            </view>
+            <view class="form-row" style="margin-left: 20px;">
+                <label class="form-label">卖价</label>
+                <input class="form-widget" placeholder="卖价" type="number" bindinput="formValueChange" data-name="price" />
+            </view>
         </view>
-        <view class="form-row">
-            <label class="form-label">原价</label>
-            <input class="form-widget" placeholder="请填写原价" type="number" bindinput="formValueChange" data-name="address" />
-        </view>
-        <view class="form-row">
-            <label class="form-label">卖价</label>
-            <input class="form-widget" placeholder="请填写卖价" type="number" bindinput="formValueChange" data-name="address" />
-        </view>
-        <view class="form-row">
-            <label class="form-label">截至日期</label>
-            <picker class="form-widget" mode="date" value="{{dueDate}}" start="{{startDate.date}}" end="{{endDate.date}}" bindchange="formValueChange"
-                data-name="dueDate">
-                <view class="picker" style="{{form.dueDate?'':'color:#808080;'}}">
-                    {{form.dueDate ||"请选择日期"}}
+        <view class="form-row" style="flex-direction: column;align-items: flex-start;">
+            <view>
+                <textarea placeholder="请填写具体信息(选填)" bindinput="formValueChange" data-name="content" style="text-align:left;height:150rpx;padding:10rpx 0;line-height:37rpx;">
+                    </textarea>
+            </view>
+            <view class="images">
+                <view class="image btn" @tap="selectImages">
+                    <text class="iconfont icon-wode"></text>
+                    添加图片
                 </view>
-            </picker>
-        </view>
-        <view class="form-row">
-            <label class="form-label">截至时间</label>
-            <picker class="form-widget" mode="time" value="{{dueTime}}" start="{{startDate.time}}" end="23:59" bindchange="formValueChange"
-                data-name="dueTime">
-                <view class="picker" style="{{form.dueTime?'':'color:#808080;'}}">
-                    {{form.dueTime ||"请选择时间"}}
-                </view>
-            </picker>
-        </view>
-        <view class="form-row">
-            <textarea placeholder="请填写具体信息(选填)" bindinput="formValueChange" data-name="content" style="width:100%;text-align:left;height:150rpx;padding:10rpx;line-height:37rpx;">
-          </textarea>
+                <repeat for="{{images}}" item="value" key="index">
+                    <view class="image">
+                        <image src="{{value.status==1?url:''}}{{value.url}}"></image>
+                    </view>
+                </repeat>
+            </view>
         </view>
         <view style="background:#f8f8f8;font-size:25rpx;line-height:50rpx;padding-left:20rpx;">联系方式</view>
         <view class="form-row">
@@ -58,9 +60,9 @@
         </view>
         <view class="form-row">
             <label class="form-label">联系人</label>
-            <input class="form-widget" placeholder="请填写联系人" bindinput="formValueChange" data-name="concat" />
+            <input class="form-widget" placeholder="请填写联系人" bindinput="formValueChange" data-name="contact" />
         </view>
     </view>
-    <view class="release">发起求助</view>
+    <view class="release" @tap="release">发起闲置</view>
 </view>
 </view>

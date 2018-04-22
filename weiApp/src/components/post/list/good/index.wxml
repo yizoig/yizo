@@ -1,0 +1,44 @@
+<view class="good-list">
+    <toast></toast>
+    <repeat for="{{items}}" item="item" index="key">
+        <view data-tid="{{item.id}}" style="display:{{key==current?'block':'none'}}">
+            <repeat for="{{item.list}}" item="good" key="index">
+                <view class="order-item" hover-class="order-item-active" bindtap="onView" data-id="{{good.pid}}">
+                    <view class="item-top">
+                        <avatar :id="good.createId" />
+                        <view class="info">
+                            <view>
+                                <text class="username">{{good.createName}}</text>
+                                <view class="iconfont icon-{{good.createGender==0?'female':'male'}}"></view>
+                            </view>
+                            <view>
+                                <text class="time">{{good._c}}</text>
+                            </view>
+                        </view>
+                    </view>
+                    <view class="item-content">
+                        <view class="price">
+                            <view style="color: #f00;font-size: 16px;">￥{{good.price}}</view>
+                            <view style="color: #888;font-size: 10px;text-decoration:line-through ;">原价{{good.oprice}}</view>
+                        </view>
+                        <view class="title ">{{good.title}}</view>
+                    </view>
+                    <view class="images">
+                        <repeat for="{{good['images']}}" item="item">
+                            <view class="item">
+                                <image src="{{imagePath}}{{item}}" />
+                            </view>
+                        </repeat>
+                    </view>
+                    <view class="footer">
+                        <view class="content">
+                            <view class="iconfont icon-point"></view>
+                            {{good.content}}
+                        </view>
+                    </view>
+                </view>
+            </repeat>
+        </view>
+    </repeat>
+    <view class="load-more">{{limit.count > orderList.length?'努力加载中...':"没有更多了"}}</view>
+</view>

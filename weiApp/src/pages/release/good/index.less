@@ -1,71 +1,96 @@
 @import "../../../var";
-#releaseList{
-  margin-bottom: 80rpx;
-  .title{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    line-height: 150rpx;
-    align-items: center;
-    background: #fff;
-    .icon{
-      width: 60rpx;
-      height: 60rpx;
-    }
-  }
-  .form{
-    background: #fff;
-    .form-row{
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      margin: 0 20rpx;
-      line-height: 70rpx;
-      font-size: 28rpx;
-      border-top:1px solid #f8f8f8;
-      .form-label{
-
-      }
-      .form-widget{
+#releaseList {
+    margin-bottom: 80rpx;
+    .title {
         display: flex;
         flex-direction: row;
+        justify-content: center;
+        line-height: 150rpx;
         align-items: center;
-        text-align: right;
-      }
-    }
-    .radio{
-      
-      font-size: 25rpx;
-      line-height: 50rpx;
-      .radio-item{
-        margin: 10rpx 0;
-        display: inline-block;
-        padding: 0 25rpx;
-        margin-left:10rpx;
-        border-radius: 70rpx;
-        border:1px solid #f8f8f8;
-        color: #808080;
-        &.active{
-          border:1px solid transparent;
-          color: #fff;
-          background: @primaryColor;
+        background: #fff;
+        .icon {
+            width: 60rpx;
+            height: 60rpx;
         }
-      }
     }
-  }
-  .release{
-    position: fixed;
-    bottom:0;
-    left: 0;
-    right:0;
-    color: #fff;
-    background: @primaryColor;
-    line-height: 80rpx;
-    text-align: center;
-    z-index: 10;
-  }
+    .form {
+        background: #fff;
+        .form-row {
+            padding: 0 10px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            line-height: 70rpx;
+            font-size: 28rpx;
+            border-top: 1px solid #f8f8f8;
+            .form-label {
+                white-space: nowrap;
+            }
+            .form-widget {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                text-align: right;
+            }
+        }
+        .images {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 5px 0;
+            .btn {
+                border: 1px solid @primaryColor;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                color: @primaryColor;
+            }
+            .iconfont {
+                font-size: 20px;
+            }
+            .image {
+                margin: 10px 10px 0 0;
+                width: 65px;
+                height: 65px;
+            }
+            image {
+                width: 100%;
+                height: 100%;
+            }
+        }
+        .radio {
+            font-size: 25rpx;
+            line-height: 50rpx;
+            .radio-item {
+                margin: 10rpx 0;
+                display: inline-block;
+                padding: 0 25rpx;
+                margin-left: 10rpx;
+                border-radius: 70rpx;
+                border: 1px solid #f8f8f8;
+                color: #808080;
+                &.active {
+                    border: 1px solid transparent;
+                    color: #fff;
+                    background: @primaryColor;
+                }
+            }
+        }
+    }
+    .release {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        color: #fff;
+        background: @primaryColor;
+        line-height: 80rpx;
+        text-align: center;
+        z-index: 10;
+    }
 }
-page{
-  background: #f8f8f8;
+
+page {
+    background: #f8f8f8;
 }

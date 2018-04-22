@@ -1,0 +1,84 @@
+<view class="good-detail">
+    <toast></toast>
+    <view class="creater-info">
+        <avatar :id.sync="{{detail.createId}}"></avatar>
+        <view class="info">
+            <view class="username">{{detail['createName']}}</view>
+            <view class="iconfont icon-{{detail['createGender']==0?'female':'male'}}"></view>
+        </view>
+    </view>
+    <view class="detail-info">
+        <view class="header">
+            <view class="title">{{detail['title']}}</view>
+            <view class="price" style="color:#f00;font-size: 45rpx;">￥{{detail['price']}}</view>
+        </view>
+        <!-- <view class="center"></view> -->
+        <view class="footer">
+            <view>
+                <span class="type">{{detail['typeName']}}</span>
+                <span class="num">已售{{detail['number']}}件/剩余{{detail['number']}}件</span>
+            </view>
+            <view>原价 {{detail['oprice']}}</view>
+        </view>
+    </view>
+    <view class="detail-content">
+        <view class="content">{{detail['content']}}</view>
+        <view class="images">
+            <repeat for="{{detail['images']}}" item="item">
+                <image src="{{imagePath}}{{item}}" mode="widthFix"/>
+            </repeat>
+        </view>
+    </view>
+    <comment :detail.sync="detail"></comment>
+</view>
+<view class="fix-btn">
+    <view class="btn" style="width:130rpx;" @tap="gohome">
+        <text class="iconfont icon-setting"></text>
+        <view class="title">主页</view>
+    </view>
+    <block wx:if="{{detail['status']>0 && (detail['creater']==userInfo['id'] || detail['runner']==userInfo['id'])}}">
+        <view class="btn" style="width:130rpx;" @tap="callphone({{detail['creater']==userInfo['id']?detail['runner']:detail['phone_number']}})">
+            <text class="iconfont icon-setting"></text>
+            <view class="title">联系</view>
+        </view>
+    </block>
+    <!--取消的订单-->
+    <block wx:if="{{detail['status']<0}}">
+        <view class="btn" style="flex:1;background:#ccc;color:#fff">
+            <view class="title">已取消</view>
+        </view>
+    </block>
+    <block wx:elif="{{detail['status']==4}}">
+        <view class="btn" style="flex:1;background:#ccc;color:#fff">
+            <view class="title">已完成</view>
+        </view>
+    </block>
+    <!--没有取消的订单-->
+    <block wx:else>
+        <!-- 创建人-->
+        <block wx:if="{{detail['createId']==userInfo['uid']}}">
+            <view class="btn" style="flex:1;background:#FF5164;color:#fff" @tap="cancelOrder">
+                <view class="title">终止任务</view>
+            </view>
+            <!-- <block >
+                <view class="btn" style="flex:1;background:#FF5164;color:#fff" @tap="editOrder">
+                    <view class="title">结束任务</view>
+                </view>
+            </block> -->
+        </block>
+        <!-- 参与者-->
+        <block wx:elif="{{detail['flag']}}">
+            <block>
+                <view class="btn" style="flex:1;background:#ccc;color:#fff" @tap="quitOrder">
+                    <view class="title">取消报名</view>
+                </view>
+            </block>
+        </block>
+        <!-- 其他-->
+        <block wx:else>
+            <view class="btn" style="flex:1;background:#3385ff;color:#fff" @tap="grabOrder">
+                <view class="title">立即报名</view>
+            </view>
+        </block>
+    </block>
+</view>

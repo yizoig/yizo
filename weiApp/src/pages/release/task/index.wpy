@@ -57,7 +57,7 @@ export default class ReleaseTask extends wepy.page {
       })
     },
     release: async function() {
-      let params = this.form
+      let params = {...this.form}
       try {
         params['type'] = this.types[this.form['type']]['tid'];
         params = Validate.check(params, [
@@ -88,7 +88,7 @@ export default class ReleaseTask extends wepy.page {
           })
           setTimeout(() => {
             wepy.navigateTo({
-              url: '/pages/post/result/index?type=add'
+              url: '/pages/post/details/task/index?type='+data
             })
           }, 3000)
         } else {

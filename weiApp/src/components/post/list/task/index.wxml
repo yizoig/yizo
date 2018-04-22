@@ -47,5 +47,5 @@
             </repeat>
         </view>
     </repeat>
-    <view class="load-more">{{limit.count > orderList.length?'努力加载中...':"没有更多了"}}{{current}}</view>
+    <view class="load-more">{{limit.count > orderList.length?'努力加载中...':"没有更多了"}}</view>
 </view>
