@@ -74,7 +74,9 @@
         this.detail = data
         let time = new Date(this.detail['_c'])
         this.detail['_c'] = time.getDateDiff(time)
-
+        this.$invoke('avatar', 'setId', {
+          id: data['createId']
+        })
         this.$apply()
         this.$invoke('toast', 'hiddenToast')
         wepy.stopPullDownRefresh()

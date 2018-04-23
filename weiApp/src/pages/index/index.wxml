@@ -9,7 +9,7 @@
                     <view class="info">
                         <view class="top">
                             <view class="name">{{item.cname}}</view>
-                            <view class="time">{{item._c}}</view>
+                            <view class="time">{{item._c}}来过</view>
                         </view>
                         <view class="mes">
                             <text>人气:{{item.liveness}}</text>

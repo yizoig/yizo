@@ -1,7 +1,8 @@
 <view class="task-detail">
     <toast></toast>
     <view class="creater-info">
-        <avatar :id.sync="{{detail.createId}}"></avatar>
+        <avatar :id.sync="detail.createId"></avatar>
+
         <view class="info">
             <view class="username">{{detail['createName']}}</view>
             <view class="iconfont icon-{{detail['createGender']==0?'female':'male'}}"></view>
@@ -89,7 +90,7 @@
         </block>
         <!-- 参与者-->
         <block wx:elif="{{detail['flag']}}">
-            <block >
+            <block>
                 <view class="btn" style="flex:1;background:#ccc;color:#fff" @tap="quitOrder">
                     <view class="title">取消报名</view>
                 </view>

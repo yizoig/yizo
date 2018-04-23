@@ -1,4 +1,4 @@
-let { weixinVerifry,saveWeixinAvatar } = require("../common/weixin")
+let { weixinVerifry, saveWeixinAvatar } = require("../common/weixin")
 let UserModel = require("../model/user");
 const { makeToken } = require('../common/jwt')
 const fs = require('fs')
@@ -68,14 +68,15 @@ module.exports = class User extends JikeJs.Controller {
             console.log(e)
         }
     }
-    async avatar({id}){
-        let pathname =path.join(__dirname,`../static/user/avatar/`);
-        if(fs.existsSync(pathname+`${id}.png`)){
+    async avatar({ id }) {
+        id = parseInt(id);
+        let pathname = path.join(__dirname, `../static/user/avatar/`);
+        if (fs.existsSync(pathname + `${id}.png`)) {
             pathname += `${id}.png`;
-        }else{
-            pathname +=`_0.png`
+        } else {
+            pathname += `_0.png`
         }
-        this.ctx.type="image/png"
+        this.ctx.type = "image/png"
         this.ctx.status = 200;
         this.ctx.body = fs.readFileSync(pathname);
     }

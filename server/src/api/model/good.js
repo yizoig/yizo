@@ -146,9 +146,10 @@ module.exports = class Good extends JikeJs.Model {
         if (info) {
             info['images'] = info['images'].split(',');
             info['records'] = await this.table("good_buy_records")
-                .field('record_id as id,user_id as user,buy_num as num')
+                .field('record_id as id,users.user_id as user,nick_name as uname,buy_num as num,total,good_buy_records.state,good_buy_records._c')
+                .join('inner join users on users.user_id=good_buy_records.user_id')
                 .join('inner join goods on goods.good_id=good_buy_records.good_id')
-                .join('inner join posts on posts.post_id=goods.post_id')·
+                .join('inner join posts on posts.post_id=goods.post_id')
                 .where({
                     "posts.post_id": id
                 }).select()

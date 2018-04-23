@@ -29,7 +29,8 @@ export default class TaskRecord extends React.Component {
         title: '状态',
         dataIndex: 'state',
         key: 'state',
-        width: 160
+        width: 160,
+        render: (text) => this.taskstates[text]||"无"
     }, {
         title: '报名时间',
         dataIndex: '_c',

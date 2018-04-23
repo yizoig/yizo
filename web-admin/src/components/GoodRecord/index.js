@@ -15,8 +15,8 @@ export default class GoodRecord extends React.Component {
         }
     }
     goodstates = {
-        "-1": <Badge status="error" text="已结束" />,
-        "0": <Badge status="processing" text="进行中" />,
+        "-1": <Badge status="error" text="放弃购买" />,
+        "0": <Badge status="processing" text="已下单" />,
         "1": <Badge status="success" text="已完成" />,
     }
     columns = [{
@@ -29,7 +29,18 @@ export default class GoodRecord extends React.Component {
         title: '状态',
         dataIndex: 'state',
         key: 'state',
-        width: 160
+        width: 100,
+        render:state=>this.goodstates[state]
+    },{
+        title: '数量',
+        dataIndex: 'num',
+        key: 'num',
+        width: 60,
+    },{
+        title: '总价',
+        dataIndex: 'total',
+        key: 'total',
+        width: 60,
     }, {
         title: '报名时间',
         dataIndex: '_c',

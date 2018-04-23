@@ -2,26 +2,33 @@
   <image src="{{url?url:(avatarPath+id+'.ava')}}" class="avatar"></image>
 </template>
 <script>
-import wepy from 'wepy'
-import 'wepy-async-function'
-import UserApi from '../../../lib/apis/user'
-export default class Avatar extends wepy.component {
-  props = {
-    id: String,
-    url: String
+  import wepy from 'wepy'
+  import 'wepy-async-function'
+  import UserApi from '../../../lib/apis/user'
+  export default class Avatar extends wepy.component {
+    props = {
+      id: {
+        type: String,
+        default: '_0'
+      },
+      url: String
+    }
+    setId({id}){
+      this.id = id;
+      this.$apply();
+    }
+    data = {
+      avatarPath: UserApi.avatar
+    }
+    onLoad() {
+      console.log(this)
+    }
   }
-  data = {
-    avatarPath: UserApi.avatar
-  }
-  onLoad() {
-    console.log(this)
-  }
-}
 </script>
-<style >
-.avatar {
-  border-radius: 50%;
-  width: 130rpx;
-  height: 130rpx;
-}
+<style>
+  .avatar {
+    border-radius: 50%;
+    width: 130rpx;
+    height: 130rpx;
+  }
 </style>
