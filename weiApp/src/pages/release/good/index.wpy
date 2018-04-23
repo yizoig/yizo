@@ -95,7 +95,7 @@
                         })
                         setTimeout(() => {
                             wepy.navigateTo({
-                                url: '/pages/post/details/task/index?id=' + data
+                                url: '/pages/post/details/good/index?id=' + data
                             })
                         }, 1000)
                     } else {

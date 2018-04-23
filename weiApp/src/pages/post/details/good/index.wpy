@@ -64,7 +64,7 @@
           icon: "loading",
           mask: true
         })
-        let { data } = await goodApi.info({ id: 20 || this.id })
+        let { data } = await goodApi.info({ id: this.id })
         for (let item of data['records']) {
           //代表参与了
           if (item.uid == this.userInfo['uid']) {

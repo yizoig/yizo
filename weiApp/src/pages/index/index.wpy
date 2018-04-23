@@ -76,7 +76,6 @@
                 this.$apply()
                 this.$invoke('toast', 'hiddenToast')
             } catch (e) {
-                console.error(e)
                 this.$invoke('toast', 'showToast', {
                     title: e.message,
                     icon: "error",

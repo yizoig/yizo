@@ -14,6 +14,7 @@
             flex-direction: row;
             align-items: center;
             margin: 15rpx 0;
+            position: relative;
             .avatar {
                 border-radius: 50%;
                 width: 90rpx;
@@ -32,24 +33,23 @@
                     color: #8B8989;
                 }
             }
-        }
-        .item-content {
-            font-size: 22rpx;
-            color: #000;
-            margin: 10rpx 0;
-            padding: 25rpx 0;
-            position: relative;
-            .title {
-                padding: 0rpx 20rpx;
-                line-height: 40rpx;
-                margin: 20rpx 0;
-                font-size: 30rpx; 
-                border-left: 3px solid @primaryColor;
-            }
             .price {
                 position: absolute;
                 top: 5px;
                 right: 10px;
+            }
+        }
+        .item-content {
+            font-size: 22rpx;
+            .title {
+                padding: 0rpx 20rpx 0 20rpx;
+                line-height: 40rpx;
+                margin: 20rpx 0;
+                font-size: 30rpx;
+                border-left: 3px solid @primaryColor;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
         }
         .images {
@@ -59,16 +59,15 @@
             display: flex;
             display: -webkit-box;
             .item {
-                width: 130px;
-                height: 130px;
                 flex: 1;
                 border-radius: 8px;
-                margin-right: 10px;
+                margin: 10px 10px 10px 5px;
                 overflow: hidden;
-            }
-            &>image {
-                width: 130px;
-                height: 130px;
+                box-shadow: 0 0 5px #ccc;
+                &>image {
+                    width: 100px;
+                    height: 130px;
+                }
             }
         }
         .footer {

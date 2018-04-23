@@ -12,8 +12,17 @@ module.exports = class Good extends JikeJs.Controller {
         return await model.list({ search, creater, partner, college, type, state, page, pageSize, _d })
     }
     async add({ title, content, contact, tel, images, type, price, oprice, number, college }) {
+
         let model = new GoodModel();
-        return await model.add(this.user.id, { title, content, contact, tel, images, type, price, oprice, number, college });
+        let result = await model.add(this.user.id, { title, content, contact, tel, images, type, price, oprice, number, college });
+        //移动文件
+        for (let img of images) {
+            let filename = path.join(__dirname, `../static/tmp/${img}`);
+            if (fs.existsSync(filename)) {
+                fs.renameSync(path.join(__dirname, `../static/tmp/${img}`), path.join(__dirname, `../static/good/images/${img}`));
+            }
+        }
+        return result;
     }
     /**
      * 添加
@@ -60,14 +69,12 @@ module.exports = class Good extends JikeJs.Controller {
         }
         return pathnames;
     }
-    async image({name}){
-        let pathname =path.join(__dirname,`../static/good/images/`);
-        if(fs.existsSync(pathname+`${name}.png`)){
-            pathname += `${name}.png`;
-        }else{
-            pathname +=`_0.png`
+    async image({ name }) {
+        let pathname = path.join(__dirname, `../static/good/images/`, `${name}.png`);
+        if (!fs.existsSync(pathname)) {
+            pathname = path.join(__dirname, `../static/404.png`);
         }
-        this.ctx.type="image/png"
+        this.ctx.type = "image/png"
         this.ctx.status = 200;
         this.ctx.body = fs.readFileSync(pathname);
     }

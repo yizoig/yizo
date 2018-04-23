@@ -142,6 +142,9 @@ module.exports = class Good extends JikeJs.Model {
             .join('inner join users on users.user_id=posts.create_by')
             .join("join colleges on colleges.college_id= posts.college")
             .join('inner join post_types on post_types.type_id=posts.type')
+            .where({
+                "posts.post_id": id
+            })
             .find();
         if (info) {
             info['images'] = info['images'].split(',');

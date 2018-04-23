@@ -15,13 +15,13 @@
                                 <text class="time">{{good._c}}</text>
                             </view>
                         </view>
-                    </view>
-                    <view class="item-content">
                         <view class="price">
                             <view style="color: #f00;font-size: 16px;">￥{{good.price}}</view>
                             <view style="color: #888;font-size: 10px;text-decoration:line-through ;">原价{{good.oprice}}</view>
                         </view>
-                        <view class="title ">{{good.title}}</view>
+                    </view>
+                    <view class="item-content">
+                        <view class="title">{{good.title}}</view>
                     </view>
                     <view class="images">
                         <repeat for="{{good['images']}}" item="item">

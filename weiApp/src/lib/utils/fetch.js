@@ -26,13 +26,20 @@ async function doFetch(url, method = 'GET', data = {}, header = {}) {
         data = {}
     }
     console.log(url)
-    //发起请求
-    let res = await wepy.request({
-        url,
-        data,
-        header,
-        method
-    })
+    let res;
+    try {
+
+        //发起请求
+        res = await wepy.request({
+            url,
+            data,
+            header,
+            method
+        })
+    } catch (e) {
+        console.error(e)
+        throw new Error("请求数据失败");
+    }
     if (res.data.code != 0) {
         throw new Error(code[res.data.code])
     }
