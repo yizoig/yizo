@@ -4,7 +4,7 @@ const env = 'development';//'development' or 'production'
 const version = 2.0
 
 const hosts = {
-  development: 'http://192.168.43.171:3001/api',
+  development: 'http://localhost:3001/api',
   production: 'https://api.yizo.exvu.vip'
 }
 

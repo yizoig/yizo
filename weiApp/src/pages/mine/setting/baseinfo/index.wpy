@@ -1,85 +1,98 @@
 <template lang="wxml" src="./index.wxml"></template>
 <script>
-import wepy from 'wepy'
-import 'wepy-async-function'
-import UserApi from '../../../../lib/apis/user'
-import Toast from '../../../../components/toast/index'
-import User from '../../../../lib/services/user'
-import { Validate } from '../../../../lib/utils/index'
-export default class BaseInfoSettting extends wepy.page {
-  data = {
-    userInfo: null,
-    cache: {},
-    edit: false
-  }
-  components = {
-    toast: Toast
-  }
-  methods = {
-    edit: function(e) {
-      /**
-       * 检查值是否修改
-       */
-      if (this.userInfo[e.currentTarget.dataset.name] != e.detail.value) {
-        this.cache[e.currentTarget.dataset.name] = e.detail.value
-      } else {
-        delete this.cache[e.currentTarget.dataset.name]
-      }
-      if (Object.keys(this.cache).length > 1) {
-        this.edit = true
-      } else {
-        this.edit = false
-      }
-      this.$apply()
-    },
-    submit: async function() {
-      try {
-        let params = Validate.check(this.data.cache, [
-          ['nickname', 'require', '姓名不能为空', Validate.EXISTS_VALIDATE],
-          ['gender', ['0', '1'], '性别错误', Validate.EXISTS_VALIDATE, 'in']
-        ])
-        console.log(this.data.cache)
-        console.log(params)
-        this.$invoke('toast', 'showToast', {
-          title: '加载中',
-          icon: 'loading',
-          mask: true
-        })
-        let { data } = await UserApi.updateInfo(params)
-        if (data) {
-          console.log(User)
-          User.setUserInfo(this.data.cache)
+  import wepy from 'wepy'
+  import 'wepy-async-function'
+  import UserApi from '../../../../lib/apis/user'
+  import Toast from '../../../../components/toast/index'
+  import User from '../../../../lib/services/user'
+  import { Validate } from '../../../../lib/utils/index'
+  export default class BaseInfoSettting extends wepy.page {
+    data = {
+      userInfo: null,
+      cache: {},
+      edit: false
+    }
+    components = {
+      toast: Toast
+    }
+    methods = {
+      edit: function (e) {
+        /**
+         * 检查值是否修改
+         */
+        if (this.userInfo[e.currentTarget.dataset.name] != e.detail.value) {
+          this.cache[e.currentTarget.dataset.name] = e.detail.value
+        } else {
+          delete this.cache[e.currentTarget.dataset.name]
+        }
+        if (Object.keys(this.cache).length > 0) {
+          this.edit = true
+        } else {
+          this.edit = false
+        }
+        this.$apply()
+      },
+      submit: async function () {
+        try {
+          let params = Validate.check(this.data.cache, [
+            ['nickname', 'require', '姓名不能为空', Validate.EXISTS_VALIDATE],
+            ['ugender', ['0', '1'], '性别错误', Validate.EXISTS_VALIDATE, 'in']
+          ])
           this.$invoke('toast', 'showToast', {
-            title: '修改成功',
-            icon: 'success',
+            title: '加载中',
+            icon: 'loading',
             mask: true
           })
-          setTimeout(function() {
-            this.$back()
-          }.bind(this), 1000)
-        } else {
+          let { data } = await UserApi.updateInfo({
+            uid: this.userInfo.uid,
+            ...params
+          })
+          if (data) {
+            User.setUserInfo(this.data.cache)
+            this.$parent.globalData.userInfo = {
+              ...this.userInfo,
+              ...this.cache
+            }
+            this.$invoke('toast', 'showToast', {
+              title: '修改成功',
+              icon: 'success',
+              mask: true
+            })
+            var pages = getCurrentPages();
+            var prevPage = pages[pages.length - 2]; //上一个页面
+            prevPage.setData({
+              userInfo: {
+                ...this.userInfo,
+                ...params
+              }
+            })
+            setTimeout(function () {
+              this.$back()
+            }.bind(this), 400)
+          } else {
+            this.$invoke('toast', 'showToast', {
+              title: '修改失败',
+              icon: 'error',
+              mask: true
+            })
+          }
+        } catch (e) {
           this.$invoke('toast', 'showToast', {
-            title: '修改失败',
+            title: e.message,
             icon: 'error',
             mask: true
           })
         }
-      } catch (e) {
-        this.$invoke('toast', 'showToast', {
-          title: e.message,
-          icon: 'error',
-          mask: true
-        })
       }
     }
-  }
-  async onShow() {
+    async onShow() {
 
-    this.userInfo = this.$parent.globalData.userInfo
-    this.userInfo['avatar'] =  UserApi.avatar+this.userInfo['uid']+'.ava'
-    
-    this.$apply()
+      this.userInfo = this.$parent.globalData.userInfo
+      // this.userInfo = wepy.getStorageSync("userInfo")
+      this.userInfo['avatar'] = UserApi.avatar + this.userInfo['uid'] + '.ava'
+
+      this.$apply()
+    }
   }
-}
 </script>
 <style src="./index.less" lang="less"></style>

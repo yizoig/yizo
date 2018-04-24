@@ -2,6 +2,7 @@
   import wepy from 'wepy'
   import 'wepy-async-function'
   import taskApi from '../../../../lib/apis/task'
+  import userApi from '../../../../lib/apis/user'
   import Avatar from '../../../../components/users/avatar/index'
   import Toast from '../../../../components/toast/index'
   import Comment from '../../../../components/post/comment/index'
@@ -15,13 +16,13 @@
       userInfo: {},
       creater: null,
       runner: null,
-      detail: {}
+      detail: {},
+      avatar: userApi.avatar
     }
     methods = {
       callphone: (phone) => {
         wepy.makePhoneCall({
           phoneNumber: phone + ''
-
         })
       },
       gohome: () => {
@@ -30,12 +31,40 @@
         })
       },
       /**
-       * 编辑订单
+       * 编辑
        */
-      editOrder: (params) => {
-
+      editor: () => {
+        wepy.navigateTo({
+          url: '/pages/editor/task/index?id=' + this.detail['pid']
+        })
       },
-
+      putstate:async (type) => {
+        try {
+          this.$invoke('toast', 'showToast', {
+            title: type == -1 ? "关闭中" : "结束中",
+            icon: "loading",
+            mask: true
+          })
+          let result = await taskApi.putstate({ pid: this.detail['pid'], type })
+          if (!result) {
+            throw new Error("操作失败")
+          }
+          this.$invoke('toast', 'showToast', {
+            title: type == -1 ? "关闭成功" : "结束成功",
+            icon: "success",
+            mask: true
+          })
+        } catch (e) {
+          console.error(e)
+          this.$invoke('toast', 'showToast', {
+            title: type == -1 ? "关闭失败" : "结束失败",
+            icon: "error",
+            mask: true
+          })
+        }finally{
+          this.loadData();
+        }
+      }
     }
     components = {
       avatar: Avatar,
@@ -46,15 +75,16 @@
       this.id = opt.id || null
       this.userInfo = this.$parent.globalData['userInfo']
       this.$apply()
-    }
-    async onShow() {
-      await this.loadData()
+      this.loadData()
     }
     async onPullDownRefresh() {
       /**
        * 与指定的组件通信
        */
       await this.loadData()
+    }
+    onShow() {
+      this.loadData();
     }
     async loadData() {
       try {
@@ -87,6 +117,7 @@
         })
       }
     }
+
   }
 </script>
 <style src="./index.less" lang="less"></style>

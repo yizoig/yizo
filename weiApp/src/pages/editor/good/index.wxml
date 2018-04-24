@@ -1,4 +1,4 @@
-<view id="releaseList">
+<view id="editor-list">
     <toast></toast>
     <alert></alert>
     <view class="title">
@@ -63,6 +63,6 @@
             <input class="form-widget" placeholder="请填写联系人" bindinput="formValueChange" data-name="contact" />
         </view>
     </view>
-    <view class="release" @tap="release">发起闲置</view>
+    <view class="editor" @tap="editor">发起闲置</view>
 </view>
 </view>

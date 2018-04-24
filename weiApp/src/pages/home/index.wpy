@@ -24,7 +24,7 @@
             }
         }
         methods = {
-            onSwitch: function (e) {
+            onSwitch: (e) => {
                 let { index, type } = e.currentTarget.dataset
                 switch (type) {
                     case 'menu': {
@@ -32,7 +32,13 @@
                         break
                     }
                     case 'sub': {
-                        this.menus[this.current]['current'] = index
+                        this.menus = {
+                            ...this.menus,
+                            [this.current]: {
+                                ...this.menus[this.current],
+                                current: index
+                            },
+                        }
                         break
                     }
                     default: {
@@ -54,18 +60,14 @@
             this.$broadcast('loadMore', 'task')
         }
         onShow() {
-            this.college = wepy.getStorageSync('college')
-            this.$apply()
+            this.college = this.$parent.globalData.college;
         }
         async getMenus() {
-
-
             let menus = await this.fetchMenu();
             wepy.setStorage({
                 key: "menus",
                 data: menus
             })
-
             let newMenus = {}
             for (let key in menus) {
                 if (key == 0)
@@ -83,13 +85,12 @@
                 };
             }
             this.menus = newMenus;
+            console.log(menus)
             this.$apply();
             this.$broadcast('setMenus')
         }
         async onLoad() {
-            this.components = {}
             await this.getMenus();
-
         }
         onPullDownRefresh() {
             /**

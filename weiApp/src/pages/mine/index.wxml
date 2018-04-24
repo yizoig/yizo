@@ -8,7 +8,7 @@
                     <view class="left">
                         <avatar :id="id"></avatar>
                         <view class="info">
-                            <text class="item name">{{userInfo['nickName']}}</text>
+                            <text class="item name">{{userInfo['nickname']}}</text>
                             <text class="item iconfont icon-{{userInfo['ugender']==0?'female':'male'}}"></text>
                         </view>
                     </view>
@@ -22,7 +22,7 @@
                     </view>
                 </block>
             </view>
-            <block wx:if="{{userInfo}}">
+            <!-- <block wx:if="{{userInfo}}">
                 <view class="items">
                     <view class="item"  @tap="navigateTo({{'/pages/mine/setting/baseinfo/index'}})">
                         <i class="iconfont icon-wode" style="color:#F1A468;"></i>
@@ -33,7 +33,7 @@
                         <text>账号管理</text>
                     </view>
                 </view>
-            </block>
+            </block> -->
         </view>
         <block wx:if="{{userInfo}}">
             <view class="menu">

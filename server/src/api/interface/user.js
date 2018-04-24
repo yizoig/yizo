@@ -16,7 +16,7 @@ module.exports = {
             rules: {
                 search: Dvm.string(),
                 college: Dvm.string(),
-                  // 0女 1男
+                // 0女 1男
                 gender: Dvm.number().in([0, 1]),
                 page: Dvm.number().min(1, true).default(1),
                 pageSize: Dvm.number().default(5),
@@ -41,8 +41,8 @@ module.exports = {
             action: "updateInfo",
             middle: [tokenVerify],
             rules: {
-                  // 0女 1男
-                gender: Dvm.string(),
+                // 0女 1男
+                ugender: Dvm.string(),
                 nickname: Dvm.string()
             }
         },

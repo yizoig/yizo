@@ -39,7 +39,6 @@
         async loadMore({ id }, { refresh = false } = {}) {
             try {
                 let { items, pageSize } = this.data;
-                console.log(this.data)
                 if (items.length == 0 || !(id in items)) {
                     return;
                 }

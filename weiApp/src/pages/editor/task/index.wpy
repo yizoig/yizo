@@ -5,8 +5,9 @@ import Toast from '../../../components/toast/index'
 import Alert from '../../../components/alert/index'
 import { Validate } from '../../../lib/utils/index'
 import taskApi from '../../../lib/apis/task'
-export default class ReleaseTask extends wepy.page {
+export default class editorTask extends wepy.page {
   data = {
+    id:null,
     startDate: null,
     endDate: null,
     otherReward: [
@@ -56,7 +57,7 @@ export default class ReleaseTask extends wepy.page {
         }
       })
     },
-    release: async function() {
+    editor: async function() {
       let params = {...this.form}
       try {
         params['type'] = this.types[this.form['type']]['tid'];
@@ -71,26 +72,31 @@ export default class ReleaseTask extends wepy.page {
           ['type','require',"请选择类型",Validate.MUST_VALIDATE]
         ])
         let { cid } = wepy.getStorageSync('college') || {}
+        let { pid:id } = this.form;
         params['dueDate'] = params['dueDate'] + ' ' + params['dueTime']
         params['college'] = cid
         delete params['dueTime']
         this.$invoke('toast', 'showToast', {
-          title: '创建中',
+          title: id?'修改中':"发布中",
           icon: 'loading'
         })
         //设置type
         
-        let { data } = await taskApi.add(params)
+        let { data } = await taskApi[id?'update':'add'](params)
         if (data) {
           this.$invoke('toast', 'showToast', {
-            title: '创建成功',
+            title: id?'修改成功':"发布成功",
             icon: 'success'
-          })
-          setTimeout(() => {
-            wepy.navigateTo({
-              url: '/pages/post/details/task/index?type='+data
-            })
-          }, 3000)
+          });
+          if(!id){
+              setTimeout(() => {
+                  wepy.navigateTo({
+                      url: '/pages/post/details/task/index?id='+data
+                    })
+                }, 3000);
+          }else{
+            this.$back()
+        }
         } else {
           this.$invoke('toast', 'showToast', {
             title: '创建失败',
@@ -104,6 +110,42 @@ export default class ReleaseTask extends wepy.page {
         })
       }
     }
+  }
+  async onLoad({id=27}={}){
+
+    if(id){
+      this.id=id;
+      await this.loadInfo(id)
+      this.$apply();
+    }
+  }
+  async loadInfo(id){
+    try {
+        this.$invoke('toast', 'showToast', {
+          title: "获取信息中",
+          icon: "loading",
+          mask: true
+        })
+        let { data } = await taskApi.info({ id })
+        let time = data['dueDate'].split(' ');
+        data['dueTime'] = time[1]
+        data['dueDate'] = time[0]
+        data['tel'] =data['contactTel']
+        for( let key in this.types){
+          if(this.types[key]['tid']==data.tid){
+            data['type'] = key;
+          }
+        }
+        this.form = data;
+        this.$apply()
+        this.$invoke('toast', 'hiddenToast')
+      } catch (e) {
+        this.$invoke('toast', 'showToast', {
+          title: e.message,
+          icon: "error",
+          mask: true
+        })
+      }
   }
   onShow() {
     let date = new Date()

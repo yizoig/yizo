@@ -16,7 +16,7 @@
       creater: null,
       runner: null,
       detail: {},
-      imagePath: goodApi.uploadImage
+      imagePath: goodApi.uploadImage,
     }
     methods = {
       callphone: (phone) => {
@@ -65,10 +65,14 @@
           mask: true
         })
         let { data } = await goodApi.info({ id: this.id })
+        data['recordnum'] = 0;
         for (let item of data['records']) {
           //代表参与了
           if (item.uid == this.userInfo['uid']) {
             data['flag'] = 'join';
+          }
+          if (item.state >= 0) {
+            data['recordnum']++;
           }
         }
         this.detail = data

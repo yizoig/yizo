@@ -17,9 +17,9 @@ module.exports = class User extends JikeJs.Controller {
     /**
      * 修改用户基本信息
      */
-    async updateInfo({ id, gender, nickname }) {
+    async updateInfo({ id, ugender, nickname }) {
         let model = new UserModel();
-        return await model.updateInfo(id, { user_gender: gender, nick_name: nickname });
+        return await model.updateInfo(id, { user_gender: ugender, nick_name: nickname });
     }
     /**
      * 获取用户基本信息

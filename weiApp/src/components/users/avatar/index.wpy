@@ -20,9 +20,6 @@
     data = {
       avatarPath: UserApi.avatar
     }
-    onLoad() {
-      console.log(this)
-    }
   }
 </script>
 <style>

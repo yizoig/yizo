@@ -65,33 +65,38 @@ module.exports = class TaskModel extends JikeJs.Model {
     }
 
     async add(user_id, { title, content, contact, tel, college, type, dueDate, rewardType, reward, money, number, gender }) {
-
-        //开启事务
-        await this.startTrans();
-        let { insertId: pid = null } = await this.table("posts").data({
-            post_title: title,
-            post_content: content,
-            create_by: user_id,
-            contact,
-            contact_tel: tel,
-            college,
-            type
-        }).insert();
-        let { insertId: tid = null } = await this.table("tasks").data({
-            post_id: pid,
-            due_date: dueDate,
-            reward_type: rewardType,
-            reward,
-            [rewardType == 0 ? 'money' : "reward"]: reward,
-            state: 0,
-            gender
-        }).insert();
-        if (!(pid && tid)) {
+        try {
+            //开启事务
+            await this.startTrans();
+            let { insertId: pid = null } = await this.table("posts").data({
+                post_title: title,
+                post_content: content,
+                create_by: user_id,
+                contact,
+                contact_tel: tel,
+                college,
+                type
+            }).insert();
+            let { insertId: tid = null } = await this.table("tasks").data({
+                post_id: pid,
+                due_date: dueDate,
+                reward_type: rewardType,
+                reward,
+                [rewardType == 0 ? 'money' : "reward"]: reward,
+                state: 0,
+                gender
+            }).insert();
+            this.query('update colleges set now_live = now_live+1,liveness=liveness+1 where college_id =' + college);
+            if (!(pid && tid)) {
+                await this.rollback();
+                return false;
+            }
+            await this.commit();
+            return pid;
+        } catch (e) {
             await this.rollback();
-            return false;
+            throw e;
         }
-        await this.commit();
-        return pid;
     }
     async del(ids, is_del) {
 
@@ -113,7 +118,7 @@ module.exports = class TaskModel extends JikeJs.Model {
     async updateInfo(id, { title, content, contact, tel, college, type, dueDate, rewardType, reward, money, number }) {
         try {
             await this.startTrans();
-            let { affectedRows: affectedRows1 } = this.table("posts").where({ post_id: id }).data({
+            let { affectedRows: affectedRows1 } = await this.table("posts").where({ post_id: id }).data({
                 post_title: title,
                 post_content: content,
                 contact,
@@ -121,8 +126,8 @@ module.exports = class TaskModel extends JikeJs.Model {
                 college,
                 type
             }).update();
-            let { affectedRows: affectedRows2 } = this.table("tasks").where({ post_id: id }).data({
-                due_time: dueDate,
+            let { affectedRows: affectedRows2 } = await this.table("tasks").where({ post_id: id }).data({
+                due_date: dueDate,
                 reward_type: rewardType,
                 reward, money,
                 number
@@ -159,8 +164,13 @@ module.exports = class TaskModel extends JikeJs.Model {
             throw new Error("不存在任务")
         }
         info['records'] = await this
-            .field("record_id as rid,user as uid,users.nick_name uname,state,task_records._c")
+            .field("record_id as rid,user as uid,users.nick_name uname,task_records.state,task_records._c")
             .join("join users on task_records.user=users.user_id")
+            .join("join tasks on tasks.task_id=task_records.task_id")
+            .join("join posts on posts.post_id=tasks.post_id")
+            .where({
+                "posts.post_id": id
+            })
             .table("task_records").select() || [];
         return info;
     }

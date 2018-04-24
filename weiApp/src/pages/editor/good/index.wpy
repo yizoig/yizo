@@ -5,7 +5,7 @@
     import Toast from '../../../components/toast/index'
     import Alert from '../../../components/alert/index'
     import { Validate } from '../../../lib/utils/index'
-    export default class ReleaseGood extends wepy.page {
+    export default class editorGood extends wepy.page {
         data = {
             form: {
                 rewardType: 'money',
@@ -58,7 +58,7 @@
                     }
                 })
             },
-            release: async function () {
+            editor: async function () {
                 let params = { ...this.form };
                 try {
                     params['type'] = this.types[this.form['type']]['tid'];

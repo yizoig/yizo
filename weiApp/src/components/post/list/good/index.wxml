@@ -32,7 +32,6 @@
                     </view>
                     <view class="footer">
                         <view class="content">
-                            <view class="iconfont icon-point"></view>
                             {{good.content}}
                         </view>
                     </view>

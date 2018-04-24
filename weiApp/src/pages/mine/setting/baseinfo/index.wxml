@@ -1,21 +1,23 @@
 <view id="baseinfo">
   <toast></toast>
-  <view class="avatar">
-    <image src="{{userInfo['avatar']}}" style="width:150rpx;height:150rpx;border-radius:100%;border:5px solid #ddd;"></image>
-  </view>
-  <view class="form">
-    <view class="form-row">
-      <label>昵称</label>
-      <input class="form-widget" value="{{userInfo['nickName']}}" bindinput="edit" data-name="nickname"/>
+  <view class="content">
+    <view class="avatar">
+      <image src="{{userInfo['avatar']}}" ></image>
     </view>
-
-    <radio-group class="form-row" bindchange="edit" data-name="gender">
-      <label>姓名</label>
-      <view class="form-widget">
-        <radio value="0" checked="{{userInfo['ugender']==0}}" />女
-        <radio value="1" checked="{{userInfo['ugender']==1}}" />男
+    <view class="form">
+      <view class="form-row">
+        <label>昵称</label>
+        <input class="form-widget" value="{{userInfo['nickname']}}" bindinput="edit" data-name="nickname" />
       </view>
-    </radio-group>
+
+      <radio-group class="form-row" bindchange="edit" data-name="ugender">
+        <label>姓名</label>
+        <view class="form-widget">
+          <radio value="0" checked="{{userInfo['ugender']==0}}" />女
+          <radio value="1" checked="{{userInfo['ugender']==1}}" />男
+        </view>
+      </radio-group>
+    </view>
+    <view class="save-btn {{edit?'':'disabled'}}" @tap="{{edit?'submit':null}}">提交保存</view>
   </view>
-  <view class="save-btn {{edit?'':'disabled'}}" @tap="{{edit?'submit':null}}">提交保存</view>
 </view>

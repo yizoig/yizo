@@ -28,13 +28,13 @@
         let { data: userInfo } = await wepy.getStorage({
           key: 'userInfo'
         })
-        console.log(this.detail)
         this.$invoke('alert', 'showAlert', {
           title: '写评论',
           placeholder: '请输入你想说的话',
           okText: '评论',
           onOK: async (content) => {
             let result = await postApi.commentAdd({ id: this.detail['pid'], content });
+            await this.loadData();
           }
         })
       }

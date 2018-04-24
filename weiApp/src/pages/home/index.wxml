@@ -10,7 +10,7 @@
                     <view class="name">{{college.cname}}</view>
                     <view class="mes">
                         <text>人气:{{college.liveness}}</text>
-                        <text>昨日新增:{{college.yest_live}}</text>
+                        <text>今日新增:{{college.now_live}}</text>
                     </view>
                 </view>
             </view>
@@ -22,7 +22,7 @@
         <view class="menu">
             <view class="menus">
                 <repeat for="{{menus}}" item="menu" index="menuIndex" key="unique">
-                    <view class="nav-item {{current==menuIndex?'active':''}}" bindtap="onSwitch" data-type="menu" data-index="{{menuIndex}}">
+                    <view class="nav-item {{current==menuIndex?'active':''}}" @tap="onSwitch" data-type="menu" data-index="{{menuIndex}}">
                         <text class="title">{{menu.tname}}</text>
                     </view>
                 </repeat>

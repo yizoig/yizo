@@ -17,6 +17,7 @@ module.exports = {
                 search: Dvm.string(),
                 page: Dvm.number().min(1, true).default(1),
                 pageSize: Dvm.number().default(5),
+                ids:Dvm.array(),
                 use: Dvm.number().in([0, 1]),
                 del: Dvm.number().in([0, 1]).default(0)
             },

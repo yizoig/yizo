@@ -6,10 +6,10 @@ module.exports = class College extends JikeJs.Controller {
     /**
      * 获取学校列表
      */
-    async list({ search, page, pageSize, del, use }) {
+    async list({ search, page, pageSize, del, use,ids }) {
 
         let model = new CollegeModel();
-        return await model.list({ search, page, pageSize, del, use });
+        return await model.list({ search, page, pageSize, del, use,ids });
     }
     /**
      * 修改学校基本信息

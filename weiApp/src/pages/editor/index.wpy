@@ -3,7 +3,7 @@
 import wepy from 'wepy'
 // import request from '../../utils/api'
 // import { host } from '../../config/api'
-export default class Release extends wepy.page {
+export default class editor extends wepy.page {
   methods = {
     navigateTo: function (url) {
       wepy.navigateTo({

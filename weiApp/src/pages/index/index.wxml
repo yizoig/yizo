@@ -13,7 +13,7 @@
                         </view>
                         <view class="mes">
                             <text>人气:{{item.liveness}}</text>
-                            <text>昨日新增:{{item.yest_live}}</text>
+                            <text>今日新增:{{item.now_live}}</text>
                         </view>
                     </view>
                 </view>
@@ -21,7 +21,7 @@
         </view>
     </view>
     <view >
-        <view class="title">附近的学校</view>
+        <view class="title">开通的学校</view>
         <view class="list">
             <view wx:for="{{colleges}}" wx:key="unique">
                 <view class="item" hover-class="item-active" @tap="onSelect" data-id="{{item.cid}}">
@@ -32,7 +32,7 @@
                             </view>
                             <view class="mes">
                                 <text>人气:{{item.liveness}}</text>
-                                <text>昨日新增:{{item.yest_live}}</text>
+                                <text>今日新增:{{item.now_live}}</text>
                             </view>
                         </view>
                 </view>

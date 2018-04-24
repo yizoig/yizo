@@ -11,7 +11,8 @@
         }
         data = {
             colleges: [],
-            visitCollege: null
+            visitColleges: null,
+            visit: {}
         }
         components = {
             toast: Toast
@@ -21,15 +22,10 @@
                 let { id = null } = e.currentTarget.dataset
                 let college = this.colleges[id];
 
-                let { visitCollege = {} } = this.data;
+                let { visit = {} } = this.data;
+                visit[id] = new Date().getTime();
                 //保存浏览的学校
-                wepy.setStorageSync("colleges", {
-                    [id]: {
-                        ...college,
-                        _c: new Date().getTime()
-                    },
-                    ...visitCollege
-                });
+                wepy.setStorageSync("visitColleges", visit);
                 //保存当前点击的学校
                 wepy.setStorageSync('college', college)
                 this.$parent.globalData.college = college;
@@ -43,16 +39,22 @@
             wepy.stopPullDownRefresh()
         }
         onLoad() {
+
+            // //获取浏览过的学校
+            // this.visit = wepy.getStorageSync('visitColleges') || {};
+            // //获取访问的学校
+            // this.loadData({ ids: Object.keys(this.visit) })
             this.loadData()
         }
-        async loadData() {
+        async loadData(data) {
+            //获取学校
             try {
                 this.$invoke('toast', 'showToast', {
-                    title: "正在查找附近的学校中",
+                    title: "正在查找开通的学校中",
                     icon: "loading",
                     mask: true
                 })
-                let { data } = await collegeApi.list()
+                let { data } = await collegeApi.list(data)
                 let { list } = data
                 let colleges = {};
                 //转换成数组
@@ -63,16 +65,6 @@
                     }
                 }
                 this.colleges = colleges;
-
-                //获取浏览过的学校
-                let visitCollege = wepy.getStorageSync('colleges');
-                if (visitCollege) {
-                    for (let key in visitCollege) {
-                        let time = new Date(visitCollege[key]['_c'])
-                        visitCollege[key]['_c'] = time.getDateDiff(time)
-                    }
-                }
-                this.visitCollege = visitCollege;
                 this.$apply()
                 this.$invoke('toast', 'hiddenToast')
             } catch (e) {

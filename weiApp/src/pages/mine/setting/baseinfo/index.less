@@ -1,44 +1,65 @@
-#baseinfo{
-  .avatar{
-    padding: 20rpx;
-    display: flex;
-    justify-content: center;
-    overflow: hidden;
-  }
-  .form{
-    .form-row{
-      label{
-        background: #f0f0f0;
-        font-size: 30rpx;
-        display: block;
-        padding-left: 20rpx;
-        line-height: 60rpx;
-      }
-      .form-widget{
-        display: block;
-        font-size: 30rpx;
-        padding:0  20rpx;
-        line-height:80rpx;
-        height: 80rpx;
-        radio{
-          margin-left: 20rpx;
+@import '../../../../var';
+page {
+    background: #f8f8f8;
+}
+
+#baseinfo {
+    .avatar {
+        padding: 5rpx;
+        display: flex;
+        justify-content: center;
+        overflow: hidden;
+        image {
+            width: 150rpx;
+            height: 150rpx;
+            border-radius: 100%;
+            border: 3px solid #ddd;
         }
-      }
     }
-  }
-  .save-btn{
-    position: fixed;
-    bottom:0;
-    left: 0;
-    right:0;
-    color: #fff;
-    background: #3385ff;
-    line-height: 80rpx;
-    text-align: center;
-    z-index: 10;
-    &.disabled{
-      background: #f7f7f7;
-      color: #d9d9d9;
+    .content {
+        margin: 20px;
+        padding: 10px 5px;
+        border-radius: 5px;
+        box-shadow: 0 0 3px #ccc;
+        background: #fff;
     }
-  }
+    .form {
+        .form-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 5px;
+            label {
+                font-size: 34rpx;
+                display: block;
+                padding-left: 20rpx;
+                line-height: 60rpx;
+            }
+            input{
+              text-align: right;
+            }
+            .form-widget {
+                display: block;
+                font-size: 32rpx;
+                padding: 0 20rpx;
+                line-height: 80rpx;
+                height: 80rpx;
+            }
+        }
+    }
+    .save-btn {
+        color: #fff;
+        background: @primaryColor;
+        line-height: 80rpx;
+        text-align: center;
+        z-index: 10;
+        font-size: 30rpx;
+        margin: 20px auto 0;
+        width: 100px;
+        border-radius: 20px;
+        &.disabled {
+            background: #f7f7f7;
+            color: #d9d9d9;
+        }
+    }
 }

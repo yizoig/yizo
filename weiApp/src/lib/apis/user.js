@@ -8,7 +8,7 @@ const UserApi = {
   //微信快捷登录
   weixinSignin:Apis.post(host+'/users/wxSignIn'),
   //修改基本信息
-  updateInfo:Apis.put(host+'/users/:id'),
+  updateInfo:Apis.put(host+'/users/:uid'),
   //修改密码
   changePwd:Apis.put(host+'/users/pwd/:id'),
   //修改手机号

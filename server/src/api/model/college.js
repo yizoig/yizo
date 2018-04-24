@@ -11,7 +11,7 @@ module.exports = class College extends JikeJs.Model {
     /**
      * 获取学校列表
      */
-    async list({ search, pageable, page, pageSize, del, use }) {
+    async list({ search, pageable, page, pageSize, del, use, ids }) {
 
         let total;
         let _where = [];
@@ -25,11 +25,16 @@ module.exports = class College extends JikeJs.Model {
                 is_use: use
             }, "AND")
         }
+        if (!this.isUndefined(ids)) {
+            _where.push({
+                college_id: ['in', ids]
+            }, "AND")
+        }
         _where.push({
             is_del: del
         })
         total = await this.where(_where).count();
-        let list = await this.field('college_id as cid,college_name as cname,_c as c_c,liveness,yesterday_live as yest_live,is_use,is_del').page(page - 1, pageSize).where(_where).select();
+        let list = await this.field('college_id as cid,college_name as cname,_c as c_c,liveness,now_live as now_live,is_use,is_del').page(page - 1, pageSize).where(_where).select();
         return {
             list,
             pagination: {

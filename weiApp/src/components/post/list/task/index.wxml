@@ -39,7 +39,6 @@
                         <text class="reward reward-money" wx:else>￥{{task.reward}}</text>
                         <view class="title ">{{task.title}}</view>
                         <view class="address">
-                            <view class="iconfont icon-point"></view>
                             {{task.content}}
                         </view>
                     </view>

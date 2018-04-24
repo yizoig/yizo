@@ -71,31 +71,36 @@ module.exports = class Good extends JikeJs.Model {
      */
     async add(user_id, { title, content, college, contact, tel, images, type, price, oprice, number }) {
 
-
-        //开启事务
-        await this.startTrans();
-        let { insertId: pid = null } = await this.table("posts").data({
-            post_title: title,
-            post_content: content,
-            create_by: user_id,
-            contact,
-            contact_tel: tel,
-            college,
-            type
-        }).insert();
-        let { insertId: tid = null } = await this.table("goods").data({
-            post_id: pid,
-            good_number: number,
-            good_price: price,
-            original_price: oprice,
-            images: images.join(',')
-        }).insert();
-        if (!(pid && tid)) {
+        try {
+            //开启事务
+            await this.startTrans();
+            let { insertId: pid = null } = await this.table("posts").data({
+                post_title: title,
+                post_content: content,
+                create_by: user_id,
+                contact,
+                contact_tel: tel,
+                college,
+                type
+            }).insert();
+            let { insertId: tid = null } = await this.table("goods").data({
+                post_id: pid,
+                good_number: number,
+                good_price: price,
+                original_price: oprice,
+                images: images.join(',')
+            }).insert();
+            this.query('update colleges set now_live = now_live+1,liveness=liveness+1 where college_id =' + college);
+            if (!(pid && tid)) {
+                await this.rollback();
+                return false;
+            }
+            await this.commit();
+            return pid;
+        } catch (e) {
             await this.rollback();
-            return false;
+            throw e;
         }
-        await this.commit();
-        return pid;
     }
 
     async updateInfo(id, data) {
@@ -137,7 +142,7 @@ module.exports = class Good extends JikeJs.Model {
     }
     async info(id) {
         let info = await this
-            .field('goods.post_id as pid,post_title as title,post_content as content,contact,contact_tel,create_by as createId,nick_name as createName,user_gender as createGender,images,post_types.type_id as type,post_types.type_name typeName,posts.college as cid,colleges.college_name as cName,state,good_price as price,original_price as oprice,good_number as number')
+            .field('goods.post_id as pid,post_title as title,post_content as content,contact,contact_tel as contactTel,create_by as createId,nick_name as createName,user_gender as createGender,images,post_types.type_id as type,post_types.type_name typeName,posts.college as cid,colleges.college_name as cName,state,good_price as price,original_price as oprice,good_number as number')
             .join('inner join posts on goods.post_id=posts.post_id')
             .join('inner join users on users.user_id=posts.create_by')
             .join("join colleges on colleges.college_id= posts.college")

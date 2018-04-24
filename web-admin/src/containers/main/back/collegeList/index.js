@@ -30,9 +30,9 @@ class CollegeList extends React.Component {
         key: 'liveness',
         width: 100
     },{
-        title: '昨日人气',
-        dataIndex: 'yest_live',
-        key: 'yest_live',
+        title: '今日人气',
+        dataIndex: 'now_live',
+        key: 'now_live',
         width: 100
     }, {
         title: '操作',

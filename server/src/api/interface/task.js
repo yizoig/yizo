@@ -114,8 +114,8 @@ module.exports = {
          */
         {
             path: '/state/:id',
-            method: 'putState',
-            action: 'join',
+            method: 'put',
+            action: 'putState',
             middle: [tokenVerify, userCheck],
             rules: {
                 //-1表示结束 1完成

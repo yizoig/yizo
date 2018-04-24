@@ -7,5 +7,7 @@ const taskApi = {
   info:Apis.get(host+'/tasks/:id'),
   //添加任务
   add:Apis.post(host+'/tasks'),
+  update:Apis.put(host+'/tasks/:pid'),
+  putstate:Apis.put(host+'/tasks/state/:pid')
 }
 export default taskApi;

@@ -66,10 +66,9 @@
          */
         async loadMore({ refresh = false } = {}) {
             try {
-
                 let { items, pageSize } = this.data;
                 let { current } = this.data;
-                if(items.length==0 || !(current in items)){
+                if (items.length == 0 || !(current in items)) {
                     return;
                 }
                 this.$invoke('toast', 'showToast', {
@@ -77,7 +76,6 @@
                     icon: "loading",
                     mask: true
                 });
-                console.log(current, items[current])
                 let { id, list, page } = items[current];
                 let { cid } = wepy.getStorageSync('college') || {}
                 let { data: { list: tasks, pagination: { total = 0 } } } = await taskApi.list({ pageSize, college: cid, type: id, page })
@@ -90,7 +88,6 @@
                     tasks[i]['_c'] = time.getDateDiff(time)
                 }
                 if (refresh) {
-
                     items[current] = {
                         list: tasks,
                         page: 1,
@@ -106,9 +103,9 @@
                         id
                     }
                 }
-                this.items = { ...items };
+                this.items = JSON.parse(JSON.stringify(items));
+                this.$apply();
                 this.$invoke('toast', 'hiddenToast')
-                this.$apply()
             } catch (e) {
                 console.error(e)
                 this.$invoke('toast', 'showToast', {
@@ -117,8 +114,6 @@
                     mask: true
                 })
             }
-        }
-        onLoad() {
         }
     }
 </script>
