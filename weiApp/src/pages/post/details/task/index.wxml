@@ -68,7 +68,7 @@
     </view>
     <comment :detail.sync="detail"></comment>
     <view class="fix-btn">
-        <block wx:if="{{detail['flag']}}">
+        <block wx:if="{{detail['createId']!=userInfo['uid']}}">
             <view class="btn" style="width:130rpx;" @tap="callphone({{detail['contactTel']}})">
                 <text class="iconfont icon-setting"></text>
                 <view class="title">联系</view>

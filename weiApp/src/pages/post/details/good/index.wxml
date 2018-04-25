@@ -42,7 +42,7 @@
     </view>
     <comment :detail.sync="detail"></comment>
     <view class="fix-btn">
-        <block wx:if="{{detail['flag']}}">
+        <block wx:if="{{detail['createId']!=userInfo['uid']}}">
             <view class="btn" style="width:130rpx;" @tap="callphone({{detail['contactTel']}})">
                 <text class="iconfont icon-setting"></text>
                 <view class="title">联系</view>
@@ -61,24 +61,15 @@
                     <view class="title">物品售罄</view>
                 </view>
             </block>
-            <!-- 参与者-->
-            <block wx:elif="{{detail['flag']}}">
-                <block>
-                    <view class="btn" style="flex:1;background:#FF5164;color:#fff" @tap="quit">
-                        <view class="title">退出任务</view>
-                    </view>
-                </block>
-            </block>
-            <!-- 其他-->
             <block wx:else>
                 <view class="btn" style="flex:1;background:#F1A468;color:#fff" @tap="join">
-                    <view class="title">接受任务</view>
+                    <view class="title">我要购买</view>
                 </view>
             </block>
         </block>
         <block wx:else>
             <view class="btn" style="flex:1;background:#ccc;color:#fff">
-                <view class="title">{{detail['state']==-1?"任务已关闭":"任务已完成"}}</view>
+                <view class="title">我要购买</view>
             </view>
         </block>
     </view>

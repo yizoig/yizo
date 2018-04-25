@@ -1,0 +1,44 @@
+<view class="task-detail-records">
+    <toast></toast>
+    <view class="card detail-content">
+        <view class="title">{{detail['title']}}
+            <text class="type-name">{{detail['tName']}}</text>
+        </view>
+        <view class="content">{{detail['content']}}</view>
+        <view class="reward">{{detail['reward_type']==1?"￥":""}}{{detail.reward}}</view>
+    </view>
+    <view class="card creater-info">
+        <view class="header">发布者信息</view>
+        <view class="content item">
+            <view class="info">
+                <image src="{{avatar+detail['createId']+'.ava'}}" />
+                <view class="top">
+                    <view class="username">{{detail['createName']}}
+                        <text class="iconfont icon-{{detail['createGender']==0?'female':'male'}}">
+                    </view>
+                    <view class="bottom">{{detail['cName']}}</view>
+                </view>
+            </view>
+            <view class="call" @tap="callphone({{detail['contactTel']}})" wx:if="{{detail['createId']!=userInfo.uid}}">拨打电话</view>
+        </view>
+    </view>
+    <view class="card detail-records">
+        <view class="header">接受者信息</view>
+        <view class="content items">
+            <repeat for="{{detail['records']}}" item="record">
+                <view class="item">
+                    <view class="info">
+                        <image src="{{avatar+record['uid']+'.ava'}}" />
+                        <view class="top">
+                            <view class="username">{{record['uname']}}
+                                <text class="iconfont icon-{{record['ugender']==0?'female':'male'}}">
+                            </view>
+                            <view class="bottom">{{record['cName']||""}}</view>
+                        </view>
+                    </view>
+                    <view class="call" @tap="callphone({{record['contactTel']}})" wx:if="{{detail['flag']}}">拨打电话</view>
+                </view>
+            </repeat>
+        </view>
+    </view>
+</view>

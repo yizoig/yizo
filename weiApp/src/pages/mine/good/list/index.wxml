@@ -21,13 +21,16 @@
                             <view class="content ">{{task.content}}</view>
                             <view class="type-name ">{{task.tName}}</view>
                             <view class="join-detail">
-                                <text>报名{{task.users.length}}人/需要{{task.number||0}}人</text>
+                                <text>剩余{{task.users.length}}件/一共{{task.number||0}}件</text>
                                 <view class="join">
                                     <repeat for="{{task.users}}" item="avatar" index="index">
                                         <image src="{{avatar}}" wx:if="{{index<=5}}"/>
                                     </repeat>
                                 </view>
-                                <text style="color:#f00">{{task.rewardType==0?"￥":""}}{{task.reward}}</text>
+                                <view style="color:#f00;text-align: center;">
+                                        ￥{{task.price}}
+                                        <view style="color:#666;">原价{{task.oprice}}</view>
+                                </view>
                             </view>
                         </view>
                     </view>

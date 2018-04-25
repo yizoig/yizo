@@ -48,14 +48,13 @@ module.exports = class TaskModel extends JikeJs.Model {
             .where(_where).count();
         //获取列表
         let list = await this
-            .field("posts.post_id as pid,post_title as title,post_content as content,create_by as createId,users.nick_name as createName,users.user_gender as createGender,posts.type as tid,post_types.type_name as tName,posts.college as cid,colleges.college_name as cName,reward_type AS rewardType,if(reward_type=0,money,reward) as reward,number,tasks.state,gender,tasks._c")
+            .field("posts.post_id as pid,post_title as title,post_content as content,create_by as createId,users.nick_name as createName,users.user_gender as createGender,posts.type as tid,post_types.type_name as tName,posts.college as cid,colleges.college_name as cName,reward_type AS rewardType,if(reward_type=0,money,reward) as reward,number,tasks.state,gender,posts._c,group_concat(task_records.user) as users")
             .join('inner join posts on posts.post_id=tasks.post_id')
             .join('left join task_records on task_records.task_id=tasks.task_id')
             .join('inner join users on users.user_id=posts.create_by')
             .join('inner join post_types on posts.type=post_types.type_id')
             .join('inner join colleges on colleges.college_id=posts.college')
-            .where(_where).page(page - 1, pageSize).select();
-
+            .where(_where).group('posts.post_id').order('posts._c desc').page(page - 1, pageSize).select();
         return {
             list,
             pagination: {
@@ -84,7 +83,8 @@ module.exports = class TaskModel extends JikeJs.Model {
                 reward,
                 [rewardType == 0 ? 'money' : "reward"]: reward,
                 state: 0,
-                gender
+                gender,
+                number
             }).insert();
             this.query('update colleges set now_live = now_live+1,liveness=liveness+1 where college_id =' + college);
             if (!(pid && tid)) {
@@ -164,9 +164,10 @@ module.exports = class TaskModel extends JikeJs.Model {
             throw new Error("不存在任务")
         }
         info['records'] = await this
-            .field("record_id as rid,user as uid,users.nick_name uname,task_records.state,task_records._c")
+            .field("record_id as rid,user as uid,users.nick_name uname,users.user_gender as ugender,task_records.state,college_id as cid,college_name as cName,task_records._c,task_records.contact,task_records.contact_tel as contactTel")
             .join("join users on task_records.user=users.user_id")
             .join("join tasks on tasks.task_id=task_records.task_id")
+            .join("left join  colleges on colleges.college_id= users.college")
             .join("join posts on posts.post_id=tasks.post_id")
             .where({
                 "posts.post_id": id

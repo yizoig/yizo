@@ -1,0 +1,95 @@
+@import '../../../../var';
+page {
+    background: #e8e8e8;
+}
+
+.good-detail-records {
+    .detail-content {
+        padding: 10px;
+        position: relative;
+        .title {
+            font-size: 15px;
+            padding-right: 40px;
+        }
+        .content {
+            font-size: 12px;
+            text-indent: 12px;
+            padding-right: 50px;
+        }
+        .reward {
+            position: absolute;
+            top: 33px;
+            right: 5px;
+            color: #FF5164;
+            font-size: 26rpx;
+            font-weight: bold;
+        }
+        .type-name {
+            font-size: 25rpx;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #1890ff;
+            color: #fff;
+            padding: 2px 5px;
+            border-radius: 5px;
+        }
+    }
+    .detail-records {
+        .items {}
+    }
+    
+    .item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        
+        .info {
+            display: flex;
+            flex-direction: row;
+            padding: 8px 10px;
+            image {
+                width: 30px;
+                height: 30px;
+                border-radius: 100%;
+                box-shadow: 0 0 3px 000;
+            }
+            .top {
+                display: flex;
+                flex-direction: column;
+                margin-left: 10px;
+                .username {
+                    font-size: 13px;
+                }
+            }
+            .bottom {
+                font-size: 12px;
+            }
+           
+        }
+        .call {
+            background: @primaryColor;
+            color: #fff;
+            font-size: 13px;
+            padding: 3px 5px;
+        }
+    }
+    .images {
+        overflow-x: scroll;
+        overflow-y: hidden;
+        width: 100%;
+        display: flex;
+        display: -webkit-box;
+        .item {
+            flex: 1;
+            border-radius: 8px;
+            margin: 10px 10px 10px 5px;
+            overflow: hidden;
+            box-shadow: 0 0 5px #ccc;
+            &>image {
+                width: 100px;
+                height: 130px;
+            }
+        }
+    }
+}

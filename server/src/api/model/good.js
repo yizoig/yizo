@@ -22,12 +22,12 @@ module.exports = class Good extends JikeJs.Model {
         }
         if (!this.isUndefined(partner)) {
             _where.push([
-                { user_id: partner }
+                { "good_buy_records.user_id": partner }
             ])
         }
-        if (!this.isUndefined(partner)) {
+        if (!this.isUndefined(college)) {
             _where.push([
-                { college: college }
+                {  "posts.college": college }
             ])
         }
         if (!this.isUndefined(type)) {
@@ -49,7 +49,7 @@ module.exports = class Good extends JikeJs.Model {
             .where(_where)
             .count();
         let list = await this
-            .field('posts.post_id as pid,post_title as title,post_content as content,create_by as createId,users.nick_name as createName,users.user_gender as createGender,posts.type as tid,post_types.type_name as tName,posts.college as cid,colleges.college_name as cName,good_number as number,good_price as price,original_price as oprice,images,goods.state,goods._c')
+            .field('posts.post_id as pid,post_title as title,post_content as content,create_by as createId,users.nick_name as createName,users.user_gender as createGender,posts.type as tid,post_types.type_name as tName,posts.college as cid,colleges.college_name as cName,good_number as number,good_price as price,original_price as oprice,images,goods.state,goods._c,group_concat(good_buy_records.user_id) as users')
             .join('inner join posts on goods.post_id=posts.post_id')
             .join('inner join users on users.user_id=posts.create_by')
             .join('left join good_buy_records on good_buy_records.good_id=goods.good_id')
@@ -58,6 +58,7 @@ module.exports = class Good extends JikeJs.Model {
             .join('inner join colleges on colleges.college_id=posts.college')
             .where(_where)
             .page(page - 1, pageSize)
+            .group("posts.post_id")
             .select();
         return {
             list,
@@ -142,7 +143,7 @@ module.exports = class Good extends JikeJs.Model {
     }
     async info(id) {
         let info = await this
-            .field('goods.post_id as pid,post_title as title,post_content as content,contact,contact_tel as contactTel,create_by as createId,nick_name as createName,user_gender as createGender,images,post_types.type_id as type,post_types.type_name typeName,posts.college as cid,colleges.college_name as cName,state,good_price as price,original_price as oprice,good_number as number')
+            .field('goods.post_id as pid,post_title as title,post_content as content,contact,contact_tel as contactTel,create_by as createId,nick_name as createName,user_gender as createGender,images,post_types.type_id as type,post_types.type_name tName,posts.college as cid,colleges.college_name as cName,state,good_price as price,original_price as oprice,good_number as number')
             .join('inner join posts on goods.post_id=posts.post_id')
             .join('inner join users on users.user_id=posts.create_by')
             .join("join colleges on colleges.college_id= posts.college")
@@ -154,10 +155,11 @@ module.exports = class Good extends JikeJs.Model {
         if (info) {
             info['images'] = info['images'].split(',');
             info['records'] = await this.table("good_buy_records")
-                .field('record_id as id,users.user_id as user,nick_name as uname,buy_num as num,total,good_buy_records.state,good_buy_records._c')
+                .field('record_id as id,users.user_id as uid,nick_name as uname,users.user_gender as ugender,buy_num as num,total,good_buy_records.state,good_buy_records._c,college_id as cid,college_name as cName,good_buy_records._c,good_buy_records.contact,good_buy_records.contact_tel as contactTel')
                 .join('inner join users on users.user_id=good_buy_records.user_id')
                 .join('inner join goods on goods.good_id=good_buy_records.good_id')
                 .join('inner join posts on posts.post_id=goods.post_id')
+                .join("left join  colleges on colleges.college_id= users.college")
                 .where({
                     "posts.post_id": id
                 }).select()

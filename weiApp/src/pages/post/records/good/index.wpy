@@ -1,0 +1,125 @@
+<script>
+    import wepy from 'wepy'
+    import 'wepy-async-function'
+    import goodApi from '../../../../lib/apis/good'
+    import userApi from '../../../../lib/apis/user'
+    import Avatar from '../../../../components/users/avatar/index'
+    import Toast from '../../../../components/toast/index'
+    import Comment from '../../../../components/post/comment/index'
+    export default class Task extends wepy.page {
+        config = {
+            'enablePullDownRefresh': true,
+            'backgroundColor': '#3385ff'
+        }
+        data = {
+            orderId: null,
+            userInfo: {},
+            creater: null,
+            runner: null,
+            detail: {},
+            avatar: userApi.avatar,
+            imagePath: goodApi.uploadImage,
+        }
+        methods = {
+            callphone: (phone) => {
+                wepy.makePhoneCall({
+                    phoneNumber: phone + ''
+                })
+            },
+            gohome: () => {
+                wepy.switchTab({
+                    url: '/pages/home/index'
+                })
+            },
+            /**
+             * 编辑
+             */
+            editor: () => {
+                wepy.navigateTo({
+                    url: '/pages/editor/good/index?id=' + this.detail['pid']
+                })
+            },
+            putstate: async (type) => {
+                try {
+                    this.$invoke('toast', 'showToast', {
+                        title: type == -1 ? "关闭中" : "结束中",
+                        icon: "loading",
+                        mask: true
+                    })
+                    let result = await goodApi.putstate({ pid: this.detail['pid'], type })
+                    if (!result) {
+                        throw new Error("操作失败")
+                    }
+                    this.$invoke('toast', 'showToast', {
+                        title: type == -1 ? "关闭成功" : "结束成功",
+                        icon: "success",
+                        mask: true
+                    })
+                } catch (e) {
+                    console.error(e)
+                    this.$invoke('toast', 'showToast', {
+                        title: type == -1 ? "关闭失败" : "结束失败",
+                        icon: "error",
+                        mask: true
+                    })
+                } finally {
+                    this.loadData();
+                }
+            }
+        }
+        components = {
+            avatar: Avatar,
+            toast: Toast,
+            comment: Comment
+        }
+        onLoad({ id } = {}) {
+            this.id = id
+            this.userInfo = this.$parent.globalData['userInfo']
+            this.$apply()
+            this.loadData()
+        }
+        async onPullDownRefresh() {
+            /**
+             * 与指定的组件通信
+             */
+            await this.loadData()
+        }
+        onShow() {
+            this.loadData();
+        }
+        async loadData() {
+            try {
+                this.$invoke('toast', 'showToast', {
+                    title: "获取信息中",
+                    icon: "loading",
+                    mask: true
+                })
+                let { data } = await goodApi.info({ id: this.id })
+                for (let item of data['records']) {
+                    //代表参与了
+                    if (item.uid == this.userInfo['uid']) {
+                        data['flag'] = 'join';
+                    }
+                }
+                this.detail = data
+                let time = new Date(this.detail['_c'])
+                this.detail['_c'] = time.getDateDiff(time)
+                this.$invoke('avatar', 'setId', {
+                    id: data['createId']
+                })
+                this.$apply()
+                this.$invoke('toast', 'hiddenToast')
+                wepy.stopPullDownRefresh()
+            } catch (e) {
+                console.error(e)
+                this.$invoke('toast', 'showToast', {
+                    title: e.message,
+                    icon: "error",
+                    mask: true
+                })
+            }
+        }
+    }
+</script>
+<style src="./index.less" lang="less"></style>
+<template lang="wxml" src="./index.wxml"></template>

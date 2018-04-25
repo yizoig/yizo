@@ -5,21 +5,22 @@
     import wepy from 'wepy'
     import Avatar from '../../../../components/users/avatar/index'
     import Toast from '../../../../components/toast/index'
-    import taskApi from '../../../../lib/apis/task'
+    import goodApi from '../../../../lib/apis/good'
     import userApi from '../../../../lib/apis/user'
-    export default class taskList extends wepy.page {
+    export default class goodList extends wepy.page {
         data = {
             menus: {},
             current: null,
             items: {},
             pageSize: 5,
             userInfo: null,
-            type: "creater"
+            type: "creater",
+            imagePath: goodApi.uploadImage,
         }
         methods = {
             onView: function (e) {
                 wepy.navigateTo({
-                    url: '/pages/post/records/task/index?id=' + e.currentTarget.dataset.id
+                    url: '/pages/post/records/good/index?id=' + e.currentTarget.dataset.id
                 })
             },
             onSwitch: function (e) {
@@ -52,19 +53,20 @@
                 });
                 let { page, list } = items[id]
                 let { cid } = wepy.getStorageSync('college') || {}
-                let { data: { list: tasks, pagination: { total = 0 } } } = await taskApi.list({ pageSize, college: cid, type:id,...data, page })
+                let { data: { list: goods, pagination: { total = 0 } } } = await goodApi.list({ pageSize, college: cid, type:id,...data, page })
                 /**
                  * 先进行数据处理
                  */
                 
-                for (let task of tasks) {
-                    task.users = (task.users || "").split(',');
-                    task.users = task.users.filter(id => id.trim()).map(id => (userApi.avatar + id + '.ava'))
+                for (let good of goods) {
+                    good.users = (good.users || "").split(',');
+                    good.users = good.users.filter(id => id.trim()).map(id => (userApi.avatar + id + '.ava'))
+                    good['images'] = good['images'].split(',')
                 }
                 if (refresh) {
 
                     items[id] = {
-                        list: tasks,
+                        list: goods,
                         page: 1,
                         total,
                         id
@@ -72,7 +74,7 @@
                     this.$emit('loadMoreOk', 'home')
                 } else {
                     items[id] = {
-                        list: [...tasks, ...list],
+                        list: [...goods, ...list],
                         page: ++page,
                         total,
                         id
@@ -103,7 +105,7 @@
             }
             let newMenus = {}
             for (let key in menus) {
-                if (menus[key]['tid'] == 1) {
+                if (menus[key]['tid'] == 2) {
                     for (let k in menus[key]['children']) {
                         if (k == 0) {
                             this.current = menus[key]['children'][k]['tid'];
@@ -121,7 +123,7 @@
             this.menus = newMenus;
             await this.loadMore({
                 id: this.current,
-                [type == 'create' ? 'creater' : "partner"]: this.userInfo['uid']
+                [this.type == 'create' ? 'creater' : "partner"]: this.userInfo['uid']
             });
             this.$apply();
         }

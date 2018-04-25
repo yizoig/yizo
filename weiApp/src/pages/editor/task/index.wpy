@@ -17,6 +17,7 @@ export default class editorTask extends wepy.page {
       rewardType: 0,
       number:1,
       type:0,
+      gender:-1
     },
     types:[]
   }
@@ -111,7 +112,7 @@ export default class editorTask extends wepy.page {
       }
     }
   }
-  async onLoad({id=27}={}){
+  async onLoad({id}={}){
 
     if(id){
       this.id=id;
