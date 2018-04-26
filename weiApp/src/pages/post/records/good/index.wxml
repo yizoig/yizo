@@ -46,7 +46,7 @@
                             <view class="bottom">{{record['cName']||""}}</view>
                         </view>
                     </view>
-                    <view class="call" @tap="callphone({{record['contactTel']}})" wx:if="{{detail['flag']}}">拨打电话</view>
+                    <view class="call" @tap="callphone({{record['contactTel']}})" >拨打电话</view>
                 </view>
             </repeat>
         </view>

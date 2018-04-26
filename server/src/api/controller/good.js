@@ -27,9 +27,24 @@ module.exports = class Good extends JikeJs.Controller {
     /**
      * 添加
      */
-    async update({ id, title, content, contact, contact_tel, images, type, price, oprice, number }) {
+    async update({ id, title, content, contact, tel, images, type, price, oprice, number }) {
         let model = new GoodModel();
-        return await model.updateInfo(id, { title, content, contact, contact_tel, images, type, price, oprice, number })
+        for (let img of images) {
+            let filename = path.join(__dirname, `../static/tmp/${img}`);
+            if (fs.existsSync(filename)) {
+                fs.renameSync(path.join(__dirname, `../static/tmp/${img}`), path.join(__dirname, `../static/good/images/${img}`));
+            }
+        }
+        return await model.updateInfo(id, {
+            title,
+            content,
+            contact,
+            tel,
+            images: images.join(),
+            type, price,
+            oprice,
+            number
+        })
     }
     /**
      * 删除
@@ -44,9 +59,9 @@ module.exports = class Good extends JikeJs.Controller {
     /**
      * 购买
      */
-    async buy({ id, number }) {
+    async buy({ id, number, remark, contact, tel }) {
         let model = new GoodModel();
-        return await model.buy(id, { number });
+        return await model.buy(id, { number, remark, contact, tel, user: this.user.id });
     }
     /**
      * 获取基本信息
@@ -77,5 +92,19 @@ module.exports = class Good extends JikeJs.Controller {
         this.ctx.type = "image/png"
         this.ctx.status = 200;
         this.ctx.body = fs.readFileSync(pathname);
+    }
+    /**
+     * 取消
+     */
+    async cancel({ id }) {
+        let model = new GoodModel();
+        return await model.cancel(id, this.user.id);
+    }
+    /**
+     * 取消
+     */
+    async close({ id,type }) {
+        let model = new GoodModel();
+        return await model.close(id, type);
     }
 }

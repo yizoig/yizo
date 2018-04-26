@@ -1,98 +1,125 @@
 <script>
-  import wepy from 'wepy'
-  import 'wepy-async-function'
-  import goodApi from '../../../../lib/apis/good'
-  import Avatar from '../../../../components/users/avatar/index'
-  import Toast from '../../../../components/toast/index'
-  import Comment from '../../../../components/post/comment/index'
-  export default class Good extends wepy.page {
-    config = {
-      'enablePullDownRefresh': true,
-      'backgroundColor': '#3385ff'
-    }
-    data = {
-      orderId: null,
-      userInfo: {},
-      creater: null,
-      runner: null,
-      detail: {},
-      imagePath: goodApi.uploadImage,
-    }
-    methods = {
-      callphone: (phone) => {
-        wepy.makePhoneCall({
-          phoneNumber: phone + ''
-
-        })
-      },
-      gohome: () => {
-        wepy.switchTab({
-          url: '/pages/home/index'
-        })
-      },
-      /**
-       * 编辑订单
-       */
-      editOrder: (params) => {
-
-      },
-
-    }
-    components = {
-      avatar: Avatar,
-      toast: Toast,
-      comment: Comment
-    }
-    onLoad(opt) {
-      this.id = opt.id || null
-      this.userInfo = this.$parent.globalData['userInfo']
-      this.$apply()
-    }
-    async onShow() {
-      await this.loadData()
-    }
-    async onPullDownRefresh() {
-      /**
-       * 与指定的组件通信
-       */
-      await this.loadData()
-    }
-    async loadData() {
-      try {
-        this.$invoke('toast', 'showToast', {
-          title: "获取信息中",
-          icon: "loading",
-          mask: true
-        })
-        let { data } = await goodApi.info({ id: this.id })
-        data['recordnum'] = 0;
-        for (let item of data['records']) {
-          //代表参与了
-          if (item.uid == this.userInfo['uid']) {
-            data['flag'] = 'join';
-          }
-          if (item.state >= 0) {
-            data['recordnum']++;
-          }
+    import wepy from 'wepy'
+    import 'wepy-async-function'
+    import goodApi from '../../../../lib/apis/good'
+    import Avatar from '../../../../components/users/avatar/index'
+    import Toast from '../../../../components/toast/index'
+    import Comment from '../../../../components/post/comment/index'
+    export default class Good extends wepy.page {
+        config = {
+            'enablePullDownRefresh': true,
+            'backgroundColor': '#F1A468'
         }
-        this.detail = data
-        let time = new Date(this.detail['_c'])
-        this.detail['_c'] = time.getDateDiff(time)
-        this.$invoke('avatar', 'setId', {
-          id: data['createId']
-        })
-        this.$apply()
-        this.$invoke('toast', 'hiddenToast')
-        wepy.stopPullDownRefresh()
-      } catch (e) {
-        this.$invoke('toast', 'showToast', {
-          title: e.message,
-          icon: "error",
-          mask: true
-        })
-      }
+        data = {
+            orderId: null,
+            userInfo: {},
+            creater: null,
+            runner: null,
+            detail: {},
+            imagePath: goodApi.uploadImage,
+        }
+        methods = {
+            callphone: (phone) => {
+                wepy.makePhoneCall({
+                    phoneNumber: phone + ''
+
+                })
+            },
+            navigateTo: function (url) {
+                wepy.navigateTo({
+                    url
+                })
+            },
+            gohome: () => {
+                wepy.switchTab({
+                    url: '/pages/home/index'
+                })
+            },
+            /**
+             * 编辑订单
+             */
+            editor: () => {
+                wepy.navigateTo({
+                    url: '/pages/editor/good/index?id=' + this.detail['pid']
+                })
+            },
+            cancel: async function () {
+                try {
+                    this.$invoke('toast', 'showToast', {
+                        title: "退出中...",
+                        icon: "loading",
+                        mask: true
+                    })
+                    let { data } = await goodApi.cancel({ id: this.id })
+                    if (!data) {
+                        throw new Error("操作失败")
+                    }
+                    this.loadData();
+                } catch (e) {
+                    console.error(e);
+                    this.$invoke('toast', 'showToast', {
+                        title: e.message,
+                        icon: "error",
+                        mask: true
+                    })
+                }
+            }
+        }
+        components = {
+            avatar: Avatar,
+            toast: Toast,
+            comment: Comment
+        }
+        onLoad(opt) {
+            this.id = opt.id || null
+            this.userInfo = this.$parent.globalData['userInfo']
+            this.$apply()
+        }
+        async onShow() {
+            await this.loadData()
+        }
+        async onPullDownRefresh() {
+            /**
+             * 与指定的组件通信
+             */
+            await this.loadData()
+        }
+        async loadData() {
+            try {
+                this.$invoke('toast', 'showToast', {
+                    title: "获取信息中",
+                    icon: "loading",
+                    mask: true
+                })
+                let { data } = await goodApi.info({ id: this.id })
+                data['recordnum'] = 0;
+                for (let item of data['records']) {
+                    //代表参与了
+                    if (item.uid == this.userInfo['uid'] && item.state != -1) {
+                        data['flag'] = 'join';
+                    }
+                    if (item.state >= 0) {
+                        data['recordnum']++;
+                    }
+                }
+                this.detail = data
+                let time = new Date(this.detail['_c'])
+                this.detail['_c'] = time.getDateDiff(time)
+                this.$invoke('avatar', 'setId', {
+                    id: data['createId']
+                })
+                this.$apply()
+                this.$invoke('toast', 'hiddenToast')
+                wepy.stopPullDownRefresh()
+            } catch (e) {
+                this.$invoke('toast', 'showToast', {
+                    title: e.message,
+                    icon: "error",
+                    mask: true
+                })
+            }
+        }
     }
-  }
 </script>
 <style src="./index.less" lang="less"></style>
 <template lang="wxml" src="./index.wxml"></template>

@@ -53,8 +53,6 @@ class GoodList extends React.Component {
                 <a onClick={() => {
                     this.settype(record, index, "comment")
                 }}>查看评论</a>
-                <Divider type="vertical" />
-                <a href="#" >删除</a>
             </span>
         ),
     }];
@@ -134,7 +132,6 @@ class GoodList extends React.Component {
                     showIcon
                 />
                 <div className="table-btns">
-                    <Button type="primary">删除</Button>
                 </div>
                 <Table
                     columns={this.columns}

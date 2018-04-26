@@ -40,7 +40,7 @@ class CollegeList extends React.Component {
         render: (text, record) => (
             <span>
                 <Popconfirm title={"你确认要" + (record['is_use'] == 1 ? "禁用" : "启用") + "该数据吗?"} onConfirm={() => {
-                    this.props.dispatch(disable_items({
+                    this.props.dispatch(use_items({
                         ids: [record.cid, 0],
                         use: record.is_use == 0 ? 1 : 0
                     }))

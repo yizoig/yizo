@@ -63,7 +63,7 @@
     </view>
     <view class="join" wx:if="{{detail['records'].length>0}}">
         <repeat for="{{detail['records']}}" item="record">
-            <image src="{{avatar+record.uid+'.ava'}}" />
+            <image src="{{avatar+record.uid+'.ava'}}" wx:if="{{record.state!=-1}}" />
         </repeat>
     </view>
     <comment :detail.sync="detail"></comment>
@@ -97,13 +97,13 @@
             </block>
             <!-- 其他-->
             <block wx:else>
-                <view class="btn" style="flex:1;background:#F1A468;color:#fff" @tap="join">
+                <view class="btn" style="flex:1;background:#F1A468;color:#fff" @tap="navigateTo({{'/pages/post/join/task/index?id='+detail['pid']}})">
                     <view class="title">接受任务</view>
                 </view>
             </block>
         </block>
         <block wx:else>
-            <view class="btn" style="flex:1;background:#ccc;color:#fff" >
+            <view class="btn" style="flex:1;background:#ccc;color:#fff">
                 <view class="title">{{detail['state']==-1?"任务已关闭":"任务已完成"}}</view>
             </view>
         </block>

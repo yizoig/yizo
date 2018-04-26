@@ -53,8 +53,8 @@ class TaskList extends React.Component {
                 <a onClick={() => {
                     this.settype(record, index, "comment")
                 }}>查看评论</a>
-                <Divider type="vertical" />
-                <a href="#" >删除</a>
+                {/* <Divider type="vertical" />
+                <a href="#" >删除</a> */}
             </span>
         ),
     }];
@@ -130,9 +130,9 @@ class TaskList extends React.Component {
                     type="info"
                     showIcon
                 />
-                <div className="table-btns">
+                {/* <div className="table-btns">
                     <Button type="primary">删除</Button>
-                </div>
+                </div> */}
                 <Table
                     columns={this.columns}
                     dataSource={list}

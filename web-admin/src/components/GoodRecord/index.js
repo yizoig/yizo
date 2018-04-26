@@ -25,7 +25,17 @@ export default class GoodRecord extends React.Component {
         key: 'avatar',
         width: 160,
         render: (id, { uname }) => <div className="avatar"><img src={users.avatar(id)} style={{ width: 30, height: 30, margin: 3 }} />{uname}</div>
-    }, {
+    },{
+        title: '联系人',
+        dataIndex: 'contact',
+        key: 'contact',
+        render: (text) => text||"无"
+    },  {
+        title: '联系电话',
+        dataIndex: 'contactTel',
+        key: 'contactTel',
+        render: (text) => text||"无"
+    },  {
         title: '状态',
         dataIndex: 'state',
         key: 'state',

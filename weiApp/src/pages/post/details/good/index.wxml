@@ -40,6 +40,11 @@
             </repeat>
         </view>
     </view>
+    <view class="join" wx:if="{{detail['records'].length>0}}">
+        <repeat for="{{detail['records']}}" item="record">
+            <image src="{{avatar+record.uid+'.ava'}}" wx:if="{{record.state!=-1}}" />
+        </repeat>
+    </view>
     <comment :detail.sync="detail"></comment>
     <view class="fix-btn">
         <block wx:if="{{detail['createId']!=userInfo['uid']}}">
@@ -54,22 +59,32 @@
                     <text class="iconfont icon-setting"></text>
                     <view class="title">编辑</view>
                 </view>
-                <view class="btn" style="flex:1;background:#FF5164;color:#fff" @tap="putstate(-1)" wx:if="{{detail['records'].length==0}}">
+                <view class="btn" style="flex:1;background:#FF5164;color:#fff" @tap="putstate(-1)">
                     <view class="title">物品下架</view>
-                </view>
-                <view class="btn" style="flex:1;background:#FF5164;color:#fff" @tap="putstate(1)" wx:else>
-                    <view class="title">物品售罄</view>
                 </view>
             </block>
             <block wx:else>
-                <view class="btn" style="flex:1;background:#F1A468;color:#fff" @tap="join">
+                <view wx:if="{{detail['flag']}}" class="btn" style="flex:1;background:#FF5164;color:#fff" @tap="cancel">
+                    <view class="title">我要取消</view>
+                </view>
+                <block wx:elif="{{detail['records'].length==detail['number']}}">
+                    <view class="btn" style="flex:1;background:#ccc;color:#fff" @tap="putstate(1)">
+                        <view class="title">物品售罄</view>
+                    </view>
+                </block>
+                <view wx:else class="btn" style="flex:1;background:#F1A468;color:#fff" @tap="navigateTo({{'/pages/post/join/good/index?id='+detail['pid']}})">
                     <view class="title">我要购买</view>
                 </view>
             </block>
         </block>
-        <block wx:else>
+        <block wx:elif="{{detail['state']==-1}}">
             <view class="btn" style="flex:1;background:#ccc;color:#fff">
-                <view class="title">我要购买</view>
+                <view class="title">已下架</view>
+            </view>
+        </block>
+        <block wx:elif="{{detail['state']==1}}">
+            <view class="btn" style="flex:1;background:#ccc;color:#fff">
+                <view class="title">已结束</view>
             </view>
         </block>
     </view>

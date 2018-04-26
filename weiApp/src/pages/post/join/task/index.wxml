@@ -1,0 +1,34 @@
+<view class="task-join">
+    <toast></toast>
+    <view class="background">
+        <view class="top"></view>
+    </view>
+    <view class="main">
+        <view class="top">
+            <view class="task-info">
+                <view class="title">{{detail['title']}}</view>
+                <view class="content">{{detail['content']}}</view>
+                <view class="type-name">{{detail['tName']}}</view>
+            </view>
+        </view>
+        <view class="task-form">
+            <view class="form-row">
+                <label class="form-label">联系人</label>
+                <input class="form-widget" placeholder="请填写联系人" bindinput="formValueChange" data-name="contact" value="{{form.contact}}" />
+            </view>
+            <view class="form-row">
+                <label class="form-label">联系方式</label>
+                <input class="form-widget" placeholder="请填写联系电话" bindinput="formValueChange" data-name="tel" value="{{form.tel}}" />
+            </view>
+        </view>
+    </view>
+    <view class="fix-btn">
+        <view class="reward-label">
+            酬劳:
+            <text class="reward {{detail['reward']==0?'-money':''}}">{{detail['reward']}}</text>
+        </view>
+        <view class="btn" style="background:#F1A468;color:#fff;width:140px;">
+            <view @tap="joinTask()">提交任务</view>
+        </view>
+    </view>
+</view>

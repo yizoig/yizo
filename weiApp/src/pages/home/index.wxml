@@ -22,15 +22,15 @@
         <view class="menu">
             <view class="menus">
                 <repeat for="{{menus}}" item="menu" index="menuIndex" key="unique">
-                    <view class="nav-item {{current==menuIndex?'active':''}}" @tap="onSwitch" data-type="menu" data-index="{{menuIndex}}">
+                    <view class="nav-item {{current==menuIndex?'active':''}}" @tap="onSwitch" data-type="menu" data-index="{{menuIndex}}" wx:if="{{menu['is_use']==1}}">
                         <text class="title">{{menu.tname}}</text>
                     </view>
                 </repeat>
             </view>
             <view class="sub-menus">
                 <repeat for="{{menus}}" item="menu" key="unique" index="menuIndex">
-                    <repeat for="{{menu.children}}" index="index" item="subMenu" key="unique" wx:if="{{menuIndex==current}}">
-                        <view class="sub-nav-item {{menu.current==index?'active':''}}" bindtap="onSwitch" data-index="{{index}}" data-type="sub">
+                    <repeat for="{{menu.children}}" index="index" item="subMenu" key="unique" wx:if="{{menuIndex==current &&menu['is_use']==1}}">
+                        <view class="sub-nav-item {{menu.current==index?'active':''}}" bindtap="onSwitch" data-index="{{index}}" data-type="sub"  wx:if="{{subMenu['is_use']==1}}">
                             <text class="title">{{subMenu.tname}}</text>
                         </view>
                     </repeat>

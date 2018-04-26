@@ -1,0 +1,49 @@
+<view class="good-join">
+    <toast></toast>
+    <view class="background">
+        <view class="top"></view>
+    </view>
+    <view class="main">
+        <view class="top">
+            <view class="task-info">
+                <view class="title">{{detail['title']}}</view>
+                <view class="content">{{detail['content']}}</view>
+                <view class="type-name">{{detail['tName']}}</view>
+            </view>
+        </view>
+        <view class="task-form">
+            <view class="form-row">
+                <label class="form-label">数量</label>
+                <view class="form-widget">
+                    <view style="border:1px solid #ccc;line-height:40rpx;height:40rpx;width:40rpx;text-align:center;border-radius:5rpx;" @tap="changnumber({{form.number-1}})">-</view>
+                    <view style="margin: 0 30rpx;">{{form.number}}/{{detail['num1']}}</view>
+                    <view style="border:1px solid #ccc;line-height:40rpx;height:40rpx;width:40rpx;text-align:center;border-radius:5rpx;" @tap="changnumber({{form.number+1}})">+</view>
+                </view>
+            </view>
+            <view class="form-row">
+                <label class="form-label">联系人</label>
+                <input class="form-widget" placeholder="请填写联系人" bindinput="formValueChange" data-name="contact" value="{{form.contact}}"
+                />
+            </view>
+            <view class="form-row">
+                <label class="form-label">联系方式</label>
+                <input class="form-widget" placeholder="请填写联系电话" bindinput="formValueChange" data-name="tel" value="{{form.tel}}" />
+            </view>
+            <view class="form-row" style="flex-direction: column;align-items: flex-start;">
+                <view>
+                    <textarea placeholder="备注(选填)" bindinput="formValueChange" value="{{form.content}}" data-name="content" style="text-align:left;height:150rpx;padding:10rpx 0;line-height:37rpx;">
+                            </textarea>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view class="fix-btn">
+        <view class="reward-label">
+            酬劳:
+            <text class="reward {{detail['reward']==0?'-money':''}}">{{form.number*detail['price']}}</text>
+        </view>
+        <view class="btn" style="background:#F1A468;color:#fff;width:140px;">
+            <view @tap="buyGood()">申请购买</view>
+        </view>
+    </view>
+</view>

@@ -102,15 +102,38 @@ module.exports = {
         {
             path: '/join/:id',
             method: 'put',
-            action: 'join',
+            action: 'joinTask',
             middle: [tokenVerify, userCheck],
             rules: {
-                //0表示报名 1表示取消报名
-                type: Dvm.number().in([0, 1]).default(0)
+                contact: Dvm.string().require(),
+                tel: Dvm.string().require(),
             }
         },
         /**
-         * 完成任务 结束任务
+         * 取消报名
+         */
+        {
+            path: '/quit/:id',
+            method: 'put',
+            action: 'quitTask',
+            middle: [tokenVerify, userCheck],
+            rules: {
+            }
+        },
+        /**
+         * 完成任务
+         */
+        {
+            path: '/finally/:id',
+            method: 'put',
+            action: 'finallyTask',
+            middle: [tokenVerify, userCheck],
+            rules: {
+                user: Dvm.string().require(),
+            }
+        },
+        /**
+         * 结束任务 关闭任务
          */
         {
             path: '/state/:id',

@@ -27,7 +27,7 @@ module.exports = class Good extends JikeJs.Model {
         }
         if (!this.isUndefined(college)) {
             _where.push([
-                {  "posts.college": college }
+                { "posts.college": college }
             ])
         }
         if (!this.isUndefined(type)) {
@@ -104,10 +104,29 @@ module.exports = class Good extends JikeJs.Model {
         }
     }
 
-    async updateInfo(id, data) {
+    async updateInfo(id, { title, content, contact, tel, images, type, price, oprice, number }) {
 
-        let { affectedRows = 0 } = await this.data(data).update();
-        return affectedRows > 0;
+        try {
+            await this.startTrans();
+            let { affectedRows: affectedRows1 } = await this.table("posts").where({ post_id: id }).data({
+                post_title: title,
+                post_content: content,
+                contact,
+                contact_tel: tel,
+                type
+            }).update();
+            let { affectedRows: affectedRows2 } = await this.table("goods").where({ post_id: id }).data({
+                images,
+                good_price: price,
+                original_price: oprice,
+                good_number: number
+            }).update();
+            await this.commit();
+            return affectedRows1 > 0 || affectedRows2 > 0;
+        } catch (e) {
+            await this.rollback();
+            throw e;
+        }
     }
 
     /**
@@ -133,17 +152,27 @@ module.exports = class Good extends JikeJs.Model {
     /**
      * 购买
      */
-    async buy(id, { number, user }) {
+    async buy(id, { number, remark, contact, tel, user }) {
 
+        let { good_id, good_price } = await this.where({ post_id: id }).find();
+        if (!good_id) {
+            throw new Error("不存在物品")
+        }
+        console.error(good_id, good_price)
         let { insertId } = await this.data({
-            number,
+            buy_num: number,
+            remark,
+            contact,
+            contact_tel: tel,
+            total: number * good_price,
+            good_id,
             user_id: user
-        }).insert();
+        }).table("good_buy_records").insert();
         return insertId;
     }
     async info(id) {
         let info = await this
-            .field('goods.post_id as pid,post_title as title,post_content as content,contact,contact_tel as contactTel,create_by as createId,nick_name as createName,user_gender as createGender,images,post_types.type_id as type,post_types.type_name tName,posts.college as cid,colleges.college_name as cName,state,good_price as price,original_price as oprice,good_number as number')
+            .field('goods.post_id as pid,post_title as title,post_content as content,contact,contact_tel as contactTel,create_by as createId,nick_name as createName,user_gender as createGender,images,post_types.type_id as tid,post_types.type_name tName,posts.college as cid,colleges.college_name as cName,state,good_price as price,original_price as oprice,good_number as number')
             .join('inner join posts on goods.post_id=posts.post_id')
             .join('inner join users on users.user_id=posts.create_by')
             .join("join colleges on colleges.college_id= posts.college")
@@ -166,5 +195,26 @@ module.exports = class Good extends JikeJs.Model {
         }
 
         return info
+    }
+    async cancel(id, user) {
+        let { good_id, good_price } = await this.where({ post_id: id }).find();
+        if (!good_id) {
+            throw new Error("不存在物品")
+        }
+        let { affectedRows } = await this.where({
+            good_id,
+            user_id: user
+        }).data({
+            state: -1
+        }).table("good_buy_records").update();
+        return affectedRows > 0;
+    }
+    async close(id, type) {
+        let { affectedRows } = await this.where({
+            post_id: id
+        }).data({
+            state: type
+        }).update();
+        return affectedRows > 0;
     }
 }

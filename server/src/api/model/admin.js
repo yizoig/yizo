@@ -73,19 +73,8 @@ module.exports = class Admin extends JikeJs.Model {
             "admins.is_del": del
         })
         total = await this.where(_where).join("inner join admin_groups on admin_groups.group_id=admins.group").count();
-        // if (sort) {
-        //     let sortObj = {};
-        //     sort.split(',').forEach(item => {
-        //         let [key, type = 'ASC'] = item.split(',');
-        //         if (['_c', 'name', 'id'].indexOf(key) != -1) {
-        //             sortObj[key] = type;
-        //         }
-        //     });
-        //     sortObj = this.map_handle(sortObj);
-        //     this.order(sortObj);
-        // }
         let list = await this
-            .field('admin_id as aid,admin_name as aname,admin_account as aaccount,group as gid,group_name as gname,admins._c as a_c,admins.is_del as is_del,admins.is_use as is_use')
+            .field('admin_id as aid,admin_name as aname,admin_account as aaccount,`group` as gid,group_name as gname,admins._c as a_c,admins.is_del as is_del,admins.is_use as is_use')
             .join("inner join admin_groups on admin_groups.group_id=admins.group")
             .page(page - 1, pageSize)
             .where(_where).select();
@@ -117,7 +106,7 @@ module.exports = class Admin extends JikeJs.Model {
             this.fail(this.codes.ACCOUNT_NOT_EXISTS);
         }
         //过滤字段
-        data = this.filter_handle(data, ['admin_name', 'group']);
+        data = this.filter_handle(data, ['admin_name', 'group','admin_account']);
         if (Object.keys(data).length == 0) {
             return 0;
         }

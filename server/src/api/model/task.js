@@ -48,7 +48,7 @@ module.exports = class TaskModel extends JikeJs.Model {
             .where(_where).count();
         //获取列表
         let list = await this
-            .field("posts.post_id as pid,post_title as title,post_content as content,create_by as createId,users.nick_name as createName,users.user_gender as createGender,posts.type as tid,post_types.type_name as tName,posts.college as cid,colleges.college_name as cName,reward_type AS rewardType,if(reward_type=0,money,reward) as reward,number,tasks.state,gender,posts._c,group_concat(task_records.user) as users")
+            .field("posts.post_id as pid,post_title as title,post_content as content,create_by as createId,users.nick_name as createName,users.user_gender as createGender,posts.type as tid,post_types.type_name as tName,posts.college as cid,colleges.college_name as cName,reward_type AS rewardType,if(reward_type=0,money,reward) as reward,number,tasks.state,gender,posts._c,GROUP_CONCAT(IF(task_records.state <>-1, task_records.user,null)) AS users")
             .join('inner join posts on posts.post_id=tasks.post_id')
             .join('left join task_records on task_records.task_id=tasks.task_id')
             .join('inner join users on users.user_id=posts.create_by')
@@ -175,17 +175,47 @@ module.exports = class TaskModel extends JikeJs.Model {
             .table("task_records").select() || [];
         return info;
     }
-    async joinTask(id, user) {
+    async joinTask(id, { user, contact, tel }) {
 
-        let { task_id } = {} = await this.where({ post_id: id }).find();
-        if (task_id) {
+        let { task_id } = await this.where({ post_id: id }).find();
+        if (!task_id) {
             throw new Error("不存在任务")
         }
         let { insertId } = await this.data({
             task_id,
             user,
+            contact,
+            contact_tel: tel
         }).table("task_records").insert();
         return insertId;
+    }
+    async quitTask(id, user) {
+
+        let { task_id } = await this.where({ post_id: id }).find();
+        if (!task_id) {
+            throw new Error("不存在任务")
+        }
+        let { affectedRows } = await this.data({
+            state: -1,
+        }).where({
+            task_id,
+            user
+        }).table("task_records").update();
+        return affectedRows > 0;
+    }
+    async finallyTask(id, user) {
+
+        let { task_id } = await this.where({ post_id: id }).find();
+        if (!task_id) {
+            throw new Error("不存在任务")
+        }
+        let { affectedRows } = await this.data({
+            state: 1,
+        }).where({
+            task_id,
+            user
+        }).table("task_records").update();
+        return affectedRows > 0;
     }
     async putState(id, type) {
         let { affectedRows } = await this.where({ post_id: id }).data({

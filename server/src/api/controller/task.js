@@ -6,32 +6,41 @@ module.exports = class Task extends JikeJs.Controller {
         let model = new TaskModel();
         return await model.list(({ search, page, pageSize, creater, partner, state, college, type }));
     }
-    async add({ title, content, contact, tel, college, type,dueDate, rewardType, reward, number, gender }) {
+    async add({ title, content, contact, tel, college, type, dueDate, rewardType, reward, number, gender }) {
 
         let model = new TaskModel();
-        return await model.add(this.user.id,{ title, content, contact, tel, college, type,dueDate, rewardType, reward, number, gender });
+        return await model.add(this.user.id, { title, content, contact, tel, college, type, dueDate, rewardType, reward, number, gender });
     }
-    async del({ ids,del }) {
+    async del({ ids, del }) {
 
         let model = new TaskModel();
-        return await model.del(ids,del);
+        return await model.del(ids, del);
     }
     async updateInfo({ id, ...data }) {
         let model = new TaskModel();
-        return await model.updateInfo(id,data)
+        return await model.updateInfo(id, data)
     }
-    async info({id}){
+    async info({ id }) {
         let model = new TaskModel();
         return await model.info(id)
     }
     //报名
-    async joinTask({id}){
+    async joinTask({ id, contact, tel }) {
         let model = new TaskModel();
-        return await model.join(id,this.user.id)
+        return await model.joinTask(id, { user: this.user.id, contact, tel })
+    }
+    async quitTask({ id }) {
+        let model = new TaskModel();
+        return await model.quitTask(id, this.user.id)
+    }
+    //报名
+    async finallyTask({ id, user }) {
+        let model = new TaskModel();
+        return await model.finallyTask(id, user)
     }
     //完成  或结束
-    async putState({id,type}){
+    async putState({ id, type }) {
         let model = new TaskModel();
-        return await model.putState(id,type)
+        return await model.putState(id, type)
     }
 }

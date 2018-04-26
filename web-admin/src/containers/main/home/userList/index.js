@@ -54,16 +54,12 @@ class UserList extends React.Component {
                     }}
                 >{record['is_use'] == 0 ? "启用" : "禁用"}</a>
                 <Divider type="vertical" />
-                <a href="#" >删除</a>
-                <Divider type="vertical" />
                 <a href="#">修改</a>
-                <Divider type="vertical" />
-                <a href="#">重置密码</a>
             </span>
         ),
     }];
     componentWillMount() {
-        if(this.props.memory.list.length==0){
+        if (this.props.memory.list.length == 0) {
             this.props.dispatch(get_list())
         }
     }
@@ -80,19 +76,6 @@ class UserList extends React.Component {
         const { dispatch } = this.props;
         return (
             <div className="list">
-                <Alert
-                    message="用户管理注意事项"
-                    description={(
-                        <div>
-                            <div>1.用户账号不能重复</div>
-                            <div>2.数据删除就无法恢复，建议使用禁用</div>
-                            <div>3.用户必须填写学校，并且学校没有被禁用，才能登录</div>
-                            <div>4.重置密码默认123456</div>
-                        </div>
-                    )}
-                    type="info"
-                    showIcon
-                />
                 <div className="table-btns">
 
                 </div>

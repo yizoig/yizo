@@ -139,7 +139,8 @@ module.exports = {
             middle: [tokenVerify, adminCheck],
             rules: {
                 name: Dvm.string(),
-                group: Dvm.string()
+                group: Dvm.string(),
+                account:Dvm.string(),
             }
         },
         /**

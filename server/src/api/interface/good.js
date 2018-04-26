@@ -93,8 +93,8 @@ module.exports = {
                 title: Dvm.string(),
                 content: Dvm.string(),
                 contact: Dvm.string(),
-                contact_tel: Dvm.string(),
-                images: Dvm.string(),
+                tel: Dvm.string(),
+                images: Dvm.array(),
                 type: Dvm.string(),
                 price: Dvm.number(),
                 oprice: Dvm.number(),
@@ -123,7 +123,30 @@ module.exports = {
             action: 'buy',
             middle: [tokenVerify, userCheck],
             rules: {
-                number: Dvm.number()
+                number: Dvm.number(),
+                remark: Dvm.string(),
+                contact: Dvm.string(),
+                tel: Dvm.string(),
+            }
+        },
+        //取消购买
+        {
+            path: '/cancel/:id',
+            method: 'put',
+            action: 'cancel',
+            middle: [tokenVerify, userCheck],
+            rules: {
+            }
+
+        },
+        //取消购买
+        {
+            path: '/close/:id',
+            method: 'put',
+            action: 'close',
+            middle: [tokenVerify, userCheck],
+            rules: {
+                type: Dvm.number().in([-1, 1]).require()
             }
         }
     ]

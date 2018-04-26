@@ -1,0 +1,111 @@
+<script>
+    import wepy from 'wepy'
+    import 'wepy-async-function'
+    import goodApi from '../../../../lib/apis/good'
+    import userApi from '../../../../lib/apis/user'
+    import Avatar from '../../../../components/users/avatar/index'
+    import Toast from '../../../../components/toast/index'
+    import { Validate } from '../../../../lib/utils/index'
+
+    export default class Task extends wepy.page {
+        config = {
+            'enablePullDownRefresh': true,
+            'backgroundColor': '#3385ff'
+        }
+        data = {
+            detail: null,
+            form: {
+                number: 1
+            }
+        }
+        methods = {
+            changnumber: function (value) {
+                if (value > 0 && value <= this.detail['num1']) {
+                    this.form['number'] = value
+                    this.$apply()
+                }
+            },
+            formValueChange: function (e) {
+                this.form[e.currentTarget.dataset.name] = e.detail.value
+                this.$apply()
+            },
+            buyGood:async function () {
+                let params = { ...this.form };
+                try {
+                    params = Validate.check(params, [
+                        ['contact', 'require', '联系人不能为空', Validate.MUST_VALIDATE],
+                        ['tel', 'tel', '联系电话格式不正确', Validate.MUST_VALIDATE],
+                    ])
+                    this.$invoke('toast', 'showToast', {
+                        title: '提交中',
+                        icon: 'loading'
+                    })
+                    //设置type
+                    let { data } = await goodApi.buy({ id: this.id, ...params })
+                    if (data) {
+                        this.$invoke('toast', 'showToast', {
+                            title: '购买成功',
+                            icon: 'success'
+                        })
+                        setTimeout(() => {
+                            this.$back();
+                        }, 1000)
+                    } else {
+                        this.$invoke('toast', 'showToast', {
+                            title: '购买失败',
+                            icon: 'error'
+                        })
+                    }
+                } catch (e) {
+                    console.error(e);
+                    this.$invoke('toast', 'showToast', {
+                        title: e.message,
+                        icon: 'error'
+                    })
+                }
+            }
+        }
+        components = {
+            toast: Toast,
+            avatar: Avatar
+        }
+        onLoad({ id = 21 }) {
+            this.id = id
+            this.userInfo = this.$parent.globalData['userInfo']
+            this.$apply()
+            this.loadData()
+        }
+        async onPullDownRefresh() {
+            /**
+             * 与指定的组件通信
+             */
+            await this.loadData()
+        }
+        async loadData() {
+            try {
+                this.$invoke('toast', 'showToast', {
+                    title: "获取信息中",
+                    icon: "loading",
+                    mask: true
+                })
+                let { data } = await goodApi.info({ id: this.id })
+                data['num1'] = data['number'] - data['records'].filter(({ state }) => state = 0).length
+                this.detail = data
+                let time = new Date(this.detail['_c'])
+                this.detail['_c'] = time.getDateDiff(time)
+                this.$apply()
+                this.$invoke('toast', 'hiddenToast')
+                wepy.stopPullDownRefresh()
+            } catch (e) {
+                console.error(e)
+                this.$invoke('toast', 'showToast', {
+                    title: e.message,
+                    icon: "error",
+                    mask: true
+                })
+            }
+        }
+    }
+</script>
+<style src="./index.less" lang="less"></style>
+<template lang="wxml" src="./index.wxml"></template>

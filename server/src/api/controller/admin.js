@@ -71,9 +71,9 @@ module.exports = class Admin extends JikeJs.Controller {
     /**
      * 修改管理员
      */
-    async update({ id, name, group }) {
+    async update({ id, name, group ,account}) {
         let model = new AdminModel();
-        return await model.updateInfo(id, { admin_name: name, group });
+        return await model.updateInfo(id, { admin_name: name, group,admin_account:account });
     }
     /**
      * 删除管理员
