@@ -9,13 +9,13 @@ const GoodApi = {
     info: Apis.get(host + '/goods/:id'),
     //添加物品
     add: Apis.post(host + '/goods'),
-    update: Apis.put(host + '/goods/:id') ,
+    update: Apis.put(host + '/goods/:id'),
     //报名
     buy: Apis.put(host + '/goods/buy/:id'),
     //退出
-    cancel: Apis.put(host + '/goods/cancel/:id'),
+    putstate: Apis.put(host + '/goods/state/:pid'),
     //完成
-    finally: Apis.put(host + '/goods/finally/:id'),
+    cancel: Apis.put(host + '/goods/cancel/:id'),
     //状态
     putstate: Apis.put(host + '/goods/state/:pid')
 }

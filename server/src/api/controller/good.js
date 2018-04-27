@@ -103,8 +103,8 @@ module.exports = class Good extends JikeJs.Controller {
     /**
      * 取消
      */
-    async close({ id,type }) {
+    async state({ id,type }) {
         let model = new GoodModel();
-        return await model.close(id, type);
+        return await model.putState(id, type);
     }
 }

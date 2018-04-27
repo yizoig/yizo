@@ -4,7 +4,7 @@ import ReactDom from 'react-dom';
 import { Alert, Table, Icon, Divider, Button } from 'antd';
 import { connect } from 'react-redux'
 import './index.less';
-import { get_list } from '../../../../redux/actions/user'
+import { get_list,use_item } from '../../../../redux/actions/user'
 import user from '../../../../redux/reducers/user';
 import users from '../../../../api/user';
 class UserList extends React.Component {
@@ -50,11 +50,14 @@ class UserList extends React.Component {
                 <a href="#"
                     style={{ color: record['is_use'] == 1 ? '#F00' : "#50B233" }}
                     onClick={() => {
-
+                        this.props.dispatch(use_item({
+                            ids: [record.uid, 0],
+                            use: record.is_use == 0 ? 1 : 0
+                        }))
                     }}
                 >{record['is_use'] == 0 ? "启用" : "禁用"}</a>
-                <Divider type="vertical" />
-                <a href="#">修改</a>
+                {/* <Divider type="vertical" />
+                <a href="#">修改</a> */}
             </span>
         ),
     }];

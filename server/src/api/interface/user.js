@@ -34,6 +34,19 @@ module.exports = {
             rules: {
             }
         },
+        /**
+       * 禁用用户
+       */
+        {
+            path: '/use',
+            method: 'put',
+            action: 'use',
+            middle: [tokenVerify, adminCheck],
+            rules: {
+                ids: Dvm.array().require(),
+                use: Dvm.number().in([0, 1]).default(1)
+            }
+        },
         //修改用户基本信息
         {
             path: "/:id",
@@ -61,19 +74,7 @@ module.exports = {
                 iv: Dvm.string().require()
             }
         },
-        /**
-        * 禁用用户
-        */
-        {
-            path: '/use',
-            method: 'put',
-            action: 'use',
-            middle: [tokenVerify, adminCheck],
-            rules: {
-                ids: Dvm.array().require(),
-                use: Dvm.number().in([0, 1]).default(1)
-            }
-        },
+
         /**
          * 获取用户基本信息
          */

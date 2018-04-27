@@ -100,10 +100,16 @@ module.exports = class Admin extends JikeJs.Model {
     async wxSignIn(openid, data) {
         //判断时候存在用户
         let [user = null] = await this
-            .field('user_id as uid,nick_name as nickname,user_tel as tel,user_gender as ugender,college as cid,users._c as u_c')
+            .field('user_id as uid,nick_name as nickname,user_tel as tel,user_gender as ugender,college as cid,users._c as u_c,users.is_use')
             .join("LEFT JOIN colleges on colleges.college_id = users.college")
             .where({ wx_id: openid }).select();
-        if (user) return user;
+        if (user){
+            if(user.is_use==0){
+                return this.fail(this.codes.UN_KNOWN_ERROR,"用户被禁用");
+            }else{
+                return user;                
+            }
+        }
         //在用户表中添加用户基本信息
         let { insertId: uid = null } = await this.data({
             wx_id: openid,

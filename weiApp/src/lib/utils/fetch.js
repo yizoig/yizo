@@ -41,7 +41,7 @@ async function doFetch(url, method = 'GET', data = {}, header = {}) {
         throw new Error("请求数据失败");
     }
     if (res.data.code != 0) {
-        throw new Error(code[res.data.code])
+        throw new Error(res.data.detail || code[res.data.code])
     }
     //保存token
     let keys = Object.keys(res.header);

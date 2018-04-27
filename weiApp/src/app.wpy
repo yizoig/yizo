@@ -1,81 +1,87 @@
 <style lang='less' src="./app.less">
-
 </style>
 <script>
-import wepy from 'wepy'
-import 'wepy-async-function'
-import './lib/utils/date'
-import User from './lib/services/user'
-export default class extends wepy.app {
-  config = {
-    pages: [
-      'pages/index/index',
-      'pages/post/join/good/index',
-      'pages/editor/good/index',
-      'pages/post/join/task/index',
-      'pages/mine/good/list/index',
-      'pages/mine/task/list/index',
-      'pages/post/records/task/index',
-      'pages/post/records/good/index',
-      'pages/editor/index',
-      'pages/editor/task/index',
-      'pages/mine/setting/baseinfo/index',
-      'pages/post/details/good/index',
-      'pages/mine/index',
-      'pages/home/index',
-      'pages/post/details/task/index',
-      'pages/account/signIn/index',
-      'pages/mine/setting/account/index',
-      'pages/account/changePwd/index',
-      'pages/account/changeTel/index',
-      'pages/account/forgotPwd/index',
-    ],
-    window: {
-      backgroundTextStyle: 'light',
-      navigationBarBackgroundColor: '#F1A468',
-      navigationBarTitleText: 'yizo微校园',
-      navigationBarTextStyle: 'white'
-    },
-    tabBar: {
-      selectedColor: '#F1A468',
-      color: '#8a8a8a',
-      borderStyle: 'white',
-      backgroundColor: '#fff',
-      list: [
-        {
-          pagePath: 'pages/home/index',
-          text: '校内',
-          iconPath: './public/image/index.png',
-          selectedIconPath: './public/image/index-active.png'
-        },
+  import wepy from 'wepy'
+  import 'wepy-async-function'
+  import './lib/utils/date'
+  import User from './lib/services/user'
+  export default class extends wepy.app {
+    config = {
+      pages: [
+        'pages/index/index',
+        'pages/post/join/good/index',
+        'pages/editor/good/index',
+        'pages/post/join/task/index',
+        'pages/mine/good/list/index',
+        'pages/mine/task/list/index',
+        'pages/post/records/task/index',
+        'pages/post/records/good/index',
+        'pages/editor/index',
+        'pages/editor/task/index',
+        'pages/mine/setting/baseinfo/index',
+        'pages/post/details/good/index',
+        'pages/mine/index',
+        'pages/home/index',
+        'pages/post/details/task/index',
+        'pages/account/signIn/index',
+        'pages/mine/setting/account/index',
+        'pages/account/changePwd/index',
+        'pages/account/changeTel/index',
+        'pages/account/forgotPwd/index',
+      ],
+      window: {
+        backgroundTextStyle: 'light',
+        navigationBarBackgroundColor: '#F1A468',
+        navigationBarTitleText: 'yizo微校园',
+        navigationBarTextStyle: 'white'
+      },
+      tabBar: {
+        selectedColor: '#F1A468',
+        color: '#8a8a8a',
+        borderStyle: 'white',
+        backgroundColor: '#fff',
+        list: [
+          {
+            pagePath: 'pages/home/index',
+            text: '校内',
+            iconPath: './public/image/index.png',
+            selectedIconPath: './public/image/index-active.png'
+          },
 
-        {
-          pagePath: 'pages/editor/index',
-          text: '发布',
-          iconPath: './public/image/release.png',
-          selectedIconPath: './public/image/release-active.png'
-        },
-        {
-          pagePath: 'pages/mine/index',
-          text: '我的',
-          iconPath: './public/image/mine.png',
-          selectedIconPath: './public/image/mine-active.png'
-        }
-      ]
+          {
+            pagePath: 'pages/editor/index',
+            text: '发布',
+            iconPath: './public/image/release.png',
+            selectedIconPath: './public/image/release-active.png'
+          },
+          {
+            pagePath: 'pages/mine/index',
+            text: '我的',
+            iconPath: './public/image/mine.png',
+            selectedIconPath: './public/image/mine-active.png'
+          }
+        ]
+      }
+    }
+    globalData = {
+      userInfo: null,
+      college: null
+    }
+    constructor() {
+      super()
+      this.use('promisify')
+      this.use('requestfix')
+    }
+    async onLaunch() {
+      try {
+
+        let userInfo = await User.autoSignIn();
+        this.globalData.userInfo = userInfo;
+      } catch (e) {
+        wx.showToast({
+          title: e.message,
+        })
+      }
     }
   }
-  globalData = {
-    userInfo: null,
-    college: null
-  }
-  constructor() {
-    super()
-    this.use('promisify')
-    this.use('requestfix')
-  }
-  async onLaunch() {
-    let userInfo = await User.autoSignIn();
-    this.globalData.userInfo = userInfo;
-  }
-}
 </script>

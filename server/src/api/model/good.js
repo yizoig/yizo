@@ -209,7 +209,7 @@ module.exports = class Good extends JikeJs.Model {
         }).table("good_buy_records").update();
         return affectedRows > 0;
     }
-    async close(id, type) {
+    async putState(id, type) {
         let { affectedRows } = await this.where({
             post_id: id
         }).data({

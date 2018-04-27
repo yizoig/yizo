@@ -35,6 +35,33 @@
                     url: '/pages/home/index'
                 })
             },
+            putstate: async (type) => {
+                try {
+                    this.$invoke('toast', 'showToast', {
+                        title: type == -1 ? "关闭中" : "结束中",
+                        icon: "loading",
+                        mask: true
+                    })
+                    let result = await goodApi.putstate({ pid: this.detail['pid'], type })
+                    if (!result) {
+                        throw new Error("操作失败");
+                    }
+                    this.$invoke('toast', 'showToast', {
+                        title: type == -1 ? "关闭成功" : "结束成功",
+                        icon: "success",
+                        mask: true
+                    })
+                } catch (e) {
+                    console.error(e)
+                    this.$invoke('toast', 'showToast', {
+                        title: type == -1 ? "关闭失败" : "结束失败",
+                        icon: "error",
+                        mask: true
+                    })
+                } finally {
+                    this.loadData();
+                }
+            },
             /**
              * 编辑订单
              */

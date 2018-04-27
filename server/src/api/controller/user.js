@@ -65,7 +65,7 @@ module.exports = class User extends JikeJs.Controller {
             }));
             return info;
         } catch (e) {
-            console.log(e)
+            throw e;
         }
     }
     async avatar({ id }) {

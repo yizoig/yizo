@@ -1,7 +1,8 @@
 import user from '../../api/user'
 export const USER_SAVE_TO_CACHE = "USER_SAVE_TO_CACHE";
 export const USER_SAVE_TO_MEMORY = "USER_SAVE_TO_MEMORY";
-import { message } from 'antd';
+import React, { Component } from 'react';
+import { message,notification,Icon } from 'antd';
 export function get_list(data) {
     return async (dispatch, getState) => {
         //获取默认数据
@@ -54,12 +55,25 @@ export function trigger_editor(data) {
     }
 }
 
-export function del_items({ ids, real = 0 }) {
+export function use_item({ ids, use = 1 }) {
     return async (dispatch) => {
-        try {
-            let result = await user.delGroup({ ids, real });
-        } catch (e) {
 
+        if(ids.length==0){
+            return  message.warning('请选择需要操作的数据');
+        }
+        try {
+            let result = await user.use({ ids, use });
+            notification.open({
+                message: "操作成功",
+                icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
+            })
+            dispatch(get_list())
+        } catch (e) {
+            notification.open({
+                message: "操作失败",
+                description: e.message,
+                icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
+            })
         }
     }
 }

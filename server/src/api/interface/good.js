@@ -141,9 +141,9 @@ module.exports = {
         },
         //取消购买
         {
-            path: '/close/:id',
+            path: '/state/:id',
             method: 'put',
-            action: 'close',
+            action: 'state',
             middle: [tokenVerify, userCheck],
             rules: {
                 type: Dvm.number().in([-1, 1]).require()

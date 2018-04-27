@@ -19,6 +19,13 @@
         }
         methods = {
             onSelect: function (e) {
+                if (!this.$parent.globalData.userInfo) {
+                    return this.$invoke('toast', 'showToast', {
+                        title: "请登陆后在查看",
+                        icon: "error",
+                        mask: true
+                    })
+                }
                 let { id = null } = e.currentTarget.dataset
                 let college = this.colleges[id];
 
